@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Trade Expansion LTDA – Website Institucional  
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)  
 [![Version](https://img.shields.io/badge/Version-1.0.0-green.svg)]  
@@ -92,3 +93,6 @@ Se precisar de alguma correção, dúvida técnica ou alterar identidade visual,
 ---
 
 > **Nota:** Este README é documento vivo – conforme o site avança, adicionaremos seções como “Performance”, “Implementação de SEO”, “Documentação de API da Petra”, “Versionamento e Deploy”.
+=======
+# tradeexpansion-site
+>>>>>>> origin/main
