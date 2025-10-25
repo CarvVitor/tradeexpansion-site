@@ -13,7 +13,6 @@
 ---
 
 ## 📌 Visão Geral  
-… *(segue todo o conteúdo que definimos anteriormente)* …
 
 ## 1. Visão Geral  
 - Migrar site do WP.com para WP.org (reduzir custo).  
