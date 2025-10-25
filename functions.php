@@ -10,3 +10,8 @@ function tradeexpansion_setup() {
   load_theme_textdomain('tradeexpansion', get_template_directory() . '/languages');
 }
 add_action('after_setup_theme', 'tradeexpansion_setup');
+
+$portal_loader = get_template_directory() . '/client-portal/portal-loader.php';
+if (file_exists($portal_loader)) {
+  require_once $portal_loader;
+}
