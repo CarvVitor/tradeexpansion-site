@@ -13,7 +13,7 @@ get_header();
     <!-- <source src="<?php echo get_template_directory_uri(); ?>/assets/videos/hero-rochas.webm" type="video/webm"> -->
     Seu navegador não suporta vídeo de fundo.
   </video>
-  <div class="absolute inset-0 bg-primary/70"></div>
+  <div class="absolute inset-0 bg-primary/60"></div>
   <div class="relative z-10 text-center px-6 text-custom1">
     <h1 class="text-5xl md:text-6xl font-bold mb-4 tracking-wide uppercase">
       Rochas Ornamentais de Excelência

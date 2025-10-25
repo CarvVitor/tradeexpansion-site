@@ -1,15 +1,30 @@
 <?php get_header(); ?>
 
-<main class="relative h-[90vh] flex flex-col items-center justify-center text-center bg-primary text-custom1 px-6">
-  <h1 class="text-5xl md:text-6xl font-bold mb-4 uppercase tracking-wide">
-    Expanda suas fronteiras com a Trade Expansion
-  </h1>
-  <p class="text-lg md:text-xl text-custom1/90 max-w-2xl mb-8">
-    Comércio internacional, exportação de rochas ornamentais e soluções sob medida para o seu crescimento global.
-  </p>
-  <a href="#contato" class="bg-accent hover:bg-custom1 hover:text-accent text-custom1 font-semibold px-8 py-4 rounded-lg transition duration-300">
-    Fale com a gente
-  </a>
+<main class="relative h-[90vh] flex flex-col items-center justify-center overflow-hidden">
+
+  <!-- VÍDEO DE FUNDO -->
+  <video class="absolute inset-0 w-full h-full object-cover"
+         autoplay muted loop playsinline
+         poster="<?php echo get_template_directory_uri(); ?>/assets/images/hero-home-fallback.jpg">
+    <source src="<?php echo get_template_directory_uri(); ?>/assets/videos/hero-home.mp4" type="video/mp4">
+    Seu navegador não suporta vídeo em background.
+  </video>
+
+  <!-- OVERLAY PARA CONTRASTE -->
+  <div class="absolute inset-0 bg-primary/60"></div>
+
+  <!-- CONTEÚDO -->
+  <div class="relative z-10 text-center px-6 text-custom1">
+    <h1 class="text-5xl md:text-6xl font-bold mb-4 tracking-wide uppercase">
+      Expanda suas fronteiras com a Trade Expansion
+    </h1>
+    <p class="text-lg md:text-xl max-w-2xl mx-auto mb-8">
+      Comércio internacional, exportação de rochas ornamentais e soluções sob medida para o seu crescimento global.
+    </p>
+    <a href="#contato" class="bg-accent hover:bg-custom1 hover:text-accent text-custom1 font-semibold px-10 py-4 rounded-lg transition duration-300">
+      Fale com a gente
+    </a>
+  </div>
 </main>
 
 <!-- SOBRE -->
