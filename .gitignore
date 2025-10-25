@@ -1,0 +1,24 @@
+# macOS / IDE
+.DS_Store
+*.log
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Dependências opcionais (se usar)
+node_modules/
+vendor/
+npm-debug.log*
+yarn.lock
+package-lock.json
+
+# Conteúdo pesado / não versionar
+assets/videos/
+assets/raw/
+client-portal/uploads/
+
+# Arquivos gerados
+*.zip
+*.tar.gz
+*.map
