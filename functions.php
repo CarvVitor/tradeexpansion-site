@@ -5,6 +5,10 @@ function tradeexpansion_setup() {
   add_theme_support('title-tag');
   add_theme_support('post-thumbnails');
   add_theme_support('custom-logo');
+  // Registra a localização do menu principal (usado no header)
+register_nav_menus([
+  'primary' => __('Menu Principal', 'tradeexpansion'),
+]);
 
   // Ativa suporte a tradução
   load_theme_textdomain('tradeexpansion', get_template_directory() . '/languages');
@@ -1567,6 +1571,25 @@ if (!function_exists('te_client_portal_fetch_financial_data')) {
     ];
   }
 }
+
+
+// === CPT Lead (para salvar contatos do formulário) ===
+add_action('init', function(){
+    if ( post_type_exists('te_lead') ) { return; }
+    register_post_type('te_lead', [
+        'labels' => [
+            'name'          => 'Leads',
+            'singular_name' => 'Lead',
+            'add_new_item'  => 'Adicionar Lead',
+            'edit_item'     => 'Editar Lead',
+        ],
+        'public'       => false,
+        'show_ui'      => true,
+        'show_in_menu' => true,
+        'menu_icon'    => 'dashicons-id',
+        'supports'     => ['title','editor'],
+    ]);
+});
 
 /* ==== CLIENT PORTAL • SETTINGS PAGE ==== */
      

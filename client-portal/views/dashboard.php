@@ -105,6 +105,14 @@ if (!is_wp_error($material_terms)) {
                 $status_slug = isset($report['status_slug']) ? strtolower($report['status_slug']) : strtolower($report['status']);
                 $chip_class  = $status_class[$status_slug] ?? 'bg-secondary text-custom1';
               ?>
+              <?php
+                $pid = get_the_ID();
+                if ( current_user_can('edit_post', $pid) ) : ?>
+                  <a class="te-btn te-btn--ghost te-btn--edit" href="<?php echo esc_url( get_edit_post_link($pid) ); ?>">
+                    <span aria-hidden="true">✏️</span>
+                    <span>Editar</span>
+                  </a>
+                <?php endif; ?>
               <span class="px-4 py-2 rounded-full text-sm font-medium <?php echo esc_attr($chip_class); ?>">
                 <?php echo esc_html($report['status']); ?>
               </span>
