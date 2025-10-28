@@ -51,3 +51,59 @@ Após o login, o cliente acessa `/dashboard`, com layout dividido em abas:
 ## 🧱 4. Estrutura de arquivos a criar
 
 Dentro do tema `tradeexpansion`, criar:
+
+/client-portal/
+├── login.php
+├── dashboard.php
+├── partials/
+│   ├── header-client.php
+│   ├── footer-client.php
+│   ├── tab-reports.php
+│   ├── tab-inspections.php
+│   ├── tab-financial.php
+│   └── tab-placeholder.php
+└── css/
+└── client-dashboard.css
+
+> O CSS pode usar Tailwind CDN.  
+> Usar classes leves, sem dependências externas pesadas.
+
+---
+
+## ⚙️ 5. Integração com o WordPress
+
+- No `functions.php`, registrar as novas rotas `/area-do-cliente` e `/dashboard`.
+- Bloquear acesso direto aos arquivos PHP se o usuário não estiver autenticado.
+- Criar funções auxiliares:
+  - `tradeexpansion_is_client_logged_in()`
+  - `tradeexpansion_redirect_if_not_logged()`
+
+---
+
+## 🎨 6. Estilo visual
+
+- Fundo escuro (#102724), textos em #E1E2DA.
+- Tipografia “Volkhorn” (Google Fonts).
+- Cabeçalho fixo com o nome do cliente e botão de logout.
+- Layout responsivo, com abas laterais no desktop e menu colapsado no mobile.
+- Manter o padrão visual do site principal (sofisticado, fluido e moderno).
+
+---
+
+## 📦 7. Resultado esperado
+
+O Codex deve gerar:
+1. Todos os arquivos e estruturas listadas acima.
+2. Código PHP e HTML funcional dentro do tema.
+3. CSS embutido ou importado corretamente.
+4. Comentários claros no código marcando pontos de integração futura (ex: `// TODO: integrar com Airtable API`).
+
+---
+
+🎯 O objetivo é que o sistema funcione *100% localmente* agora, mas com estrutura pronta para conectar-se futuramente a Airtable, Google Sheets e Gemini AI (Petra).
+
+Crie o código completo e funcional conforme especificado.
+
+Todos os arquivos gerados devem ser salvos automaticamente dentro do diretório atual do projeto (sem sobrescrever arquivos existentes).
+
+- As rotas /area-do-cliente e /dashboard devem usar o hook add_rewrite_rule() no functions.php.

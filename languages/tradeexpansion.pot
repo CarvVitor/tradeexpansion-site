@@ -1,0 +1,527 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Trade Expansion\n"
+"POT-Creation-Date: 2025-10-26 00:22:03+0000\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: custom-python\n"
+
+msgid "A cada 10 minutos (Financeiro Portal)"
+msgstr ""
+
+msgid "Abrir PDF"
+msgstr ""
+
+msgid "Acabamento polido e controle dimensional."
+msgstr ""
+
+msgid "Acabamento superficial"
+msgstr ""
+
+msgid "Acesso negado"
+msgstr ""
+
+msgid "Acompanhe inspeÃ§Ãµes, relatÃ³rios e indicadores de forma segura em um Ãºnico painel."
+msgstr ""
+
+msgid "Adicionar fotos"
+msgstr ""
+
+msgid "Adicionar novo"
+msgstr ""
+
+msgid "Admin"
+msgstr ""
+
+msgid "Ajuste integraÃ§Ãµes e branding do Client Portal."
+msgstr ""
+
+msgid "Aprovado"
+msgstr ""
+
+msgid "Aqui estÃ£o os Ãºltimos movimentos da sua operaÃ§Ã£o com a Trade Expansion."
+msgstr ""
+
+msgid "As imagens selecionadas aparecem nos quadros e serÃ£o incluÃ­das na impressÃ£o."
+msgstr ""
+
+msgid "Auditoria de Qualidade - Agosto"
+msgstr ""
+
+msgid "Baixar PDF (beta)"
+msgstr ""
+
+msgid "Bem-vindo Ã  Ãrea do Cliente Trade Expansion"
+msgstr ""
+
+msgid "Biblioteca de mÃ­dia indisponÃ­vel."
+msgstr ""
+
+msgid "Cache (minutos)"
+msgstr ""
+
+msgid "Cancelar"
+msgstr ""
+
+msgid "Chat Petra"
+msgstr ""
+
+msgid "Chat com a Petra (API Gemini) em breve. Prepare-se para tirar dÃºvidas em tempo real dentro do portal."
+msgstr ""
+
+msgid "Checklist de Embarque - Container 08"
+msgstr ""
+
+msgid "Checklist tÃ©cnico"
+msgstr ""
+
+msgid "Client Portal v1"
+msgstr ""
+
+msgid "Cliente"
+msgstr ""
+
+msgid "Clique ou arraste uma imagem"
+msgstr ""
+
+msgid "CondiÃ§Ã£o"
+msgstr ""
+
+msgid "Contexto / embalagem"
+msgstr ""
+
+msgid "Cor PrimÃ¡ria do Portal"
+msgstr ""
+
+msgid "Dados gerais"
+msgstr ""
+
+msgid "Dados sincronizados via Google Sheets / Apps Script (configure o endpoint em TECE_FIN_URL)."
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "Data"
+msgstr ""
+
+msgid "Data da inspeÃ§Ã£o"
+msgstr ""
+
+msgid "Defina pelo menos 1 minuto de cache."
+msgstr ""
+
+msgid "DescriÃ§Ã£o"
+msgstr ""
+
+msgid "Detalhe tÃ©cnico"
+msgstr ""
+
+msgid "Detalhes adicionais"
+msgstr ""
+
+msgid "DimensÃµes e espessura"
+msgstr ""
+
+msgid "Documento gerado automaticamente pelo Client Portal v1 â Trade Expansion."
+msgstr ""
+
+msgid "Editar"
+msgstr ""
+
+msgid "Editar informaÃ§Ãµes"
+msgstr ""
+
+msgid "Em breve: Projetos, Chat com a Petra e KPIs interativos."
+msgstr ""
+
+msgid "Embalagem e amarraÃ§Ã£o"
+msgstr ""
+
+msgid "Empresa / Cliente"
+msgstr ""
+
+msgid "Empresa Exemplo LTDA"
+msgstr ""
+
+msgid "Endpoint Financeiro (Google Sheets / API)"
+msgstr ""
+
+msgid "Endpoint indisponÃ­vel."
+msgstr ""
+
+msgid "Entrar"
+msgstr ""
+
+msgid "Enviando..."
+msgstr ""
+
+msgid "Erro ao anexar imagens."
+msgstr ""
+
+msgid "Erro ao salvar o relatÃ³rio."
+msgstr ""
+
+msgid "Esqueceu a senha? Contate o suporte."
+msgstr ""
+
+msgid "Este mockup nÃ£o salva automaticamente as informaÃ§Ãµes. Use para preparar o texto, gerar PDF e depois suba o arquivo final no campo de RelatÃ³rios."
+msgstr ""
+
+msgid "Fazer logout"
+msgstr ""
+
+msgid "Financeiro"
+msgstr ""
+
+msgid "Foto principal"
+msgstr ""
+
+msgid "FunÃ§Ã£o fetchReports() pronta para integrar Airtable/Drive via API."
+msgstr ""
+
+msgid "Galeria das Ãºltimas inspeÃ§Ãµes e registros fotogrÃ¡ficos."
+msgstr ""
+
+msgid "Gemini AI"
+msgstr ""
+
+msgid "Gerenciar relatÃ³rios"
+msgstr ""
+
+msgid "Granito Branco CearÃ¡"
+msgstr ""
+
+msgid "Hexadecimal da cor principal do dashboard (ex: #102724)."
+msgstr ""
+
+msgid "ID de relatÃ³rio invÃ¡lido."
+msgstr ""
+
+msgid "Imprimir / Exportar PDF"
+msgstr ""
+
+msgid "Informe uma URL vÃ¡lida para o endpoint financeiro."
+msgstr ""
+
+msgid "Informe uma cor hexadecimal vÃ¡lida (ex: #102724)."
+msgstr ""
+
+msgid "InspeÃ§Ã£o"
+msgstr ""
+
+msgid "InspeÃ§Ã£o demonstrativa"
+msgstr ""
+
+msgid "InspeÃ§Ã£o nÃ£o encontrada."
+msgstr ""
+
+msgid "InspeÃ§Ãµes"
+msgstr ""
+
+msgid "IntegraÃ§Ãµes e AparÃªncia"
+msgstr ""
+
+msgid "Integridade das chapas/blocos"
+msgstr ""
+
+msgid "Ir para o dashboard"
+msgstr ""
+
+msgid "Item avaliado"
+msgstr ""
+
+msgid "KPIs"
+msgstr ""
+
+msgid "KPIs e grÃ¡ficos com Chart.js em breve. O espaÃ§o jÃ¡ estÃ¡ reservado para mÃ©tricas personalizadas."
+msgstr ""
+
+msgid "LanÃ§amento"
+msgstr ""
+
+msgid "Lembrar acesso neste dispositivo"
+msgstr ""
+
+msgid "Limpar campos"
+msgstr ""
+
+msgid "Local da inspeÃ§Ã£o"
+msgstr ""
+
+msgid "Local de inspeÃ§Ã£o"
+msgstr ""
+
+msgid "Logout realizado com sucesso. AtÃ© breve!"
+msgstr ""
+
+msgid "Lote / Pedido"
+msgstr ""
+
+msgid "Lote 24 / Pedido 2045"
+msgstr ""
+
+msgid "Material"
+msgstr ""
+
+msgid "Material (nome ou ID). Deixe em branco para manter o configurado em cada imagem."
+msgstr ""
+
+msgid "Mockup acelerador"
+msgstr ""
+
+msgid "Modelo rÃ¡pido de RelatÃ³rio de InspeÃ§Ã£o"
+msgstr ""
+
+msgid "MÃ³dulo de projetos/pedidos em desenvolvimento. Em breve serÃ¡ possÃ­vel acompanhar etapas por material e cliente."
+msgstr ""
+
+msgid "Nenhum relatÃ³rio cadastrado para este cliente atÃ© o momento."
+msgstr ""
+
+msgid "Nenhuma observaÃ§Ã£o adicional registrada."
+msgstr ""
+
+msgid "Nome do inspetor"
+msgstr ""
+
+msgid "Nota / ObservaÃ§Ãµes"
+msgstr ""
+
+msgid "Notas detalhadas, recomendaÃ§Ãµes, ajustes solicitados..."
+msgstr ""
+
+msgid "Novo relatÃ³rio disponÃ­vel"
+msgstr ""
+
+msgid "NÃ£o foi possÃ­vel anexar as imagens. Tente novamente."
+msgstr ""
+
+msgid "NÃ£o foi possÃ­vel salvar. Tente novamente."
+msgstr ""
+
+msgid "NÃ£o foi possÃ­vel validar a sua solicitaÃ§Ã£o. Tente novamente."
+msgstr ""
+
+msgid "NÃ£o informado"
+msgstr ""
+
+msgid "ObservaÃ§Ã£o (opcional):"
+msgstr ""
+
+msgid "ObservaÃ§Ãµes"
+msgstr ""
+
+msgid "ObservaÃ§Ãµes detalhadas"
+msgstr ""
+
+msgid "OlÃ¡ %s,
+
+Um novo relatÃ³rio foi publicado no portal da Trade Expansion.
+Acesse: %s
+
+Obrigado!"
+msgstr ""
+
+msgid "OlÃ¡, %s"
+msgstr ""
+
+msgid "PDF"
+msgstr ""
+
+msgid "Pedidos e materiais"
+msgstr ""
+
+msgid "Pedreira / Porto / FÃ¡brica"
+msgstr ""
+
+msgid "Pendente"
+msgstr ""
+
+msgid "Personalize o que aparece para o cliente"
+msgstr ""
+
+msgid "Portal do Cliente"
+msgstr ""
+
+msgid "Preencha os campos, anexe as fotos e utilize o botÃ£o de impressÃ£o para gerar um PDF ou salvar como rascunho."
+msgstr ""
+
+msgid "Projetos"
+msgstr ""
+
+msgid "PrÃ©-visualizaÃ§Ã£o da imagem"
+msgstr ""
+
+msgid "Publicado em %s"
+msgstr ""
+
+msgid "Quartzito Azul Bahia"
+msgstr ""
+
+msgid "Registro fotogrÃ¡fico"
+msgstr ""
+
+msgid "RelatÃ³rio"
+msgstr ""
+
+msgid "RelatÃ³rio de InspeÃ§Ã£o"
+msgstr ""
+
+msgid "RelatÃ³rio de InspeÃ§Ã£o - Lote 23"
+msgstr ""
+
+msgid "RelatÃ³rio nÃ£o encontrado."
+msgstr ""
+
+msgid "RelatÃ³rios"
+msgstr ""
+
+msgid "RelatÃ³rios tÃ©cnicos com status atualizado."
+msgstr ""
+
+msgid "Reprovado"
+msgstr ""
+
+msgid "ResponsÃ¡vel Trade Expansion"
+msgstr ""
+
+msgid "Resumo da inspeÃ§Ã£o"
+msgstr ""
+
+msgid "Resumo nÃ£o informado."
+msgstr ""
+
+msgid "Resumo rÃ¡pido sobre objetivo, escopo e principais achados."
+msgstr ""
+
+msgid "Sair"
+msgstr ""
+
+msgid "Saldo pendente"
+msgstr ""
+
+msgid "Salvando..."
+msgstr ""
+
+msgid "Salvar"
+msgstr ""
+
+msgid "Selecionar fotos da inspeÃ§Ã£o"
+msgstr ""
+
+msgid "Selecione ao menos uma imagem para enviar."
+msgstr ""
+
+msgid "Sem cliente"
+msgstr ""
+
+msgid "Sem imagens cadastradas para esta inspeÃ§Ã£o."
+msgstr ""
+
+msgid "Sem imagens cadastradas."
+msgstr ""
+
+msgid "Sem material"
+msgstr ""
+
+msgid "Sem observaÃ§Ãµes cadastradas."
+msgstr ""
+
+msgid "Sem registros de imagens para este material."
+msgstr ""
+
+msgid "Senha"
+msgstr ""
+
+msgid "Seu usuÃ¡rio nÃ£o possui acesso Ã  Ãrea do Cliente. Fale com nosso suporte."
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Sua sessÃ£o expirou. FaÃ§a login novamente para continuar."
+msgstr ""
+
+msgid "Tempo em minutos que os dados da API permanecem em cache."
+msgstr ""
+
+msgid "Total mÂ²"
+msgstr ""
+
+msgid "Total pago em 2024"
+msgstr ""
+
+msgid "Trade Expansion"
+msgstr ""
+
+msgid "TÃ­tulo"
+msgstr ""
+
+msgid "URL do Apps Script/endpoint que retorna os dados financeiros em JSON."
+msgstr ""
+
+msgid "Umidade / manchas"
+msgstr ""
+
+msgid "Use os botÃµes ao lado para editar tÃ­tulos, status e anexar PDFs diretamente do WordPress."
+msgstr ""
+
+msgid "Uso interno"
+msgstr ""
+
+msgid "UsuÃ¡rio ou E-mail"
+msgstr ""
+
+msgid "UsuÃ¡rio ou senha invÃ¡lidos. Verifique os dados e tente novamente."
+msgstr ""
+
+msgid "Valor"
+msgstr ""
+
+msgid "Valor (R$)"
+msgstr ""
+
+msgid "Vencimento"
+msgstr ""
+
+msgid "Ver PDF"
+msgstr ""
+
+msgid "VerificaÃ§Ã£o de fissuras e embalagem."
+msgstr ""
+
+msgid "VisÃ£o administrativa"
+msgstr ""
+
+msgid "VisÃ£o estratÃ©gica"
+msgstr ""
+
+msgid "VisÃ£o financeira resumida com prÃ³ximos vencimentos."
+msgstr ""
+
+msgid "VocÃª jÃ¡ estÃ¡ autenticado como %s."
+msgstr ""
+
+msgid "VocÃª nÃ£o tem permissÃ£o para acessar este relatÃ³rio."
+msgstr ""
+
+msgid "cliente@tradeexpansion.com"
+msgstr ""
+
+msgid "fetchInspections() pronto para integrar upload interno/Google Drive. Novas fotos podem ser adicionadas diretamente acima."
+msgstr ""
+
+msgid "foto"
+msgstr ""
+
+msgid "fotos"
+msgstr ""
+
+msgid "Ãrea do Cliente"
+msgstr ""
+
+msgid "â"
+msgstr ""
