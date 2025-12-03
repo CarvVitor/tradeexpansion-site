@@ -63,4 +63,4 @@ wp-content/upgrade/
 wp-content/cache/
 
 # Permitir inclusão de arquivos específicos dentro de uploads (se quiser)
-!wp-content/uploads/.gitkeep
+!wp-content/uploads/.gitkeepapp/public/wp-content/themes/tradeexpansion_old_backup/
