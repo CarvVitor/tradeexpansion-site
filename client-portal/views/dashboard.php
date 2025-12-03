@@ -149,19 +149,62 @@ if (!is_wp_error($material_terms)) {
         <?php endforeach; ?>
         <p class="text-xs text-secondary/60 italic"><?php esc_html_e('Função fetchReports() pronta para integrar Airtable/Drive via API.', 'tradeexpansion'); ?></p>
 
-        <?php if ($can_edit_reports) : ?>
-          <div class="report-admin-tools">
-          <div>
-            <p class="report-admin-tools__eyebrow"><?php esc_html_e('Visão administrativa', 'tradeexpansion'); ?></p>
-            <h4><?php esc_html_e('Personalize o que aparece para o cliente', 'tradeexpansion'); ?></h4>
-            <p><?php esc_html_e('Use os botões ao lado para editar títulos, status e anexar PDFs diretamente do WordPress.', 'tradeexpansion'); ?></p>
-          </div>
-          <div class="report-admin-tools__actions">
-            <a class="report-admin-tools__btn" href="<?php echo esc_url(admin_url('edit.php?post_type=tec_relatorio')); ?>" target="_blank" rel="noopener"><?php esc_html_e('Gerenciar relatórios', 'tradeexpansion'); ?></a>
-            <a class="report-admin-tools__btn report-admin-tools__btn--primary" href="<?php echo esc_url(admin_url('post-new.php?post_type=tec_relatorio')); ?>" target="_blank" rel="noopener"><?php esc_html_e('Adicionar novo', 'tradeexpansion'); ?></a>
-          </div>
-          </div>
+        <script>
+// Funções para o modal de novo relatório
+document.addEventListener('DOMContentLoaded', function() {
+  window.openNewReportModal = function() {
+    const modal = document.getElementById('newReportModal');
+    if (modal) {
+      modal.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+      console.log('✅ Modal aberto');
+    } else {
+      console.error('❌ Modal #newReportModal não encontrado');
+    }
+  };
+  
+  window.closeNewReportModal = function() {
+    const modal = document.getElementById('newReportModal');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      const form = document.getElementById('newReportForm');
+      if (form) form.reset();
+    }
+  };
+  
+  window.updateFileName = function(input) {
+    const fileName = input.files[0] ? input.files[0].name : 'Clique ou arraste um arquivo PDF';
+    const fileNameEl = document.getElementById('fileName');
+    if (fileNameEl) fileNameEl.textContent = fileName;
+  };
+});
+</script>
+
+<?php if ($can_edit_reports) : ?>
+  <div style="margin: 2rem 0; padding: 1.5rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 1rem; border: 2px dashed #dee2e6; display: flex !important; flex-direction: row !important; justify-content: space-between !important; align-items: center !important; gap: 2rem;">
+    <div style="flex: 1;">
+      <p style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6c757d; margin-bottom: 0.5rem; margin-top: 0;"><?php esc_html_e('Visão administrativa', 'tradeexpansion'); ?></p>
+      <h4 style="font-size: 1.25rem; font-weight: 700; color: #212529; margin: 0 0 0.25rem 0;"><?php esc_html_e('Gerenciar relatórios', 'tradeexpansion'); ?></h4>
+      <p style="font-size: 0.875rem; color: #6c757d; margin: 0;"><?php esc_html_e('Crie, edite e organize os relatórios diretamente aqui.', 'tradeexpansion'); ?></p>
+    </div>
+    <div style="flex-shrink: 0;">
+      <button 
+        type="button" 
+        onclick="openNewReportModal()" 
+        style="padding: 1rem 2rem !important; background: linear-gradient(135deg, #5D2713 0%, #3d1a0c 100%) !important; color: white !important; border: none !important; border-radius: 0.75rem !important; font-weight: 600 !important; font-size: 1rem !important; cursor: pointer !important; box-shadow: 0 4px 12px rgba(93, 39, 19, 0.3) !important; transition: all 0.3s ease !important; white-space: nowrap !important; display: inline-flex !important; align-items: center !important; gap: 0.5rem !important;"
+        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(93, 39, 19, 0.4)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(93, 39, 19, 0.3)';"
+      >
+        <svg style="width: 1.25rem; height: 1.25rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+        </svg>
+        <span><?php esc_html_e('Novo Relatório', 'tradeexpansion'); ?></span>
+      </button>
+    </div>
+  </div>
         <?php endif; ?>
+
 
         <?php if ($can_edit_reports) : ?>
           <?php
@@ -302,54 +345,777 @@ if (!is_wp_error($material_terms)) {
         }
       ?>
 
-      <?php if ($can_view_financial && $financial) : ?>
-        <section data-tab-panel="financial" class="space-y-6 <?php echo $active_tab === 'financial' ? '' : 'hidden'; ?>">
-          <div class="grid md:grid-cols-2 gap-4">
-            <div class="rounded-2xl border border-rose-200 bg-rose-50 p-4">
-            <p class="text-sm uppercase tracking-wide text-rose-800"><?php esc_html_e('Saldo pendente', 'tradeexpansion'); ?></p>
-              <p class="text-3xl font-bold text-rose-900">R$ <?php echo esc_html(number_format_i18n($financial['summary']['pending'], 2)); ?></p>
-            </div>
-            <div class="rounded-2xl border border-emerald-200 bg-emerald-50 p-4">
-            <p class="text-sm uppercase tracking-wide text-emerald-800"><?php esc_html_e('Total pago em 2024', 'tradeexpansion'); ?></p>
-              <p class="text-3xl font-bold text-emerald-900">R$ <?php echo esc_html(number_format_i18n($financial['summary']['paid'], 2)); ?></p>
-            </div>
-          </div>
+<script>
+// Define a função financialDashboard GLOBALMENTE
+window.financialDashboard = function() {
+  return {
+    financialData: [
+      {
+        "PROVEDORES": "ARGOS Brasil",
+        "INVOICE": "INV-001",
+        "VALOR": "28600",
+        "ADV": "5000",
+        "PRAZO": "30 días",
+        "FECHA DE VENCIMIENTO": "2025-11-15",
+        "FECHA PAGO": "",
+        "SALDO ABIERTO": "23600",
+        "SALDO CREDITO": "0"
+      },
+      {
+        "PROVEDORES": "BRAMAGRAN",
+        "INVOICE": "INV-002",
+        "VALOR": "15400",
+        "ADV": "3000",
+        "PRAZO": "45 días",
+        "FECHA DE VENCIMIENTO": "2025-12-01",
+        "FECHA PAGO": "2025-10-20",
+        "SALDO ABIERTO": "0",
+        "SALDO CREDITO": "1200"
+      },
+      {
+        "PROVEDORES": "Mármores Sul",
+        "INVOICE": "INV-003",
+        "VALOR": "42000",
+        "PRAZO": "60 días",
+        "FECHA DE VENCIMIENTO": "2025-12-20",
+        "FECHA PAGO": "",
+        "SALDO ABIERTO": "32000",
+        "SALDO CREDITO": "0"
+      }
+    ],
+    loading: false,
+    showFullSheet: false,
+    showNewOrderModal: false,
+    totalAbierto: 0,
+    totalCredito: 0,
+    totalPagado: 0,
+    totalInvoicesPendientes: 0,
+    totalInvoicesPagos: 0,
+    proximoVencimiento: null,
+    diasProximoVencimiento: '',
+    newOrder: {
+      proveedor: '',
+      invoice: '',
+      valor: '',
+      adv: '',
+      prazo: '',
+      vencimiento: '',
+      documentos: ''
+    },
+    
+    init() {
+      this.calculateKPIs();
+      this.renderCharts();
+      console.log('✅ Dashboard financeiro inicializado!');
+    },
+    
+    calculateKPIs() {
+      this.totalAbierto = this.financialData.reduce((sum, row) => {
+        return sum + (parseFloat(row['SALDO ABIERTO']) || 0);
+      }, 0);
+      
+      this.totalCredito = this.financialData.reduce((sum, row) => {
+        return sum + (parseFloat(row['SALDO CREDITO']) || 0);
+      }, 0);
+      
+      this.totalInvoicesPendientes = this.financialData.filter(row => !row['FECHA PAGO']).length;
+      this.totalInvoicesPagos = this.financialData.filter(row => row['FECHA PAGO']).length;
+      
+      this.totalPagado = this.financialData
+        .filter(row => row['FECHA PAGO'])
+        .reduce((sum, row) => sum + (parseFloat(row.VALOR) || 0), 0);
+      
+      const pendientes = this.financialData
+        .filter(row => !row['FECHA PAGO'] && row['FECHA DE VENCIMIENTO'])
+        .map(row => ({
+          date: new Date(row['FECHA DE VENCIMIENTO']),
+          original: row['FECHA DE VENCIMIENTO']
+        }))
+        .sort((a, b) => a.date - b.date);
+      
+      if (pendientes.length > 0) {
+        const proxima = pendientes[0];
+        this.proximoVencimiento = proxima.original;
+        const dias = Math.ceil((proxima.date - new Date()) / (1000 * 60 * 60 * 24));
+        
+        if (dias > 0) {
+          this.diasProximoVencimiento = `En ${dias} día${dias !== 1 ? 's' : ''}`;
+        } else if (dias === 0) {
+          this.diasProximoVencimiento = '⚠️ Vence hoy';
+        } else {
+          this.diasProximoVencimiento = `🔴 Vencido hace ${Math.abs(dias)} días`;
+        }
+      }
+    },
+    
+    renderCharts() {
+      setTimeout(() => {
+        if (typeof Chart === 'undefined') {
+          console.error('Chart.js não carregado');
+          return;
+        }
+        
+        const statusChart = document.getElementById('paymentStatusChart');
+        const suppliersChart = document.getElementById('suppliersChart');
+        
+        if (statusChart) {
+          new Chart(statusChart, {
+            type: 'doughnut',
+             {
+              labels: ['Pagados', 'Pendientes'],
+              datasets: [{
+                 [this.totalInvoicesPagos, this.totalInvoicesPendientes],
+                backgroundColor: ['#10b981', '#f59e0b'],
+                borderWidth: 0
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { position: 'bottom' }
+              }
+            }
+          });
+        }
+        
+        if (suppliersChart) {
+          const proveedorCount = {};
+          this.financialData.forEach(row => {
+            const prov = row.PROVEDORES;
+            proveedorCount[prov] = (proveedorCount[prov] || 0) + 1;
+          });
+          
+          const topProveedores = Object.entries(proveedorCount)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5);
+          
+          new Chart(suppliersChart, {
+            type: 'bar',
+             {
+              labels: topProveedores.map(p => p[0]),
+              datasets: [{
+                label: 'Invoices',
+                 topProveedores.map(p => p[1]),
+                backgroundColor: '#5D2713',
+                borderRadius: 6
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false }
+              },
+              scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+              }
+            }
+          });
+        }
+      }, 100);
+    },
+    
+    formatCurrency(value) {
+      return parseFloat(value || 0).toLocaleString('es-MX', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+    },
+    
+    submitNewOrder() {
+      console.log('Nuevo pedido:', this.newOrder);
+      alert('¡Pedido enviado con éxito!');
+      this.showNewOrderModal = false;
+      this.newOrder = { proveedor: '', invoice: '', valor: '', adv: '', prazo: '', vencimiento: '', documentos: '' };
+    }
+  };
+};
+</script>
 
-          <div class="overflow-x-auto">
-            <table class="min-w-full text-sm">
-              <thead>
-                <tr class="text-left text-secondary/60">
-                  <th class="pb-2"><?php esc_html_e('Descrição', 'tradeexpansion'); ?></th>
-                  <th class="pb-2"><?php esc_html_e('Valor', 'tradeexpansion'); ?></th>
-                  <th class="pb-2"><?php esc_html_e('Status', 'tradeexpansion'); ?></th>
-                  <th class="pb-2"><?php esc_html_e('Vencimento', 'tradeexpansion'); ?></th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-secondary/10">
-                <?php foreach ($financial['entries'] as $entry) : ?>
-                  <tr>
-                    <td class="py-3 font-medium"><?php echo esc_html($entry['description']); ?></td>
-                    <td class="py-3">R$ <?php echo esc_html(number_format_i18n((float) $entry['amount'], 2)); ?></td>
-                    <td class="py-3">
-                      <?php
-                      $finance_status = strtolower($entry['status']) === 'pago' ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
-                      ?>
-                      <span class="px-3 py-1 rounded-full text-xs font-semibold <?php echo esc_attr($finance_status); ?>"><?php echo esc_html($entry['status']); ?></span>
-                    </td>
-                    <td class="py-3">
-                      <?php echo !empty($entry['due']) ? esc_html(date_i18n('d/m/Y', strtotime($entry['due']))) : '—'; ?>
-                    </td>
-                  </tr>
-                <?php endforeach; ?>
-              </tbody>
-            </table>
-          </div>
-          <p class="text-xs text-secondary/60 italic"><?php esc_html_e('Dados sincronizados via Google Sheets / Apps Script (configure o endpoint em TECE_FIN_URL).', 'tradeexpansion'); ?></p>
-        </section>
-      <?php endif; ?>
+     <?php if ($can_view_financial) : 
+  $apps_script_url = 'https://script.google.com/macros/s/AKfycbzkmSrwwDcTmv5f_mfHobv2hWZwaqV6ozikD54xP3S1XI0ZksMyUvyhBkutrXwASdO9/exec';
+  $sheet_id = '1rjttHjcDt5eszTv8CAcLer2kjOthCleQIzJJeH6KTu8'; // IMPORTANTE: Cole o ID da sua planilha Google Sheets aqui
+?>
+
+<section
+  data-tab-panel="financial"
+  class="space-y-6 <?php echo $active_tab === 'financial' ? '' : 'hidden'; ?>"
+  x-data="financialDashboard()"
+>
+  <!-- CABEÇALHO -->
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold text-primary"><?php esc_html_e('Gestión Financiera', 'tradeexpansion'); ?></h2>
+      <p class="text-sm text-secondary/70 mt-1"><?php esc_html_e('Control de pagos, créditos y plazos', 'tradeexpansion'); ?></p>
+    </div>
+    <button 
+      @click="showNewOrderModal = true"
+      class="bg-realce text-white px-5 py-2.5 rounded-lg hover:opacity-90 transition font-medium flex items-center gap-2"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      <?php esc_html_e('Nuevo Pedido', 'tradeexpansion'); ?>
+    </button>
+  </div>
+
+  <!-- KPIs -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Total em Aberto -->
+    <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg shadow-md p-6 border border-amber-200">
+      <div class="flex items-center justify-between mb-3">
+        <div class="bg-amber-500 p-2 rounded-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <span class="text-xs text-amber-700 font-medium" title="Valor total pendiente de pago"><?php esc_html_e('Pendiente', 'tradeexpansion'); ?></span>
+      </div>
+      <p class="text-3xl font-bold text-amber-900" x-text="'$' + formatCurrency(totalAbierto)">$0</p>
+      <p class="text-xs text-amber-700 mt-2" x-text="totalInvoicesPendientes + ' invoices abiertos'">0 invoices</p>
     </div>
 
-    <section class="grid md:grid-cols-3 gap-4">
+    <!-- Crédito a Favor -->
+    <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg shadow-md p-6 border border-emerald-200">
+      <div class="flex items-center justify-between mb-3">
+        <div class="bg-emerald-500 p-2 rounded-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <span class="text-xs text-emerald-700 font-medium" title="Crédito que la fábrica debe reembolsar"><?php esc_html_e('Crédito', 'tradeexpansion'); ?></span>
+      </div>
+      <p class="text-3xl font-bold text-emerald-900" x-text="'$' + formatCurrency(totalCredito)">$0</p>
+      <p class="text-xs text-emerald-700 mt-2"><?php esc_html_e('A favor de Israel', 'tradeexpansion'); ?></p>
+    </div>
+
+    <!-- Próximo Vencimento -->
+    <div class="bg-gradient-to-br from-rose-50 to-rose-100 rounded-lg shadow-md p-6 border border-rose-200">
+      <div class="flex items-center justify-between mb-3">
+        <div class="bg-rose-500 p-2 rounded-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <span class="text-xs text-rose-700 font-medium"><?php esc_html_e('Próximo', 'tradeexpansion'); ?></span>
+      </div>
+      <p class="text-2xl font-bold text-rose-900" x-text="proximoVencimiento || 'N/A'">--</p>
+      <p class="text-xs text-rose-700 mt-2" x-text="diasProximoVencimiento || 'Sin vencimientos próximos'"></p>
+    </div>
+
+    <!-- Total Pago -->
+    <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow-md p-6 border border-blue-200">
+      <div class="flex items-center justify-between mb-3">
+        <div class="bg-blue-500 p-2 rounded-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <span class="text-xs text-blue-700 font-medium"><?php esc_html_e('Total Pagado', 'tradeexpansion'); ?></span>
+      </div>
+      <p class="text-3xl font-bold text-blue-900" x-text="'$' + formatCurrency(totalPagado)">$0</p>
+      <p class="text-xs text-blue-700 mt-2" x-text="totalInvoicesPagos + ' pagos realizados'">0 pagos</p>
+    </div>
+  </div>
+
+  <!-- GRÁFICOS -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        <?php esc_html_e('Estado de Pagos', 'tradeexpansion'); ?>
+      </h3>
+      <canvas id="paymentStatusChart" style="max-height: 280px;"></canvas>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-primary mb-4 flex items-center gap-2">
+        <svg class="w-5 h-5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <?php esc_html_e('Top 5 Proveedores', 'tradeexpansion'); ?>
+      </h3>
+      <canvas id="suppliersChart" style="max-height: 280px;"></canvas>
+    </div>
+  </div>
+
+  <!-- TABELA COMPLETA -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="p-6 border-b border-gray-200 bg-gradient-to-r from-primary to-secondary">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <h3 class="text-xl font-bold text-white"><?php esc_html_e('Invoices Detalladas', 'tradeexpansion'); ?></h3>
+        </div>
+        <button 
+          @click="showFullSheet = !showFullSheet"
+          class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition flex items-center gap-2 text-sm font-medium backdrop-blur-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+          <span x-text="showFullSheet ? 'Ver Resumo' : 'Editar en Google Sheets'"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabela Resumida -->
+    <div x-show="!showFullSheet" class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">
+              Proveedor
+              <span class="text-gray-400 font-normal" title="Fornecedores do Brasil">ℹ️</span>
+            </th>
+            <th class="px-4 py-3 text-left text-xs font-semibold text-secondary uppercase tracking-wider">Invoice</th>
+            <th class="px-4 py-3 text-right text-xs font-semibold text-secondary uppercase tracking-wider">
+              Valor Total
+              <span class="text-gray-400 font-normal" title="Valor total do pedido">ℹ️</span>
+            </th>
+            <th class="px-4 py-3 text-right text-xs font-semibold text-secondary uppercase tracking-wider">
+              Anticipo
+              <span class="text-gray-400 font-normal" title="Valor adiantado">ℹ️</span>
+            </th>
+            <th class="px-4 py-3 text-center text-xs font-semibold text-secondary uppercase tracking-wider">
+              Plazo
+              <span class="text-gray-400 font-normal" title="Prazo dado para pagamento">ℹ️</span>
+            </th>
+            <th class="px-4 py-3 text-center text-xs font-semibold text-secondary uppercase tracking-wider">Vencimiento</th>
+            <th class="px-4 py-3 text-center text-xs font-semibold text-secondary uppercase tracking-wider">Pago</th>
+            <th class="px-4 py-3 text-right text-xs font-semibold text-secondary uppercase tracking-wider">
+              Saldo Abierto
+              <span class="text-gray-400 font-normal" title="Saldo pendiente">ℹ️</span>
+            </th>
+            <th class="px-4 py-3 text-right text-xs font-semibold text-secondary uppercase tracking-wider">
+              Crédito
+              <span class="text-gray-400 font-normal" title="Valor a ressarcir">ℹ️</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <template x-for="(row, index) in financialData" :key="index">
+            <tr class="hover:bg-gray-50 transition">
+              <td class="px-4 py-4 text-sm font-semibold text-primary" x-text="row.PROVEDORES"></td>
+              <td class="px-4 py-4 text-sm text-secondary font-mono" x-text="row.INVOICE"></td>
+              <td class="px-4 py-4 text-sm font-semibold text-secondary text-right" x-text="'$' + formatCurrency(row.VALOR)"></td>
+              <td class="px-4 py-4 text-sm text-secondary text-right" x-text="row.ADV ? '$' + formatCurrency(row.ADV) : '-'"></td>
+              <td class="px-4 py-4 text-sm text-center">
+                <span 
+                  class="px-2 py-1 rounded-full text-xs font-medium"
+                  :class="row.PRAZO ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-600'"
+                  x-text="row.PRAZO || 'N/A'"
+                ></span>
+              </td>
+              <td class="px-4 py-4 text-sm text-secondary text-center" x-text="row['FECHA DE VENCIMIENTO'] || '-'"></td>
+              <td class="px-4 py-4 text-center">
+                <span 
+                  class="px-3 py-1 inline-flex text-xs font-semibold rounded-full"
+                  :class="row['FECHA PAGO'] ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'"
+                  x-text="row['FECHA PAGO'] || 'Pendiente'"
+                ></span>
+              </td>
+              <td class="px-4 py-4 text-sm font-bold text-right" 
+                  :class="parseFloat(row['SALDO ABIERTO'] || 0) > 0 ? 'text-rose-600' : 'text-gray-400'"
+                  x-text="'$' + formatCurrency(row['SALDO ABIERTO'])">
+              </td>
+              <td class="px-4 py-4 text-sm font-bold text-right"
+                  :class="parseFloat(row['SALDO CREDITO'] || 0) > 0 ? 'text-emerald-600' : 'text-gray-400'"
+                  x-text="row['SALDO CREDITO'] ? '$' + formatCurrency(row['SALDO CREDITO']) : '-'">
+              </td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+      
+      <!-- Loading -->
+      <div x-show="loading" class="text-center py-16 text-secondary/60">
+        <svg class="animate-spin h-10 w-10 mx-auto mb-3 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <p class="font-medium"><?php esc_html_e('Cargando datos financieros...', 'tradeexpansion'); ?></p>
+      </div>
+
+      <!-- Empty State -->
+      <div x-show="!loading && financialData.length === 0" class="text-center py-16">
+        <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <p class="text-gray-500"><?php esc_html_e('No hay datos disponibles', 'tradeexpansion'); ?></p>
+      </div>
+    </div>
+
+    <!-- Google Sheets Iframe -->
+    <div x-show="showFullSheet" class="p-4 bg-gray-50">
+      <div class="bg-white rounded-lg border-2 border-primary/20 overflow-hidden">
+        <iframe 
+          src="https://docs.google.com/spreadsheets/d/<?php echo esc_attr($sheet_id); ?>/edit?usp=sharing"
+          class="w-full"
+          style="height: 700px; border: none;"
+          loading="lazy"
+        ></iframe>
+        <div class="p-4 bg-gradient-to-r from-primary/5 to-secondary/5 border-t border-gray-200">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm text-secondary">
+              <strong><?php esc_html_e('Modo edición activo:', 'tradeexpansion'); ?></strong>
+              <?php esc_html_e('Puede editar la planilla directamente. Los cambios se guardan automáticamente en Google Sheets.', 'tradeexpansion'); ?>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: NOVO PEDIDO -->
+  <div 
+    x-show="showNewOrderModal" 
+    x-cloak
+    @click.away="showNewOrderModal = false"
+    class="fixed inset-0 z-50 overflow-y-auto"
+    style="display: none;"
+  >
+    <div class="flex items-center justify-center min-h-screen px-4">
+      <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
+      
+      <div class="bg-white rounded-xl overflow-hidden shadow-2xl transform transition-all max-w-2xl w-full z-50">
+        <div class="bg-gradient-to-r from-primary to-secondary px-6 py-5">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="bg-white/20 p-2 rounded-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white"><?php esc_html_e('Nuevo Pedido', 'tradeexpansion'); ?></h3>
+                <p class="text-white/70 text-sm"><?php esc_html_e('Complete los datos del pedido', 'tradeexpansion'); ?></p>
+              </div>
+            </div>
+            <button @click="showNewOrderModal = false" class="text-white/70 hover:text-white transition">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <form @submit.prevent="submitNewOrder" class="p-6 space-y-5">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-secondary mb-2">
+                <?php esc_html_e('Proveedor', 'tradeexpansion'); ?>
+                <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                x-model="newOrder.proveedor"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                placeholder="Nome do fornecedor"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-secondary mb-2">
+                <?php esc_html_e('Número Invoice', 'tradeexpansion'); ?>
+                <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="text" 
+                x-model="newOrder.invoice"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                placeholder="INV-001"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-secondary mb-2">
+                <?php esc_html_e('Valor Total', 'tradeexpansion'); ?>
+                <span class="text-rose-500">*</span>
+              </label>
+              <input 
+                type="number" 
+                step="0.01"
+                x-model="newOrder.valor"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                placeholder="0.00"
+                required
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-secondary mb-2">
+                <?php esc_html_e('Anticipo (ADV)', 'tradeexpansion'); ?>
+              </label>
+              <input 
+                type="number" 
+                step="0.01"
+                x-model="newOrder.adv"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                placeholder="0.00"
+              />
+            </div>
+
+            <div>
+              <label class="block text-sm font-semibold text-secondary mb-2">
+                <?php esc_html_e('Plazo (días)', 'tradeexpansion'); ?>
+              </label>
+              <input 
+                type="text" 
+                x-model="newOrder.prazo"
+                class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                placeholder="30 días"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-secondary mb-2">
+              <?php esc_html_e('Fecha de Vencimiento', 'tradeexpansion'); ?>
+              <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="date" 
+              x-model="newOrder.vencimiento"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-sm font-semibold text-secondary mb-2">
+              <?php esc_html_e('Documentos / Observaciones', 'tradeexpansion'); ?>
+            </label>
+            <textarea 
+              x-model="newOrder.documentos"
+              rows="3"
+              class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition resize-none"
+              placeholder="Notas, links de documentos, etc."
+            ></textarea>
+          </div>
+
+          <div class="flex gap-3 pt-4 border-t">
+            <button 
+              type="button"
+              @click="showNewOrderModal = false"
+              class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-secondary font-medium hover:bg-gray-50 transition"
+            >
+              <?php esc_html_e('Cancelar', 'tradeexpansion'); ?>
+            </button>
+            <button 
+              type="submit"
+              class="flex-1 px-4 py-3 bg-realce text-white rounded-lg hover:opacity-90 transition font-semibold shadow-lg shadow-realce/30"
+            >
+              <?php esc_html_e('✓ Enviar Pedido', 'tradeexpansion'); ?>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JAVASCRIPT -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<!-- MODAL: NOVO RELATÓRIO -->
+<div id="newReportModal" style="display: none;" class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm">
+  <div class="flex items-center justify-center min-h-screen px-4">
+    <div class="bg-white rounded-xl overflow-hidden shadow-2xl max-w-3xl w-full">
+      <!-- Header do Modal -->
+      <div class="bg-gradient-to-r from-primary to-secondary px-6 py-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="bg-white/20 p-2 rounded-lg">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white"><?php esc_html_e('Novo Relatório', 'tradeexpansion'); ?></h3>
+              <p class="text-white/70 text-sm"><?php esc_html_e('Preencha os dados do relatório técnico', 'tradeexpansion'); ?></p>
+            </div>
+          </div>
+          <button onclick="closeNewReportModal()" class="text-white/70 hover:text-white transition">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <form id="newReportForm" class="p-6 space-y-5">
+        <!-- Cliente -->
+        <div>
+          <label class="block text-sm font-semibold text-secondary mb-2">
+            <?php esc_html_e('Cliente', 'tradeexpansion'); ?>
+            <span class="text-rose-500">*</span>
+          </label>
+          <select id="report_client" name="client_id" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" required>
+            <option value=""><?php esc_html_e('Selecione o cliente', 'tradeexpansion'); ?></option>
+            <?php
+            $clients = get_users(['role' => 'cliente']);
+            foreach ($clients as $client) {
+              echo '<option value="' . esc_attr($client->ID) . '">' . esc_html($client->display_name) . '</option>';
+            }
+            ?>
+          </select>
+        </div>
+
+        <!-- Título -->
+        <div>
+          <label class="block text-sm font-semibold text-secondary mb-2">
+            <?php esc_html_e('Título do Relatório', 'tradeexpansion'); ?>
+            <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="report_title"
+            name="title"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+            placeholder="<?php esc_attr_e('Ex: Inspeção Técnica - Granito Branco Ceará', 'tradeexpansion'); ?>"
+            required
+          />
+        </div>
+
+        <!-- Status -->
+        <div>
+          <label class="block text-sm font-semibold text-secondary mb-2">
+            <?php esc_html_e('Status', 'tradeexpansion'); ?>
+          </label>
+          <select id="report_status" name="status" class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            <option value="pendente"><?php esc_html_e('Pendente', 'tradeexpansion'); ?></option>
+            <option value="aprovado"><?php esc_html_e('Aprovado', 'tradeexpansion'); ?></option>
+            <option value="reprovado"><?php esc_html_e('Reprovado', 'tradeexpansion'); ?></option>
+          </select>
+        </div>
+
+        <!-- Observações -->
+        <div>
+          <label class="block text-sm font-semibold text-secondary mb-2">
+            <?php esc_html_e('Observações / Notas', 'tradeexpansion'); ?>
+          </label>
+          <textarea 
+            id="report_content"
+            name="content"
+            rows="4"
+            class="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+            placeholder="<?php esc_attr_e('Detalhes sobre o relatório, observações técnicas...', 'tradeexpansion'); ?>"
+          ></textarea>
+        </div>
+
+        <!-- Upload PDF -->
+        <div>
+          <label class="block text-sm font-semibold text-secondary mb-2">
+            <?php esc_html_e('Arquivo PDF', 'tradeexpansion'); ?>
+          </label>
+          <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary transition">
+            <input type="file" id="report_pdf" name="pdf" accept=".pdf" class="hidden" onchange="updateFileName(this)">
+            <label for="report_pdf" class="cursor-pointer">
+              <svg class="w-12 h-12 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p class="text-sm text-gray-600" id="fileName"><?php esc_html_e('Clique ou arraste um arquivo PDF', 'tradeexpansion'); ?></p>
+            </label>
+          </div>
+        </div>
+
+        <!-- Botões -->
+        <div class="flex gap-3 pt-4 border-t">
+          <button 
+            type="button"
+            onclick="closeNewReportModal()"
+            class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg text-secondary font-medium hover:bg-gray-50 transition"
+          >
+            <?php esc_html_e('Cancelar', 'tradeexpansion'); ?>
+          </button>
+          <button 
+            type="submit"
+            class="flex-1 px-4 py-3 bg-primary text-white rounded-lg hover:opacity-90 transition font-semibold shadow-lg"
+          >
+            <?php esc_html_e('✓ Criar Relatório', 'tradeexpansion'); ?>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function openNewReportModal() {
+  document.getElementById('newReportModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeNewReportModal() {
+  document.getElementById('newReportModal').style.display = 'none';
+  document.body.style.overflow = 'auto';
+  document.getElementById('newReportForm').reset();
+}
+
+function updateFileName(input) {
+  const fileName = input.files[0] ? input.files[0].name : '<?php esc_js_e('Clique ou arraste um arquivo PDF', 'tradeexpansion'); ?>';
+  document.getElementById('fileName').textContent = fileName;
+}
+
+// Submit do formulário
+document.getElementById('newReportForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const formData = new FormData();
+  formData.append('action', 'create_report_frontend');
+  formData.append('title', document.getElementById('report_title').value);
+  formData.append('client_id', document.getElementById('report_client').value);
+  formData.append('status', document.getElementById('report_status').value);
+  formData.append('content', document.getElementById('report_content').value);
+  
+  const pdfFile = document.getElementById('report_pdf').files[0];
+  if (pdfFile) {
+    formData.append('pdf', pdfFile);
+  }
+  
+  try {
+    const response = await fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      alert('✓ Relatório criado com sucesso!');
+      closeNewReportModal();
+      location.reload(); // Recarrega para mostrar o novo relatório
+    } else {
+      alert('✗ Erro ao criar relatório: ' + result.data);
+    }
+  } catch (error) {
+    alert('✗ Erro ao criar relatório');
+    console.error(error);
+  }
+});
+</script>
+
+<style>
+[x-cloak] { display: none !important; }
+</style>
+
+<?php endif; ?>
+
+    <section class="grid md:grid-cols-3 gap-4 mt-12">
       <article class="rounded-3xl border border-secondary/10 bg-white p-5">
         <p class="text-xs uppercase tracking-[0.4em] text-accent mb-2"><?php esc_html_e('Projetos', 'tradeexpansion'); ?></p>
         <h2 class="text-xl font-semibold mb-2"><?php esc_html_e('Pedidos e materiais', 'tradeexpansion'); ?></h2>
@@ -727,5 +1493,49 @@ if (!is_wp_error($material_terms)) {
     border-color: #102724;
   }
 </style>
+
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tabButtons = document.querySelectorAll('.portal-tab');
+  const panels = document.querySelectorAll('[data-tab-panel]');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-tab-target');
+
+      tabButtons.forEach(b => b.classList.remove('portal-tab-active'));
+      btn.classList.add('portal-tab-active');
+
+      panels.forEach(panel => {
+        panel.classList.toggle('hidden', panel.getAttribute('data-tab-panel') !== target);
+      });
+    });
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tabButtons = document.querySelectorAll('.portal-tab');
+  const panels = document.querySelectorAll('[data-tab-panel]');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-tab-target');
+
+      tabButtons.forEach(b => b.classList.remove('portal-tab-active'));
+      btn.classList.add('portal-tab-active');
+
+      panels.forEach(panel => {
+        panel.classList.toggle('hidden', panel.getAttribute('data-tab-panel') !== target);
+      });
+    });
+  });
+});
+</script>
 
 <?php get_footer(); ?>

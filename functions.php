@@ -487,32 +487,32 @@ add_action('init', function () {
   // Inspeções
   register_post_type('tec_inspecao', [
     'labels' => [
-      'name' => 'Inspeções',
-      'singular_name' => 'Inspeção',
+      'name' => 'Inspeções (internas)',
+      'singular_name' => 'Inspeção (interna)',
       'add_new_item' => 'Adicionar Inspeção',
       'edit_item' => 'Editar Inspeção',
     ],
     'public' => false,
     'show_ui' => true,
-    'show_in_menu' => true,
+    'show_in_menu' => 'edit.php?post_type=tec_relatorio',
     'menu_icon' => 'dashicons-search',
     'supports' => ['title', 'editor', 'thumbnail'], // use o conteúdo para observações; imagens anexas ao post
   ]);
 
-  // Financeiro (lançamentos)
-  register_post_type('tec_financeiro', [
+// Financeiro (lançamentos)
+register_post_type('tec_financeiro', [
     'labels' => [
-      'name' => 'Financeiro',
-      'singular_name' => 'Lançamento',
-      'add_new_item' => 'Adicionar Lançamento',
-      'edit_item' => 'Editar Lançamento',
+        'name' => 'Financeiro',
+        'singular_name' => 'Lançamento',
+        'add_new_item' => 'Adicionar Lançamento',
+        'edit_item' => 'Editar Lançamento',
     ],
     'public' => false,
     'show_ui' => true,
     'show_in_menu' => true,
     'menu_icon' => 'dashicons-chart-pie',
     'supports' => ['title'], // campos virão via metaboxes
-  ]);
+]);
 });
 
 /* ==== ADMIN LIST COLUMNS FOR CPTs ==== */
@@ -1279,6 +1279,128 @@ function te_build_relatorio_blocks($title, $resumo, $data = [], $bundles = []) {
 
   return $content;
 }
+
+if (!function_exists('te_relatorio_parse_float')) {
+  function te_relatorio_parse_float($value) {
+    $value = str_replace(',', '.', (string) $value);
+    return is_numeric($value) ? (float) $value : 0.0;
+  }
+}
+
+if (!function_exists('te_relatorio_parse_int')) {
+  function te_relatorio_parse_int($value) {
+    return (int) round(te_relatorio_parse_float($value));
+  }
+}
+
+if (!function_exists('te_relatorio_extract_items_from_request')) {
+  function te_relatorio_extract_items_from_request() {
+    $raw_items = [];
+    if (!empty($_POST['cavaletes']) && is_array($_POST['cavaletes'])) {
+      $raw_items = array_values($_POST['cavaletes']);
+    } elseif (!empty($_POST['bundles']) && is_array($_POST['bundles'])) {
+      $raw_items = array_values($_POST['bundles']);
+    }
+
+    $items = [];
+    foreach ($raw_items as $row) {
+      if (!is_array($row)) {
+        continue;
+      }
+
+      $items[] = [
+        'ident' => sanitize_text_field($row['ident'] ?? $row['identificacao'] ?? ''),
+        'descricao' => sanitize_text_field($row['descricao'] ?? ($row['material'] ?? '')),
+        'acabamento' => sanitize_text_field($row['acabamento'] ?? ''),
+        'quant' => te_relatorio_parse_int($row['quantidade'] ?? ($row['quant'] ?? 0)),
+        'comp' => te_relatorio_parse_float($row['comp_m'] ?? ($row['comp'] ?? 0)),
+        'altura' => te_relatorio_parse_float($row['altura_m'] ?? ($row['altura'] ?? 0)),
+        'esp' => te_relatorio_parse_float($row['espess_cm'] ?? ($row['esp'] ?? 0)),
+        'obs' => sanitize_text_field($row['obs'] ?? ''),
+      ];
+    }
+
+    return $items;
+  }
+}
+
+if (!function_exists('te_relatorio_attach_photos_to_items')) {
+  function te_relatorio_attach_photos_to_items(array &$items, $post_id) {
+    $attachments_map = [];
+
+    if (!empty($_FILES['bundle_photo']['name']) && is_array($_FILES['bundle_photo']['name'])) {
+      $bundle_files = $_FILES['bundle_photo'];
+      $count = count($bundle_files['name']);
+      for ($i = 0; $i < $count; $i++) {
+        if (empty($bundle_files['name'][$i]) || $bundle_files['error'][$i] !== UPLOAD_ERR_OK) {
+          continue;
+        }
+        $file = [
+          'name' => $bundle_files['name'][$i],
+          'type' => $bundle_files['type'][$i],
+          'tmp_name' => $bundle_files['tmp_name'][$i],
+          'error' => $bundle_files['error'][$i],
+          'size' => $bundle_files['size'][$i],
+        ];
+        $attach_id = te_handle_front_upload($file, $post_id);
+        if (!$attach_id) {
+          continue;
+        }
+        $attachments_map[$i][] = $attach_id;
+      }
+    }
+
+    foreach ($_FILES as $field => $group) {
+      if (!preg_match('/^cavalete_photo_(\\d+)$/', $field, $matches)) {
+        continue;
+      }
+      $index = (int) $matches[1];
+      if (empty($group['name']) || !is_array($group['name'])) {
+        continue;
+      }
+      $count = count($group['name']);
+      for ($i = 0; $i < $count; $i++) {
+        if (empty($group['name'][$i]) || $group['error'][$i] !== UPLOAD_ERR_OK) {
+          continue;
+        }
+        $file = [
+          'name' => $group['name'][$i],
+          'type' => $group['type'][$i],
+          'tmp_name' => $group['tmp_name'][$i],
+          'error' => $group['error'][$i],
+          'size' => $group['size'][$i],
+        ];
+        $attach_id = te_handle_front_upload($file, $post_id);
+        if (!$attach_id) {
+          continue;
+        }
+        $attachments_map[$index][] = $attach_id;
+      }
+    }
+
+    if (empty($attachments_map)) {
+      return;
+    }
+
+    foreach ($attachments_map as $index => $attachments) {
+      if (!isset($items[$index])) {
+        continue;
+      }
+      $items[$index]['attachments'] = $attachments;
+      $items[$index]['attachment_id'] = (int) ($attachments[0] ?? 0);
+      $material = $items[$index]['descricao'];
+      $obs = $items[$index]['obs'];
+      foreach ($attachments as $att_id) {
+        if ($material) {
+          tec_portal_assign_material_term($att_id, $material);
+        }
+        if ($obs) {
+          update_post_meta($att_id, 'tec_obs', $obs);
+        }
+      }
+    }
+  }
+}
 /** Shortcode [te_relatorio_form] – cria Relatório pelo front-end (Admin/Editor). */
 add_shortcode('te_relatorio_form', function($atts){
   if (!is_user_logged_in() || !current_user_can('edit_posts')) {
@@ -1292,29 +1414,27 @@ add_shortcode('te_relatorio_form', function($atts){
     $cliente_id  = isset($_POST['tec_cliente_id']) ? (int) $_POST['tec_cliente_id'] : 0;
     $status_meta = sanitize_text_field($_POST['tec_status'] ?? 'pendente');
 
-    // Normaliza bundles (dados)
-    $bundles = [];
-    if (!empty($_POST['bundles']) && is_array($_POST['bundles'])) {
-      $rows = array_values($_POST['bundles']);
-      foreach ($rows as $i => $row) {
-        $bundles[$i] = [
-          'ident'      => sanitize_text_field($row['ident'] ?? ''),
-          'descricao'  => sanitize_text_field($row['descricao'] ?? ''),
-          'acabamento' => sanitize_text_field($row['acabamento'] ?? ''),
-          'quant'      => isset($row['quant']) ? (int)$row['quant'] : 0,
-          'comp'       => isset($row['comp']) ? (float) str_replace(',', '.', $row['comp']) : 0,
-          'altura'     => isset($row['altura']) ? (float) str_replace(',', '.', $row['altura']) : 0,
-          'esp'        => isset($row['esp']) ? (float) str_replace(',', '.', $row['esp']) : 0,
-          'obs'        => sanitize_text_field($row['obs'] ?? ''),
-        ];
-      }
-    }
+    $action = sanitize_text_field($_POST['action'] ?? '');
+    $post_status = $action === 'save_draft' ? 'draft' : 'publish';
 
+    $items = te_relatorio_extract_items_from_request();
+    if (empty($items)) {
+      $items[] = [
+        'ident' => '',
+        'descricao' => '',
+        'acabamento' => '',
+        'quant' => 0,
+        'comp' => 0,
+        'altura' => 0,
+        'esp' => 0,
+        'obs' => '',
+      ];
+    }
 
     // Cria o post
     $post_id = wp_insert_post([
       'post_type'   => 'tec_relatorio',
-      'post_status' => 'publish',
+      'post_status' => $post_status,
       'post_title'  => $title ? $title : 'Relatório',
       'post_content'=> '',
     ], true);
@@ -1323,52 +1443,30 @@ add_shortcode('te_relatorio_form', function($atts){
       if ($cliente_id) update_post_meta($post_id, 'tec_cliente_id', $cliente_id);
       update_post_meta($post_id, 'tec_status', $status_meta);
 
-      // Fotos de cada bundle (bundle_photo[])
-      if (!empty($_FILES['bundle_photo']['name']) && is_array($_FILES['bundle_photo']['name'])) {
-        $names = $_FILES['bundle_photo']['name'];
-        for ($i=0; $i<count($names); $i++) {
-          if (!empty($names[$i])) {
-            $file = [
-              'name'     => $_FILES['bundle_photo']['name'][$i],
-              'type'     => $_FILES['bundle_photo']['type'][$i],
-              'tmp_name' => $_FILES['bundle_photo']['tmp_name'][$i],
-              'error'    => $_FILES['bundle_photo']['error'][$i],
-              'size'     => $_FILES['bundle_photo']['size'][$i],
-            ];
-            $att_id = te_handle_front_upload($file, $post_id);
-            if ($att_id) {
-              $bundles[$i]['attachment_id'] = $att_id;
-              if (!empty($bundles[$i]['descricao'])) {
-                tec_portal_assign_material_term($att_id, $bundles[$i]['descricao']);
-              }
-              if (!empty($bundles[$i]['obs'])) {
-                update_post_meta($att_id, 'tec_obs', $bundles[$i]['obs']);
-              }
-            }
-          }
-        }
-      }
+      te_relatorio_attach_photos_to_items($items, $post_id);
 
-      // Salva JSON compatível com o cálculo de m² (colunas C,H,Qtd)
       $json_rows = [];
-      foreach ($bundles as $b) {
+      foreach ($items as $row) {
+        $m2 = ($row['comp'] > 0 && $row['altura'] > 0 && $row['quant'] > 0)
+          ? round($row['comp'] * $row['altura'] * max(1, (int)$row['quant']), 2)
+          : 0;
         $json_rows[] = [
-          'ident'      => $b['ident'] ?? '',
-          'descricao'  => $b['descricao'] ?? '',
-          'acabamento' => $b['acabamento'] ?? '',
-          'Qtd'        => isset($b['quant']) ? (int)$b['quant'] : 0,
-          'C'          => isset($b['comp']) ? (float)$b['comp'] : 0,
-          'H'          => isset($b['altura']) ? (float)$b['altura'] : 0,
-          'esp'        => isset($b['esp']) ? (float)$b['esp'] : 0,
-          'm2'         => isset($b['comp'], $b['altura'], $b['quant']) ? round($b['comp']*$b['altura']*max(1,(int)$b['quant']), 2) : 0,
-          'attachment' => isset($b['attachment_id']) ? (int)$b['attachment_id'] : 0,
-          'obs'        => $b['obs'] ?? '',
+          'ident'      => $row['ident'] ?? '',
+          'descricao'  => $row['descricao'] ?? '',
+          'acabamento' => $row['acabamento'] ?? '',
+          'Qtd'        => isset($row['quant']) ? (int)$row['quant'] : 0,
+          'C'          => isset($row['comp']) ? (float)$row['comp'] : 0,
+          'H'          => isset($row['altura']) ? (float)$row['altura'] : 0,
+          'esp'        => isset($row['esp']) ? (float)$row['esp'] : 0,
+          'm2'         => $m2,
+          'attachment' => (int) ($row['attachment_id'] ?? 0),
+          'obs'        => $row['obs'] ?? '',
         ];
       }
       update_post_meta($post_id, 'tec_slabs_json', wp_json_encode($json_rows));
 
       // Monta o conteúdo com tabela + foto por bundle
-      $content = te_build_relatorio_blocks($title, $resumo, $_POST, $bundles);
+      $content = te_build_relatorio_blocks($title, $resumo, $_POST, $items);
       wp_update_post([
         'ID' => $post_id,
         'post_content' => $content,

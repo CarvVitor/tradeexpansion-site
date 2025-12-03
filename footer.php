@@ -25,8 +25,9 @@
     <div>
       <h4 class="text-lg font-semibold mb-3 uppercase tracking-wide">Contato</h4>
       <p class="leading-relaxed mb-4">
-        <a href="mailto:contato@tradeexpansion.com.br" class="hover:text-accent transition">contato@tradeexpansion.com.br</a><br>
-        <a href="tel:+5511999999999" class="hover:text-accent transition">+55 11 99999-9999</a>
+        <a href="mailto:vitor@tradeexpansion.com.br"  class="hover:text-accent transition">vitor@tradeexpansion.com.br</a><br>
+        <a href="mailto:valeria@tradeexpansion.com.br"  class="hover:text-accent transition">valeria@tradeexpansion.com.br</a><br>
+        <a href="tel:+5527992284517" class="hover:text-accent transition">+55 27 99228-4517</a>
       </p>
       <div class="flex space-x-4">
         <a href="https://www.linkedin.com/company/tradeexpansion" class="hover:text-accent transition">
@@ -44,6 +45,11 @@
     © <?php echo date('Y'); ?> Trade Expansion LTDA – Todos os direitos reservados.
   </div>
 </footer>
+
+<!-- FLOATING CTA -->
+<a href="/contact" class="floating-cta" title="Solicitar Cotação">
+    📧
+</a>
 
 <?php wp_footer(); ?>
 </body>

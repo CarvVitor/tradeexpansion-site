@@ -1,24 +1,66 @@
-# macOS / IDE
+# --------------------------------------------------------------------
+# Ignorar arquivos e pastas desnecessárias (macOS / sistema)
+# --------------------------------------------------------------------
 .DS_Store
-*.log
+Thumbs.db
 *.swp
 *.swo
-.vscode/
-.idea/
+*.tmp
+*.log
 
-# Dependências opcionais (se usar)
+# --------------------------------------------------------------------
+# Ignorar diretórios do Local WP
+# --------------------------------------------------------------------
+logs/
+sql/
+conf/
+*/logs/
+*/sql/
+
+# --------------------------------------------------------------------
+# Ignorar vendors e dependências
+# --------------------------------------------------------------------
 node_modules/
 vendor/
-npm-debug.log*
-yarn.lock
-package-lock.json
+npm-debug.log
+yarn-error.log
 
-# Conteúdo pesado / não versionar
-assets/videos/
-assets/raw/
-client-portal/uploads/
+# --------------------------------------------------------------------
+# Ignorar arquivos de build/transpilação (se usar no futuro)
+# --------------------------------------------------------------------
+*.map
+*.lock
+*.cache
+dist/
+build/
 
-# Arquivos gerados
+# --------------------------------------------------------------------
+# Ignorar arquivos sensíveis
+# --------------------------------------------------------------------
+local-config.php
+wp-config-local.php
+*.env
+.env.*
+
+# --------------------------------------------------------------------
+# Ignorar arquivos de upload grandes
+# (opcional – habilitar se você não quiser versionar assets pesados)
+# --------------------------------------------------------------------
 *.zip
 *.tar.gz
-*.map
+*.gz
+*.7z
+*.rar
+
+# --------------------------------------------------------------------
+# WordPress core – NÃO versionar
+# (só deixe seu tema dentro de wp-content/themes)
+# --------------------------------------------------------------------
+wp-admin/
+wp-includes/
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+
+# Permitir inclusão de arquivos específicos dentro de uploads (se quiser)
+!wp-content/uploads/.gitkeep

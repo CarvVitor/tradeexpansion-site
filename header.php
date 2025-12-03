@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="<?php echo get_stylesheet_directory_uri(); ?>/style.css">
 
   <!-- Título dinâmico -->
   <title><?php bloginfo('name'); ?> | <?php bloginfo('description'); ?></title>
@@ -40,7 +43,7 @@
  
 <!-- HEADER -->
   <header class="bg-secondary text-custom1 px-8 py-4 shadow-md relative flex justify-between items-center">
-    
+
     <!-- LOGO -->
     <div class="flex items-center space-x-3">
       <a href="<?php echo home_url(); ?>" class="flex items-center space-x-2">
@@ -63,6 +66,21 @@
       <a href="#contato" class="block md:inline hover:text-accent transition duration-200">Contato</a>
       <a class="z-20">
     </nav>
+      <!-- LOADING SCREEN -->
+      <div id="loading-screen">
+          <div class="loading-logo">TRADE</div>
+      </div>
+
+      <script>
+      window.addEventListener('load', function() {
+          var loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+              setTimeout(function() {
+                  loadingScreen.classList.add('hidden');
+              }, 800);
+          }
+      });
+      </script>
 
     <!-- BANDEIRAS -->
     <div class="flex items-center space-x-4 relative z-30">
