@@ -1,0 +1,31 @@
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Fri Oct 24 11:47:14.049112 2025] [mpm_event:notice] [pid 86687:tid 8698614976] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Fri Oct 24 11:47:14.050575 2025] [core:notice] [pid 86687:tid 8698614976] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
+[Sun Oct 26 13:53:42.863853 2025] [mpm_event:notice] [pid 86687:tid 8698614976] AH00491: caught SIGTERM, shutting down
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Mon Dec 01 12:58:31.069686 2025] [mpm_event:notice] [pid 1492:tid 8758596800] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Mon Dec 01 12:58:31.070662 2025] [core:notice] [pid 1492:tid 8758596800] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
+[Mon Dec 01 13:21:07.961124 2025] [mpm_event:notice] [pid 1492:tid 8758596800] AH00491: caught SIGTERM, shutting down
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Mon Dec 01 13:24:33.283377 2025] [mpm_event:notice] [pid 2511:tid 8758596800] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Mon Dec 01 13:24:33.284530 2025] [core:notice] [pid 2511:tid 8758596800] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
+[Mon Dec 01 13:24:50.779156 2025] [mpm_event:notice] [pid 2511:tid 8758596800] AH00491: caught SIGTERM, shutting down
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Mon Dec 01 13:28:08.516743 2025] [mpm_event:notice] [pid 2725:tid 8758596800] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Mon Dec 01 13:28:08.517139 2025] [core:notice] [pid 2725:tid 8758596800] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
+[Mon Dec 01 17:05:31.293723 2025] [mpm_event:notice] [pid 2725:tid 8758596800] AH00491: caught SIGTERM, shutting down
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Tue Dec 02 14:42:45.435472 2025] [mpm_event:notice] [pid 23908:tid 8758596800] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Tue Dec 02 14:42:45.439173 2025] [core:notice] [pid 23908:tid 8758596800] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
+[Tue Dec 02 14:42:51.521046 2025] [mpm_event:notice] [pid 23908:tid 8758596800] AH00491: caught SIGTERM, shutting down
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Tue Dec 02 15:34:34.959906 2025] [mpm_event:notice] [pid 25165:tid 8758596800] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Tue Dec 02 15:34:34.960254 2025] [core:notice] [pid 25165:tid 8758596800] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
+[Tue Dec 02 15:41:14.649406 2025] [mpm_event:notice] [pid 25165:tid 8758596800] AH00491: caught SIGTERM, shutting down
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Tue Dec 02 15:43:11.831000 2025] [mpm_event:notice] [pid 25481:tid 8758596800] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Tue Dec 02 15:43:11.831968 2025] [core:notice] [pid 25481:tid 8758596800] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
+[Tue Dec 02 15:45:20.644886 2025] [mpm_event:notice] [pid 25481:tid 8758596800] AH00491: caught SIGTERM, shutting down
+AH00558: httpd: Could not reliably determine the server's fully qualified domain name, using Vitors-Mac-mini.local. Set the 'ServerName' directive globally to suppress this message
+[Tue Dec 02 17:25:13.510147 2025] [mpm_event:notice] [pid 27728:tid 8758596800] AH00489: Apache/2.4.43 (Unix) configured -- resuming normal operations
+[Tue Dec 02 17:25:13.510877 2025] [core:notice] [pid 27728:tid 8758596800] AH00094: Command line: '/Users/vitorcarvalho/Library/Application Support/Local/lightning-services/apache-2.4.43+11/bin/darwin-arm64/bin/httpd -D FOREGROUND -f /Users/vitorcarvalho/Library/Application Support/Local/run/LecHHM_nk/conf/apache/apache2.conf'
