@@ -92,6 +92,5 @@ Se precisar de alguma correção, dúvida técnica ou alterar identidade visual,
 ---
 
 > **Nota:** Este README é documento vivo – conforme o site avança, adicionaremos seções como “Performance”, “Implementação de SEO”, “Documentação de API da Petra”, “Versionamento e Deploy”.
-=======
-# tradeexpansion-site
->>>>>>> origin/main
+
+---

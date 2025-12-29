@@ -167,7 +167,6 @@ a:hover {
         opacity: 1;
         transform: translateY(0);
     }
-<<<<<<< Updated upstream
 }
 
 .animate-slide-up {
@@ -470,12 +469,11 @@ body.page-template-default .container,
     justify-content: flex-end;
     gap: 10px;
 }
-=======
     #add-slab{ margin:.5rem 0 1rem; }
   </style>
   <?php
   return ob_get_clean();
-});
+;
 
 /* ======================= CARREGADO PREMIUM DESIGN ======================= */
 
@@ -582,4 +580,3 @@ body.page-template-default .container,
 .animate-slide-up {
     animation: slideUp 0.6s ease-out;
 }
->>>>>>> Stashed changes

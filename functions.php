@@ -1689,11 +1689,6 @@ add_action('init', function(){
     ]);
 });
 
-/* ==== CLIENT PORTAL • SETTINGS PAGE ==== */
-<<<<<<< Updated upstream
-     
-=======
-
 /* ==== /CLIENT PORTAL • SETTINGS PAGE ==== */
 /**
  * CUSTOM POST TYPE: PRODUTOS DE CATÁLOGO
@@ -2438,4 +2433,4 @@ add_action( 'wp_ajax_verificar_sku_rocha', 'verificar_sku_rocha_ajax' );
 add_action( 'wp_ajax_nopriv_verificar_sku_rocha', 'verificar_sku_rocha_ajax' );
 
 ?>
->>>>>>> Stashed changes
+
