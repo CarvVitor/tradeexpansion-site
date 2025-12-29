@@ -1690,4 +1690,752 @@ add_action('init', function(){
 });
 
 /* ==== CLIENT PORTAL • SETTINGS PAGE ==== */
+<<<<<<< Updated upstream
      
+=======
+
+/* ==== /CLIENT PORTAL • SETTINGS PAGE ==== */
+/**
+ * CUSTOM POST TYPE: PRODUTOS DE CATÁLOGO
+ * Adicione este código ao final do functions.php
+ * ORDEM CORRETA: Primeiro registra o CPT, depois as funções helper
+ */
+
+// Registra o Custom Post Type
+add_action('init', 'te_register_catalog_products_cpt');
+function te_register_catalog_products_cpt() {
+  $labels = [
+    'name' => __('Produtos do Catálogo', 'tradeexpansion'),
+    'singular_name' => __('Produto', 'tradeexpansion'),
+    'add_new' => __('Adicionar Novo', 'tradeexpansion'),
+    'add_new_item' => __('Adicionar Novo Produto', 'tradeexpansion'),
+    'edit_item' => __('Editar Produto', 'tradeexpansion'),
+    'new_item' => __('Novo Produto', 'tradeexpansion'),
+    'view_item' => __('Ver Produto', 'tradeexpansion'),
+    'search_items' => __('Buscar Produtos', 'tradeexpansion'),
+    'not_found' => __('Nenhum produto encontrado', 'tradeexpansion'),
+    'not_found_in_trash' => __('Nenhum produto na lixeira', 'tradeexpansion'),
+    'menu_name' => __('Catálogo de Rochas', 'tradeexpansion'),
+  ];
+
+  $args = [
+    'labels' => $labels,
+    'public' => false,
+    'show_ui' => true,
+    'show_in_menu' => true,
+    'menu_icon' => 'dashicons-clipboard',
+    'menu_position' => 5,
+    'supports' => ['title', 'editor', 'thumbnail'],
+    'has_archive' => false,
+    'rewrite' => false,
+  ];
+
+  register_post_type('te_catalog_product', $args);
+}
+
+// Registra as Taxonomias (Tipo de Rocha e Cor)
+add_action('init', 'te_register_catalog_taxonomies');
+function te_register_catalog_taxonomies() {
+  // Tipo de Rocha
+  register_taxonomy('tipo_rocha', 'te_catalog_product', [
+    'labels' => [
+      'name' => __('Tipos de Rocha', 'tradeexpansion'),
+      'singular_name' => __('Tipo', 'tradeexpansion'),
+      'add_new_item' => __('Adicionar Novo Tipo', 'tradeexpansion'),
+    ],
+    'hierarchical' => true,
+    'show_admin_column' => true,
+    'rewrite' => false,
+  ]);
+
+  // Cor
+  register_taxonomy('cor_rocha', 'te_catalog_product', [
+    'labels' => [
+      'name' => __('Cores', 'tradeexpansion'),
+      'singular_name' => __('Cor', 'tradeexpansion'),
+      'add_new_item' => __('Adicionar Nova Cor', 'tradeexpansion'),
+    ],
+    'hierarchical' => true,
+    'show_admin_column' => true,
+    'rewrite' => false,
+  ]);
+}
+
+// Adiciona termos padrão automaticamente
+add_action('init', 'te_add_default_catalog_terms', 20);
+function te_add_default_catalog_terms() {
+  // Tipos de rocha
+  $tipos = ['Granito', 'Mármore', 'Quartzito', 'Quartzo'];
+  foreach ($tipos as $tipo) {
+    if (!term_exists($tipo, 'tipo_rocha')) {
+      wp_insert_term($tipo, 'tipo_rocha');
+    }
+  }
+
+  // Cores
+  $cores = ['Claro', 'Escuro', 'Colorido'];
+  foreach ($cores as $cor) {
+    if (!term_exists($cor, 'cor_rocha')) {
+      wp_insert_term($cor, 'cor_rocha');
+    }
+  }
+}
+
+// Adiciona Metaboxes para dados técnicos
+add_action('add_meta_boxes', 'te_add_catalog_product_metaboxes');
+function te_add_catalog_product_metaboxes() {
+  add_meta_box(
+    'te_product_details',
+    __('Detalhes do Produto', 'tradeexpansion'),
+    'te_product_details_callback',
+    'te_catalog_product',
+    'normal',
+    'high'
+  );
+
+  add_meta_box(
+    'te_product_images',
+    __('Galeria de Imagens', 'tradeexpansion'),
+    'te_product_images_callback',
+    'te_catalog_product',
+    'side',
+    'default'
+  );
+}
+
+// Callback do Metabox - Detalhes do Produto
+function te_product_details_callback($post) {
+  wp_nonce_field('te_save_product_meta', 'te_product_meta_nonce');
+
+  $nome_geologico = get_post_meta($post->ID, '_te_nome_geologico', true);
+  $origem = get_post_meta($post->ID, '_te_origem', true);
+  $absorcao = get_post_meta($post->ID, '_te_absorcao', true);
+  $densidade = get_post_meta($post->ID, '_te_densidade', true);
+  $resistencia = get_post_meta($post->ID, '_te_resistencia', true);
+  $acabamentos = get_post_meta($post->ID, '_te_acabamentos', true);
+  $aplicacoes = get_post_meta($post->ID, '_te_aplicacoes', true);
+  ?>
+  <style>
+    .te-field-group { margin-bottom: 20px; }
+    .te-field-group label { display: block; font-weight: 600; margin-bottom: 5px; }
+    .te-field-group input[type="text"],
+    .te-field-group textarea,
+    .te-field-group select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+    .te-field-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+  </style>
+
+  <div class="te-field-group">
+    <label for="te_nome_geologico"><?php _e('Nome Geológico', 'tradeexpansion'); ?></label>
+    <input type="text" id="te_nome_geologico" name="te_nome_geologico" value="<?php echo esc_attr($nome_geologico); ?>" placeholder="Ex: Granito, Mármore...">
+  </div>
+
+  <div class="te-field-group">
+    <label for="te_origem"><?php _e('Origem (Cidade, Estado)', 'tradeexpansion'); ?></label>
+    <input type="text" id="te_origem" name="te_origem" value="<?php echo esc_attr($origem); ?>" placeholder="Ex: Espírito Santo, Brasil">
+  </div>
+
+  <h3><?php _e('Características Técnicas', 'tradeexpansion'); ?></h3>
+  <div class="te-field-row">
+    <div class="te-field-group">
+      <label for="te_absorcao"><?php _e('Absorção de Água', 'tradeexpansion'); ?></label>
+      <input type="text" id="te_absorcao" name="te_absorcao" value="<?php echo esc_attr($absorcao); ?>" placeholder="Ex: 0.4%">
+    </div>
+
+    <div class="te-field-group">
+      <label for="te_densidade"><?php _e('Densidade', 'tradeexpansion'); ?></label>
+      <input type="text" id="te_densidade" name="te_densidade" value="<?php echo esc_attr($densidade); ?>" placeholder="Ex: 2.630 kg/m³">
+    </div>
+
+    <div class="te-field-group">
+      <label for="te_resistencia"><?php _e('Resistência', 'tradeexpansion'); ?></label>
+      <select id="te_resistencia" name="te_resistencia">
+        <option value=""><?php _e('Selecione...', 'tradeexpansion'); ?></option>
+        <option value="Baixa" <?php selected($resistencia, 'Baixa'); ?>><?php _e('Baixa', 'tradeexpansion'); ?></option>
+        <option value="Média" <?php selected($resistencia, 'Média'); ?>><?php _e('Média', 'tradeexpansion'); ?></option>
+        <option value="Alta" <?php selected($resistencia, 'Alta'); ?>><?php _e('Alta', 'tradeexpansion'); ?></option>
+        <option value="Muito Alta" <?php selected($resistencia, 'Muito Alta'); ?>><?php _e('Muito Alta', 'tradeexpansion'); ?></option>
+      </select>
+    </div>
+  </div>
+
+  <div class="te-field-group">
+    <label for="te_acabamentos"><?php _e('Acabamentos Disponíveis', 'tradeexpansion'); ?></label>
+    <input type="text" id="te_acabamentos" name="te_acabamentos" value="<?php echo esc_attr($acabamentos); ?>" placeholder="Ex: Polido, Flameado, Levigado">
+    <small><?php _e('Separe por vírgulas', 'tradeexpansion'); ?></small>
+  </div>
+
+  <div class="te-field-group">
+    <label for="te_aplicacoes"><?php _e('Aplicações Recomendadas', 'tradeexpansion'); ?></label>
+    <input type="text" id="te_aplicacoes" name="te_aplicacoes" value="<?php echo esc_attr($aplicacoes); ?>" placeholder="Ex: Pisos, Revestimentos, Bancadas">
+    <small><?php _e('Separe por vírgulas', 'tradeexpansion'); ?></small>
+  </div>
+
+  <div class="te-field-group">
+    <label><?php _e('Descrição do Produto', 'tradeexpansion'); ?></label>
+    <small><?php _e('Use o editor principal acima para adicionar a descrição detalhada do produto.', 'tradeexpansion'); ?></small>
+  </div>
+  <?php
+}
+
+// Callback do Metabox - Galeria de Imagens
+function te_product_images_callback($post) {
+  $gallery_ids = get_post_meta($post->ID, '_te_gallery_ids', true);
+  $gallery_ids = $gallery_ids ? explode(',', $gallery_ids) : [];
+  ?>
+  <style>
+    #te-gallery-container { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+    .te-gallery-item { position: relative; }
+    .te-gallery-item img { width: 100%; height: 100px; object-fit: cover; border-radius: 4px; }
+    .te-gallery-remove { position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 14px; line-height: 1; }
+  </style>
+
+  <p><strong><?php _e('Imagem Destacada:', 'tradeexpansion'); ?></strong> <?php _e('Use a caixa "Imagem Destacada" ao lado para a imagem principal.', 'tradeexpansion'); ?></p>
+  
+  <p><strong><?php _e('Galeria Adicional:', 'tradeexpansion'); ?></strong></p>
+  <div id="te-gallery-container">
+    <?php foreach ($gallery_ids as $img_id) : ?>
+      <?php if ($img_id) : ?>
+        <div class="te-gallery-item" data-id="<?php echo esc_attr($img_id); ?>">
+          <img src="<?php echo wp_get_attachment_image_url($img_id, 'thumbnail'); ?>">
+          <button type="button" class="te-gallery-remove">×</button>
+        </div>
+      <?php endif; ?>
+    <?php endforeach; ?>
+  </div>
+  
+  <input type="hidden" id="te_gallery_ids" name="te_gallery_ids" value="<?php echo esc_attr(implode(',', $gallery_ids)); ?>">
+  <button type="button" class="button" id="te-add-gallery-image"><?php _e('Adicionar Imagens à Galeria', 'tradeexpansion'); ?></button>
+
+  <script>
+  jQuery(document).ready(function($) {
+    let frame;
+    
+    $('#te-add-gallery-image').on('click', function(e) {
+      e.preventDefault();
+      
+      if (frame) {
+        frame.open();
+        return;
+      }
+      
+      frame = wp.media({
+        title: '<?php _e('Selecione as Imagens', 'tradeexpansion'); ?>',
+        button: { text: '<?php _e('Adicionar à Galeria', 'tradeexpansion'); ?>' },
+        multiple: true
+      });
+      
+      frame.on('select', function() {
+        const selection = frame.state().get('selection');
+        const ids = $('#te_gallery_ids').val().split(',').filter(id => id);
+        
+        selection.forEach(function(attachment) {
+          attachment = attachment.toJSON();
+          if (!ids.includes(attachment.id.toString())) {
+            ids.push(attachment.id);
+            $('#te-gallery-container').append(`
+              <div class="te-gallery-item" data-id="${attachment.id}">
+                <img src="${attachment.sizes.thumbnail.url}">
+                <button type="button" class="te-gallery-remove">×</button>
+              </div>
+            `);
+          }
+        });
+        
+        $('#te_gallery_ids').val(ids.join(','));
+      });
+      
+      frame.open();
+    });
+    
+    $(document).on('click', '.te-gallery-remove', function() {
+      const item = $(this).closest('.te-gallery-item');
+      const id = item.data('id');
+      const ids = $('#te_gallery_ids').val().split(',').filter(i => i != id);
+      $('#te_gallery_ids').val(ids.join(','));
+      item.remove();
+    });
+  });
+  </script>
+  <?php
+}
+
+// Salva os metadados do produto
+add_action('save_post_te_catalog_product', 'te_save_catalog_product_meta');
+function te_save_catalog_product_meta($post_id) {
+  // Verificações de segurança
+  if (!isset($_POST['te_product_meta_nonce'])) return;
+  if (!wp_verify_nonce($_POST['te_product_meta_nonce'], 'te_save_product_meta')) return;
+  if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+  if (!current_user_can('edit_post', $post_id)) return;
+
+  // Campos simples
+  $fields = [
+    'te_nome_geologico',
+    'te_origem',
+    'te_absorcao',
+    'te_densidade',
+    'te_resistencia',
+    'te_acabamentos',
+    'te_aplicacoes',
+    'te_gallery_ids',
+  ];
+
+  foreach ($fields as $field) {
+    if (isset($_POST[$field])) {
+      update_post_meta($post_id, '_' . $field, sanitize_text_field($_POST[$field]));
+    }
+  }
+}
+
+// Adiciona coluna de imagem na listagem do admin
+add_filter('manage_te_catalog_product_posts_columns', 'te_catalog_admin_columns');
+function te_catalog_admin_columns($columns) {
+  $new_columns = [];
+  $new_columns['cb'] = $columns['cb'];
+  $new_columns['image'] = __('Imagem', 'tradeexpansion');
+  $new_columns['title'] = $columns['title'];
+  $new_columns['taxonomy-tipo_rocha'] = __('Tipo', 'tradeexpansion');
+  $new_columns['taxonomy-cor_rocha'] = __('Cor', 'tradeexpansion');
+  $new_columns['date'] = $columns['date'];
+  return $new_columns;
+}
+
+add_action('manage_te_catalog_product_posts_custom_column', 'te_catalog_admin_column_content', 10, 2);
+function te_catalog_admin_column_content($column, $post_id) {
+  if ($column === 'image') {
+    $thumbnail = get_the_post_thumbnail($post_id, [50, 50]);
+    echo $thumbnail ? $thumbnail : '—';
+  }
+}
+
+/**
+ * FUNÇÃO HELPER: Busca produtos para uso nos templates
+ * Esta função DEVE estar DEPOIS de todas as definições acima
+ */
+if (!function_exists('te_get_catalog_products')) {
+  function te_get_catalog_products($args = []) {
+    $defaults = [
+      'post_type' => 'te_catalog_product',
+      'posts_per_page' => -1,
+      'post_status' => 'publish',
+      'orderby' => 'menu_order',
+      'order' => 'ASC',
+    ];
+
+    $args = wp_parse_args($args, $defaults);
+    $query = new WP_Query($args);
+
+    $products = [];
+
+    if ($query->have_posts()) {
+      while ($query->have_posts()) {
+        $query->the_post();
+        $post_id = get_the_ID();
+
+        // Busca os termos (tipo e cor)
+        $tipos = wp_get_post_terms($post_id, 'tipo_rocha', ['fields' => 'slugs']);
+        $cores = wp_get_post_terms($post_id, 'cor_rocha', ['fields' => 'slugs']);
+
+        // Busca a galeria
+        $gallery_ids = get_post_meta($post_id, '_te_gallery_ids', true);
+        $gallery_ids = $gallery_ids ? explode(',', $gallery_ids) : [];
+        $imagens_adicionais = [];
+        foreach ($gallery_ids as $img_id) {
+          if ($img_id) {
+            $imagens_adicionais[] = wp_get_attachment_image_url($img_id, 'large');
+          }
+        }
+
+        $products[] = [
+          'id' => $post_id,
+          'nome' => get_the_title(),
+          'nome_geologico' => get_post_meta($post_id, '_te_nome_geologico', true),
+          'tipo' => !empty($tipos) ? $tipos[0] : '',
+          'cor' => !empty($cores) ? $cores[0] : '',
+          'origem' => get_post_meta($post_id, '_te_origem', true),
+          'imagem_principal' => get_the_post_thumbnail_url($post_id, 'large') ?: '',
+          'imagens_adicionais' => $imagens_adicionais,
+          'caracteristicas' => [
+            'absorcao' => get_post_meta($post_id, '_te_absorcao', true),
+            'densidade' => get_post_meta($post_id, '_te_densidade', true),
+            'resistencia' => get_post_meta($post_id, '_te_resistencia', true),
+          ],
+          'acabamentos' => get_post_meta($post_id, '_te_acabamentos', true),
+          'aplicacoes' => get_post_meta($post_id, '_te_aplicacoes', true),
+          'descricao' => get_the_content(),
+        ];
+      }
+      wp_reset_postdata();
+    }
+
+    return $products;
+  }
+}
+
+// Handler AJAX para criar relatório no frontend
+add_action('wp_ajax_create_report_frontend', 'te_create_report_frontend');
+function te_create_report_frontend() {
+  // Verifica permissões
+  if (!current_user_can('edit_posts')) {
+    wp_send_json_error('Sem permissão');
+    return;
+  }
+  
+  // Cria o post
+  $report_id = wp_insert_post([
+    'post_type' => 'tec_relatorio',
+    'post_title' => sanitize_text_field($_POST['title']),
+    'post_content' => wp_kses_post($_POST['content']),
+    'post_status' => 'publish',
+    'post_author' => get_current_user_id()
+  ]);
+  
+  if (is_wp_error($report_id)) {
+    wp_send_json_error('Erro ao criar relatório');
+    return;
+  }
+  
+  // Salva metadados
+  update_post_meta($report_id, 'tec_cliente_id', intval($_POST['client_id']));
+  update_post_meta($report_id, 'tec_status', sanitize_text_field($_POST['status']));
+  
+  // Upload do PDF se houver
+  if (!empty($_FILES['pdf'])) {
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
+    require_once(ABSPATH . 'wp-admin/includes/media.php');
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+    
+    $attachment_id = media_handle_upload('pdf', $report_id);
+    
+    if (!is_wp_error($attachment_id)) {
+      update_post_meta($report_id, 'tec_pdf_id', $attachment_id);
+    }
+  }
+  
+  wp_send_json_success(['report_id' => $report_id]);
+}
+
+// Handler do formulário de inspeção
+add_action('admin_post_nopriv_submit_inspection_request', 'handle_inspection_request');
+add_action('admin_post_submit_inspection_request', 'handle_inspection_request');
+
+function handle_inspection_request() {
+  if (!isset($_POST['inspection_nonce']) || !wp_verify_nonce($_POST['inspection_nonce'], 'inspection_request')) {
+    wp_die('Erro de segurança');
+  }
+  
+  $name = sanitize_text_field($_POST['name']);
+  $email = sanitize_email($_POST['email']);
+  $company = sanitize_text_field($_POST['company']);
+  $material = sanitize_text_field($_POST['material']);
+  $message = sanitize_textarea_field($_POST['message']);
+  
+  // Envia email
+  $to = get_option('admin_email');
+  $subject = 'Nova Solicitação de Inspeção - ' . $name;
+  $body = "Nome: $name\nEmail: $email\nEmpresa: $company\nMaterial: $material\n\nMensagem:\n$message";
+  
+  wp_mail($to, $subject, $body);
+  
+  wp_redirect(add_query_arg('inspection', 'success', wp_get_referer()));
+  exit;
+}
+?>
+
+<?php
+// ==================== CUSTOM POST TYPE: ROCHAS ORNAMENTAIS ====================
+
+function registrar_cpt_rochas() {
+    $labels = array(
+        'name'               => __( 'Rochas Ornamentais', 'tradeexpansion' ),
+        'singular_name'      => __( 'Rocha Ornamental', 'tradeexpansion' ),
+        'menu_name'          => __( 'Rochas Ornamentais', 'tradeexpansion' ),
+        'add_new'            => __( 'Adicionar Nova', 'tradeexpansion' ),
+        'add_new_item'       => __( 'Adicionar Nova Rocha', 'tradeexpansion' ),
+        'edit_item'          => __( 'Editar Rocha', 'tradeexpansion' ),
+        'view_item'          => __( 'Ver Rocha', 'tradeexpansion' ),
+    );
+
+    $args = array(
+        'label'              => __( 'Rochas Ornamentais', 'tradeexpansion' ),
+        'labels'             => $labels,
+        'description'        => __( 'Catálogo de rochas ornamentais brasileiras', 'tradeexpansion' ),
+        'public'             => true,
+        'show_in_menu'       => true,
+        'menu_icon'          => 'dashicons-images-alt2',
+        'supports'           => array( 'title', 'editor', 'thumbnail', 'custom-fields' ),
+        'has_archive'        => true,
+        'rewrite'            => array( 'slug' => 'rochas' ),
+        'taxonomies'         => array( 'rocha_tipo', 'rocha_cor' ),
+    );
+
+    register_post_type( 'rocha', $args );
+
+    // Taxonomia: Tipo de Rocha
+    register_taxonomy( 'rocha_tipo', 'rocha', array(
+        'label'             => __( 'Tipo de Rocha', 'tradeexpansion' ),
+        'rewrite'           => array( 'slug' => 'tipo' ),
+        'hierarchical'      => false,
+        'show_ui'           => true,
+        'public'            => true,
+    ));
+
+    // Taxonomia: Cor
+    register_taxonomy( 'rocha_cor', 'rocha', array(
+        'label'             => __( 'Cor', 'tradeexpansion' ),
+        'rewrite'           => array( 'slug' => 'cor' ),
+        'hierarchical'      => false,
+        'show_ui'           => true,
+        'public'            => true,
+    ));
+}
+
+add_action( 'init', 'registrar_cpt_rochas' );
+
+// Meta Box para ordem de exibição
+function adicionar_metabox_rocha() {
+    add_meta_box(
+        'rocha_metabox',
+        __( 'Configurações da Rocha', 'tradeexpansion' ),
+        'render_metabox_rocha',
+        'rocha',
+        'normal',
+        'high'
+    );
+}
+
+add_action( 'add_meta_boxes', 'adicionar_metabox_rocha' );
+
+function render_metabox_rocha( $post ) {
+    $ordem = get_post_meta( $post->ID, '_rocha_ordem', true );
+    $destaque = get_post_meta( $post->ID, '_rocha_destaque', true );
+    
+    ?>
+    <div style="margin: 10px 0;">
+        <label for="rocha_ordem"><?php _e( 'Ordem de Exibição:', 'tradeexpansion' ); ?></label>
+        <input type="number" id="rocha_ordem" name="rocha_ordem" value="<?php echo esc_attr( $ordem ); ?>" style="width: 60px;" />
+        <small><?php _e( 'Deixe 0 para desabilitar', 'tradeexpansion' ); ?></small>
+    </div>
+    
+    <div style="margin: 10px 0;">
+        <label for="rocha_destaque">
+            <input type="checkbox" id="rocha_destaque" name="rocha_destaque" value="1" <?php checked( $destaque, 1 ); ?> />
+            <?php _e( 'Exibir nas 10 Principais?', 'tradeexpansion' ); ?>
+        </label>
+    </div>
+    <?php
+}
+
+function salvar_metabox_rocha( $post_id ) {
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    
+    if ( isset( $_POST['rocha_ordem'] ) ) {
+        update_post_meta( $post_id, '_rocha_ordem', sanitize_text_field( $_POST['rocha_ordem'] ) );
+    }
+    
+    if ( isset( $_POST['rocha_destaque'] ) ) {
+        update_post_meta( $post_id, '_rocha_destaque', 1 );
+    } else {
+        delete_post_meta( $post_id, '_rocha_destaque' );
+    }
+}
+
+add_action( 'save_post', 'salvar_metabox_rocha' );
+?>
+
+<?php
+// ==================== PARTE 1: CRIAR ROCHA ====================
+
+// Essa função cria um novo tipo chamado "rocha" no WordPress
+function criar_tipo_rocha() {
+    
+    // Aqui a gente dá nomes em português
+    $nomes = array(
+        'name'               => __( 'Rochas Ornamentais', 'tradeexpansion' ),
+        'singular_name'      => __( 'Rocha Ornamental', 'tradeexpansion' ),
+        'menu_name'          => __( 'Rochas Ornamentais', 'tradeexpansion' ),
+        'add_new'            => __( 'Adicionar Nova', 'tradeexpansion' ),
+        'add_new_item'       => __( 'Adicionar Nova Rocha', 'tradeexpansion' ),
+        'edit_item'          => __( 'Editar Rocha', 'tradeexpansion' ),
+        'view_item'          => __( 'Ver Rocha', 'tradeexpansion' ),
+    );
+
+    // Aqui a gente configura como o WordPress vai tratar as rochas
+    $config = array(
+        'label'              => __( 'Rochas Ornamentais', 'tradeexpansion' ),
+        'labels'             => $nomes,  // Usa os nomes que definimos acima
+        'description'        => __( 'Catálogo de rochas ornamentais brasileiras', 'tradeexpansion' ),
+        'public'             => true,    // Mostra no site
+        'show_in_menu'       => true,    // Aparece no menu do admin
+        'menu_icon'          => 'dashicons-images-alt2',  // Ícone no menu (imagem)
+        'supports'           => array( 'title', 'editor', 'thumbnail' ), // Título, conteúdo e foto
+        'has_archive'        => true,    // Permite listar todas as rochas
+        'rewrite'            => array( 'slug' => 'rochas' ), // URL fica /rochas/nome-da-rocha
+    );
+
+    // Registra (cadastra) o novo tipo no WordPress
+    register_post_type( 'rocha', $config );
+}
+
+// Diz ao WordPress: "Quando você iniciar, execute a função criar_tipo_rocha()"
+add_action( 'init', 'criar_tipo_rocha' );
+
+// ==================== PARTE 2: META BOX DO SKU ====================
+
+// Essa função cria a caixa do SKU que aparece ao editar uma rocha
+function criar_metabox_sku() {
+    add_meta_box(
+        'rocha_sku_box',                                    // ID único dessa caixa
+        __( 'Código do Produto (SKU)', 'tradeexpansion' ),  // Título da caixa
+        'renderizar_metabox_sku',                           // Função que desenha a caixa
+        'rocha',                                            // Tipo: só aparece em "Rochas"
+        'normal',                                           // Posição: normal (nem topo, nem lado)
+        'high'                                              // Prioridade: alta (aparece primeiro)
+    );
+}
+
+// Essa função desenha o que aparece DENTRO da caixa
+function renderizar_metabox_sku( $post ) {
+    // Pega o SKU salvo (se existir)
+    $sku_salvo = get_post_meta( $post->ID, '_rocha_sku', true );
+    
+    // Pega os 3 primeiros caracteres do prefixo (ex: TUL de TUL-056)
+    $prefixo = substr( $sku_salvo, 0, 3 );
+    
+    // Desenha o HTML (a caixa que você vai ver)
+    ?>
+    <div style="margin: 15px 0;">
+        <label for="rocha_sku" style="display: block; margin-bottom: 8px; font-weight: bold;">
+            <?php _e( 'SKU (Código Único):', 'tradeexpansion' ); ?>
+        </label>
+        
+        <!-- Campo de entrada -->
+        <input 
+            type="text" 
+            id="rocha_sku" 
+            name="rocha_sku" 
+            value="<?php echo esc_attr( $sku_salvo ); ?>" 
+            placeholder="Ex: TUL-056"
+            maxlength="7"
+            pattern="[A-Z]{3}-[0-9]{3}"
+            style="width: 200px; padding: 10px; border: 2px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 16px;"
+        />
+        
+        <!-- Ajuda embaixo -->
+        <p style="margin-top: 10px; color: #666; font-size: 13px;">
+            <?php _e( '📌 Formato: 3 LETRAS - 3 NÚMEROS (ex: TUL-056)', 'tradeexpansion' ); ?><br>
+            <?php _e( '⚠️ Cada PREFIXO só pode aparecer UMA VEZ. Ex: TUL-056 já existe? Não pode usar TUL-999', 'tradeexpansion' ); ?>
+        </p>
+        
+        <!-- Aviso de duplicata (se existir) -->
+        <?php
+        // Se o prefixo foi usado antes COM UM NÚMERO DIFERENTE
+        if ( $prefixo && strlen( $prefixo ) === 3 ) {
+            $outro_com_mesmo_prefixo = get_posts( array(
+                'post_type'      => 'rocha',
+                'posts_per_page' => 1,
+                'meta_query'     => array(
+                    array(
+                        'key'     => '_rocha_sku',
+                        'value'   => $prefixo . '-%',
+                        'compare' => 'LIKE'
+                    )
+                ),
+                'exclude'        => array( $post->ID ) // Não contar a própria rocha
+            ));
+            
+            if ( $outro_com_mesmo_prefixo ) {
+                $outro_sku = get_post_meta( $outro_com_mesmo_prefixo[0]->ID, '_rocha_sku', true );
+                ?>
+                <p style="margin-top: 10px; padding: 10px; background: #fff3cd; border-left: 4px solid #ffc107; color: #856404;">
+                    ⚠️ <strong><?php _e( 'Atenção:', 'tradeexpansion' ); ?></strong> 
+                    <?php printf( 
+                        __( 'O prefixo "%s" já está em uso: %s', 'tradeexpansion' ), 
+                        esc_html( $prefixo ), 
+                        esc_html( $outro_sku ) 
+                    ); ?>
+                </p>
+                <?php
+            }
+        }
+        ?>
+    </div>
+    <?php
+}
+
+// Diz ao WordPress: execute criar_metabox_sku() quando o admin carregar
+add_action( 'add_meta_boxes', 'criar_metabox_sku' );
+
+// ==================== PARTE 3: SALVAR O SKU ====================
+
+// Essa função salva o SKU quando você clica em "Atualizar"
+
+function salvar_sku_rocha( $post_id ) {
+    // NÃO FAZE NADA AQUI - validação é no frontend form
+    return;
+    
+    /* CÓDIGO ANTIGO COMENTADO PARA REFERÊNCIA
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+    
+    if ( isset( $_POST['rocha_sku'] ) ) {
+        $sku = sanitize_text_field( $_POST['rocha_sku'] );
+        
+        if ( preg_match( '/^[A-Z]{3}-[0-9]{3}$/', $sku ) ) {
+            $outro_com_mesmo_sku = get_posts( array(
+                'post_type'      => 'rocha',
+                'posts_per_page' => 1,
+                'meta_query'     => array(
+                    array(
+                        'key'     => '_rocha_sku',
+                        'value'   => $sku,
+                        'compare' => '='
+                    )
+                ),
+                'exclude'        => array( $post_id )
+            ));
+            
+            if ( ! $outro_com_mesmo_sku ) {
+                update_post_meta( $post_id, '_rocha_sku', $sku );
+            } else {
+                wp_die( __( 'Erro: Este SKU já existe! Use outro número.', 'tradeexpansion' ) );
+            }
+        } else {
+            wp_die( __( 'Erro: SKU deve ter o formato XXX-000', 'tradeexpansion' ) );
+        }
+    }
+    */
+}
+
+// ==================== AJAX: Verificar SKU ====================
+
+function verificar_sku_rocha_ajax() {
+    if ( ! isset( $_POST['sku'] ) ) {
+        wp_send_json_error( 'SKU não fornecido' );
+    }
+    
+    $sku = sanitize_text_field( $_POST['sku'] );
+    
+    $sku_existe = get_posts( array(
+        'post_type'      => 'rocha',
+        'posts_per_page' => 1,
+        'meta_query'     => array(
+            array(
+                'key'   => '_rocha_sku',
+                'value' => $sku,
+            )
+        ),
+        'fields'         => 'ids'
+    ));
+    
+    wp_send_json( array(
+        'existe' => ! empty( $sku_existe )
+    ));
+}
+
+add_action( 'wp_ajax_verificar_sku_rocha', 'verificar_sku_rocha_ajax' );
+add_action( 'wp_ajax_nopriv_verificar_sku_rocha', 'verificar_sku_rocha_ajax' );
+
+?>
+>>>>>>> Stashed changes
