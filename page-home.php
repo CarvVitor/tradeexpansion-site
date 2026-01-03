@@ -57,11 +57,212 @@
     }
 
     .te-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
       font-size: 1rem;
       letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--cream);
       font-weight: 500;
+    }
+
+    .te-logo-img {
+      height: 34px;
+      width: auto;
+      display: block;
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+    }
+
+    .te-logo-text {
+      display: inline-block;
+      line-height: 1;
+    }
+    /* BARRA / MARQUEE ENTRE SEÇÕES */
+    .te-marquee {
+      background: rgba(5, 8, 8, 0.92);
+      border-top: 1px solid rgba(241, 241, 217, 0.08);
+      border-bottom: 1px solid rgba(241, 241, 217, 0.08);
+      overflow: hidden;
+    }
+
+    .te-marquee-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 6vw;
+    }
+
+    .te-marquee-track {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+      width: max-content;
+      padding: 1.05rem 0;
+      animation: teMarquee 26s linear infinite;
+      will-change: transform;
+    }
+
+    .te-marquee-item {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: rgba(241, 241, 217, 0.78);
+      white-space: nowrap;
+    }
+
+    .te-marquee-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(214, 163, 84, 0.85);
+      box-shadow: 0 0 14px rgba(214, 163, 84, 0.35);
+      flex: 0 0 auto;
+    }
+
+    @keyframes teMarquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    /* QUEBRA VISUAL COM VÍDEO */
+    .te-break {
+      position: relative;
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-top: 1px solid rgba(241, 241, 217, 0.06);
+      border-bottom: 1px solid rgba(241, 241, 217, 0.06);
+    }
+
+    .te-break-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.08) contrast(1.05) brightness(0.7);
+      transform: scale(1.02);
+    }
+
+    .te-break-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, rgba(214, 163, 84, 0.22), transparent 55%),
+        linear-gradient(120deg, rgba(16, 39, 36, 0.88), rgba(5, 8, 8, 0.92));
+    }
+
+    .te-break-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 3.2rem 6vw;
+      max-width: 980px;
+      color: var(--cream);
+    }
+
+    .te-break-kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.26em;
+      color: rgba(241, 241, 217, 0.78);
+      margin-bottom: 1rem;
+    }
+
+    .te-break-title {
+      font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin: 0 0 1.2rem;
+    }
+
+    .te-break-sub {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(241, 241, 217, 0.9);
+      margin: 0 auto;
+      max-width: 42rem;
+    }
+
+    /* GRID DE MATERIAIS (FOTOS DINÂMICAS) */
+    .materials {
+      background: rgba(5, 8, 8, 0.88);
+      border-top: 1px solid rgba(241, 241, 217, 0.06);
+      border-bottom: 1px solid rgba(241, 241, 217, 0.06);
+    }
+
+    .materials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.6rem;
+      margin-top: 2.6rem;
+    }
+
+    .material-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: 280px;
+      background-size: cover;
+      background-position: center;
+      border: 1px solid rgba(241, 241, 217, 0.14);
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
+      transition: transform 0.22s ease-out, box-shadow 0.22s ease-out, border-color 0.22s ease-out;
+    }
+
+    .material-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
+      border-color: rgba(214, 163, 84, 0.55);
+    }
+
+    .material-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(5, 8, 8, 0.08) 0%, rgba(5, 8, 8, 0.82) 70%, rgba(5, 8, 8, 0.96) 100%);
+    }
+
+    .material-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1.35rem 1.35rem 1.5rem;
+    }
+
+    .material-title {
+      margin: 0 0 0.45rem;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--cream);
+    }
+
+    .material-meta {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(241, 241, 217, 0.78);
+    }
+
+    .material-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.95rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(214, 163, 84, 0.92);
+    }
+
+    .materials-cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2.4rem;
     }
 
     .te-nav {
@@ -512,6 +713,18 @@
         display: none;
       }
 
+      .te-logo-img {
+        height: 30px;
+      }
+
+      .te-break {
+        min-height: 280px;
+      }
+
+      .materials-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
       main {
         margin-top: 64px;
       }
@@ -544,7 +757,10 @@
 <body <?php body_class(); ?>>
 
 <header class="te-header">
-  <a class="te-logo" href="<?php echo esc_url( home_url('/') ); ?>">TRADE EXPANSION</a>
+  <a class="te-logo" href="<?php echo esc_url( home_url('/') ); ?>">
+    <img class="te-logo-img" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.jpg' ); ?>" alt="Trade Expansion" />
+    <span class="te-logo-text">TRADE EXPANSION</span>
+  </a>
 
   <nav class="te-nav">
     <a href="<?php echo esc_url( home_url('/sobre-nos') ); ?>">Sobre</a>
@@ -558,8 +774,16 @@
 <main>
   <!-- HERO COM VÍDEO -->
   <section class="hero">
-    <video class="hero-video" autoplay muted loop playsinline>
-      <source src="<?php echo esc_url( get_template_directory_uri() . '/assets/hero-home.mp4' ); ?>" type="video/mp4" />
+    <video
+      class="hero-video"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="auto"
+      poster="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-home-fallback.jpg' ); ?>"
+    >
+      <source src="<?php echo esc_url( get_template_directory_uri() . '/assets/videos/hero-home.mp4' ); ?>" type="video/mp4" />
     </video>
     <div class="hero-overlay"></div>
 
@@ -593,6 +817,31 @@
           <span class="hero-tag-pill">Commodities</span>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <!-- BARRA / MARQUEE (PALAVRAS-CHAVE) -->
+  <section class="te-marquee" aria-label="Áreas de atuação">
+    <div class="te-marquee-inner">
+      <div class="te-marquee-track">
+        <span class="te-marquee-item">Rochas ornamentais</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Inspeção independente</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Commodities</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Exportação</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Sourcing</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Relatórios fotográficos</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Qualidade &amp; conformidade</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot" aria-hidden="true"></span>
+
+        <span class="te-marquee-item">Rochas ornamentais</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Inspeção independente</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Commodities</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Exportação</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Sourcing</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Relatórios fotográficos</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Qualidade &amp; conformidade</span><span class="te-marquee-dot" aria-hidden="true"></span>
+        <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot" aria-hidden="true"></span>
+      </div>
     </div>
   </section>
 
@@ -646,6 +895,19 @@
     </div>
   </section>
 
+  <!-- QUEBRA VISUAL (VÍDEO) -->
+  <section class="te-break" aria-label="Atuação em campo">
+    <video class="te-break-video" autoplay muted loop playsinline preload="metadata">
+      <source src="<?php echo esc_url( get_template_directory_uri() . '/assets/videos/hero-rochas.mp4' ); ?>" type="video/mp4" />
+    </video>
+    <div class="te-break-overlay" aria-hidden="true"></div>
+    <div class="te-break-content fade-up">
+      <div class="te-break-kicker">Do Brasil para o mundo</div>
+      <h2 class="te-break-title">Você não compra foto bonita — você compra previsibilidade.</h2>
+      <p class="te-break-sub">Por isso nosso trabalho é juntar ponta a ponta: material, padrão, metragem, acabamento, documentação e expectativas. O resto é barulho.</p>
+    </div>
+  </section>
+
   <!-- SERVIÇOS PRINCIPAIS -->
   <section class="services">
     <div class="te-section-header fade-up">
@@ -687,6 +949,67 @@
         </p>
         <a class="service-link" href="<?php echo esc_url( home_url('/contato') ); ?>">Falar sobre uma demanda</a>
       </article>
+    </div>
+  </section>
+
+  <!-- MATERIAIS EM DESTAQUE (FOTOS DINÂMICAS) -->
+  <?php
+    $te_featured = new WP_Query([
+      'post_type'      => 'rocha',
+      'posts_per_page' => 6,
+      'no_found_rows'  => true,
+      'meta_query'     => [
+        [
+          'key'     => '_rocha_destaque',
+          'value'   => '1',
+          'compare' => '='
+        ]
+      ],
+      'meta_key'  => '_rocha_ordem',
+      'orderby'   => [
+        'meta_value_num' => 'ASC',
+        'date'           => 'DESC'
+      ]
+    ]);
+  ?>
+
+  <section class="te-section materials" id="materiais">
+    <div class="te-section-header fade-up">
+      <div class="te-kicker">Rochas ornamentais</div>
+      <h2 class="te-title">Alguns materiais que costumamos trabalhar.</h2>
+      <p class="te-subtitle">Aqui é o “gostinho” visual: você cadastra o material uma vez (com foto) e ele reaparece no site. Sem retrabalho, sem duplicação.</p>
+    </div>
+
+    <div class="materials-grid">
+      <?php if ($te_featured->have_posts()) : ?>
+        <?php while ($te_featured->have_posts()) : $te_featured->the_post(); ?>
+          <?php
+            $te_img = get_the_post_thumbnail_url(get_the_ID(), 'large');
+            if (!$te_img) {
+              $te_img = get_template_directory_uri() . '/assets/images/hero-rochas-fallback.jpg';
+            }
+            $te_sku = get_post_meta(get_the_ID(), '_rocha_sku', true);
+          ?>
+          <article class="material-card fade-up" style="background-image: url('<?php echo esc_url($te_img); ?>');">
+            <div class="material-overlay" aria-hidden="true"></div>
+            <div class="material-content">
+              <h3 class="material-title"><?php the_title(); ?></h3>
+              <div class="material-meta"><?php echo $te_sku ? 'SKU ' . esc_html($te_sku) : 'Material em destaque'; ?></div>
+              <a class="material-link" href="<?php echo esc_url( home_url('/rochas-ornamentais') ); ?>">Ver página de rochas →</a>
+            </div>
+          </article>
+        <?php endwhile; ?>
+        <?php wp_reset_postdata(); ?>
+      <?php else : ?>
+        <div class="about-highlight" style="grid-column: 1 / -1;">
+          <strong>Sem fotos ainda?</strong> Sem drama. Assim que você cadastrar materiais com imagem destacada e marcar “destaque”, eles aparecem automaticamente aqui.
+        </div>
+      <?php endif; ?>
+    </div>
+
+    <div class="materials-cta-row fade-up delay-1">
+      <a class="btn-primary" href="<?php echo esc_url( home_url('/catalogo') ); ?>">Explorar catálogo</a>
+      <a class="btn-secondary" href="<?php echo esc_url( home_url('/contato') ); ?>">Solicitar disponibilidade</a>
     </div>
   </section>
 
