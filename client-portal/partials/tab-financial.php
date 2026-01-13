@@ -7,7 +7,7 @@ if (!function_exists('tec_portal_user_has_financial') || !tec_portal_user_has_fi
   return;
 }
 
-<?php
+
 if (!isset($active_tab)) {
   return;
 }
@@ -491,10 +491,10 @@ function financialDashboard() {
       // Gráfico Status
       new Chart(document.getElementById('paymentStatusChart'), {
         type: 'doughnut',
-         {
+        data: {
           labels: ['Pagados', 'Pendientes', 'Crédito a Favor'],
           datasets: [{
-             [this.totalInvoicesPagos, this.totalInvoicesPendientes, this.totalCredito > 0 ? 1 : 0],
+            data: [this.totalInvoicesPagos, this.totalInvoicesPendientes, this.totalCredito > 0 ? 1 : 0],
             backgroundColor: ['#10b981', '#f59e0b', '#3b82f6'],
             borderWidth: 0
           }]
@@ -521,11 +521,11 @@ function financialDashboard() {
       
       new Chart(document.getElementById('suppliersChart'), {
         type: 'bar',
-         {
+        data: {
           labels: topProveedores.map(p => p[0]),
           datasets: [{
             label: 'Invoices',
-             topProveedores.map(p => p[1]),
+            data: topProveedores.map(p => p[1]),
             backgroundColor: '#5D2713',
             borderRadius: 6
           }]
