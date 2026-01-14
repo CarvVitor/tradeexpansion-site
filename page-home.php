@@ -30,7 +30,7 @@
 
     body {
       margin: 0;
-      font-family: 'Volkhorn', Georgia, serif;
+      font-family: 'Vollkorn', Georgia, serif;
       background: radial-gradient(circle at top, #1b332f 0%, #0c1514 45%, #050808 100%);
       color: var(--text);
       overflow-x: hidden;
@@ -75,8 +75,32 @@
     }
 
     .te-logo-text {
-      display: inline-block;
-      line-height: 1;
+      display: none;
+    }
+
+    /* Logo: full (top) -> ícone (scroll) */
+    .te-logo-icon {
+      display: none;
+      height: 34px;
+      width: 34px;
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+    }
+
+    header.te-header.is-scrolled {
+      padding: 0.85rem 4vw;
+      border-bottom-color: rgba(214, 163, 84, 0.18);
+    }
+
+    header.te-header.is-scrolled .te-logo-img {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    header.te-header.is-scrolled .te-logo-icon {
+      display: block;
     }
     /* BARRA / MARQUEE ENTRE SEÇÕES */
     .te-marquee {
@@ -756,10 +780,28 @@
 
 <body <?php body_class(); ?>>
 
-<header class="te-header">
-  <a class="te-logo" href="<?php echo esc_url( home_url('/') ); ?>">
+<header class="te-header" id="teHeader">
+  <a class="te-logo" href="<?php echo esc_url( home_url('/') ); ?>" aria-label="Trade Expansion">
     <img class="te-logo-img" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.jpg' ); ?>" alt="Trade Expansion" />
-    <span class="te-logo-text">TRADE EXPANSION</span>
+
+    <!-- Ícone (aparece no scroll) -->
+    <svg class="te-logo-icon" viewBox="0 0 64 64" role="img" aria-label="Trade Expansion">
+      <defs>
+        <linearGradient id="teGold" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#D6A354" />
+          <stop offset="1" stop-color="#5D2713" />
+        </linearGradient>
+      </defs>
+      <!-- Gancho minimalista -->
+      <path d="M36 8c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4Z" fill="url(#teGold)" />
+      <path d="M32 12v10" stroke="url(#teGold)" stroke-width="3" stroke-linecap="round" />
+      <path d="M26 22c0 3.3 2.7 6 6 6s6-2.7 6-6" fill="none" stroke="url(#teGold)" stroke-width="3" stroke-linecap="round" />
+
+      <!-- Contêiner geométrico -->
+      <rect x="14" y="30" width="36" height="24" rx="4" fill="none" stroke="url(#teGold)" stroke-width="3" />
+      <path d="M22 30v24M30 30v24M38 30v24" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
+      <path d="M14 38h36" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
+    </svg>
   </a>
 
   <nav class="te-nav">
@@ -1065,6 +1107,43 @@
   </section>
 </main>
 
+</script>
+<script>
+  (function () {
+    const header = document.getElementById('teHeader');
+    if (!header) return;
+
+    // Header: logo completa -> ícone
+    const toggleHeader = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 24);
+    };
+
+    // Parallax sutil (só desktop / sem reduzir acessibilidade)
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    const heroVideo = document.querySelector('.hero-video');
+    const breakVideo = document.querySelector('.te-break-video');
+
+    let ticking = false;
+    const onScroll = () => {
+      toggleHeader();
+      if (prefersReduced || isCoarse) return;
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY || 0;
+        const p1 = Math.min(28, y * 0.08);
+        const p2 = Math.min(20, y * 0.05);
+        if (heroVideo) heroVideo.style.transform = `translate3d(0, ${p1}px, 0) scale(1.03)`;
+        if (breakVideo) breakVideo.style.transform = `translate3d(0, ${p2}px, 0) scale(1.02)`;
+        ticking = false;
+      });
+    };
+
+    toggleHeader();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>
 <?php wp_footer(); ?>
 </body>
 </html>
