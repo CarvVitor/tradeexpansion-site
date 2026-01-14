@@ -14,10 +14,10 @@
     <div>
       <h4 class="text-lg font-semibold mb-3 uppercase tracking-wide">Links úteis</h4>
       <ul class="space-y-2">
-        <li><a href="#sobre" class="hover:text-accent transition">Sobre</a></li>
-        <li><a href="#servicos" class="hover:text-accent transition">Serviços</a></li>
-        <li><a href="#faq" class="hover:text-accent transition">Perguntas Frequentes</a></li>
-        <li><a href="#contato" class="hover:text-accent transition">Contato</a></li>
+        <li><a href="<?php echo is_front_page() ? '#sobre' : esc_url( home_url('/#sobre') ); ?>" class="hover:text-accent transition">Sobre</a></li>
+        <li><a href="<?php echo is_front_page() ? '#servicos' : esc_url( home_url('/#servicos') ); ?>" class="hover:text-accent transition">Serviços</a></li>
+        <li><a href="<?php echo is_front_page() ? '#faq' : esc_url( home_url('/#faq') ); ?>" class="hover:text-accent transition">Perguntas Frequentes</a></li>
+        <li><a href="<?php echo esc_url( home_url('/contato') ); ?>" class="hover:text-accent transition">Contato</a></li>
       </ul>
     </div>
 
@@ -47,9 +47,46 @@
 </footer>
 
 <!-- FLOATING CTA -->
-<a href="/contact" class="floating-cta" title="Solicitar Cotação">
+<a href="<?php echo esc_url( home_url('/contato') ); ?>" class="floating-cta" title="Solicitar Cotação">
     📧
 </a>
+
+<script>
+  (function () {
+    const header = document.getElementById('teHeader');
+    if (header) {
+      const toggleHeader = () => {
+        header.classList.toggle('is-scrolled', window.scrollY > 24);
+      };
+      toggleHeader();
+      window.addEventListener('scroll', toggleHeader, { passive: true });
+    }
+
+    // Parallax sutil (desktop / respeita reduced motion)
+    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+    if (prefersReduced || isCoarse) return;
+
+    const heroVideo = document.querySelector('.hero-video');
+    const breakVideo = document.querySelector('.te-break-video');
+    if (!heroVideo && !breakVideo) return;
+
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        const y = window.scrollY || 0;
+        const p1 = Math.min(28, y * 0.08);
+        const p2 = Math.min(20, y * 0.05);
+        if (heroVideo) heroVideo.style.transform = `translate3d(0, ${p1}px, 0) scale(1.03)`;
+        if (breakVideo) breakVideo.style.transform = `translate3d(0, ${p2}px, 0) scale(1.02)`;
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>
 
 <?php wp_footer(); ?>
 </body>

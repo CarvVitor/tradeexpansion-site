@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
 
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
@@ -12,6 +11,7 @@
 
   <!-- Fonte Vollkorn -->
   <link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;600;700&display=swap" rel="stylesheet">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -42,13 +42,33 @@
 <body <?php body_class("bg-primary text-text font-volk relative"); ?>>
  
 <!-- HEADER -->
-  <header class="bg-secondary text-custom1 px-8 py-4 shadow-md relative flex justify-between items-center">
+  <header id="teHeader" class="bg-secondary text-custom1 px-8 py-4 shadow-md relative flex justify-between items-center">
 
     <!-- LOGO -->
     <div class="flex items-center space-x-3">
-      <a href="<?php echo home_url(); ?>" class="flex items-center space-x-2">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/logo.png" alt="Trade Expansion" class="h-10 w-auto">
-        <span class="text-xl font-bold uppercase tracking-wide">Trade Expansion</span>
+      <a href="<?php echo home_url(); ?>" class="flex items-center space-x-2" aria-label="Trade Expansion">
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/logo.png" alt="Trade Expansion" class="te-logo-img h-10 w-auto">
+
+        <!-- Ícone (aparece no scroll) -->
+        <svg class="te-logo-icon" viewBox="0 0 64 64" role="img" aria-label="Trade Expansion">
+          <defs>
+            <linearGradient id="teGold" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#D6A354" />
+              <stop offset="1" stop-color="#5D2713" />
+            </linearGradient>
+          </defs>
+          <!-- Gancho minimalista -->
+          <path d="M36 8c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4Z" fill="url(#teGold)" />
+          <path d="M32 12v10" stroke="url(#teGold)" stroke-width="3" stroke-linecap="round" />
+          <path d="M26 22c0 3.3 2.7 6 6 6s6-2.7 6-6" fill="none" stroke="url(#teGold)" stroke-width="3" stroke-linecap="round" />
+
+          <!-- Contêiner geométrico -->
+          <rect x="14" y="30" width="36" height="24" rx="4" fill="none" stroke="url(#teGold)" stroke-width="3" />
+          <path d="M22 30v24M30 30v24M38 30v24" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
+          <path d="M14 38h36" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
+        </svg>
+
+        <span class="te-logo-text text-xl font-bold uppercase tracking-wide">Trade Expansion</span>
       </a>
     </div>
 
@@ -61,10 +81,9 @@
 
     <!-- MENU -->
     <nav id="menu" class="hidden md:flex md:space-x-8 flex-col md:flex-row absolute md:static top-full left-0 w-full md:w-auto bg-secondary md:bg-transparent text-center md:text-left md:py-0 py-6 z-40">
-      <a href="#sobre" class="block md:inline hover:text-accent transition duration-200">Sobre</a>
-      <a href="#servicos" class="block md:inline hover:text-accent transition duration-200">Serviços</a>
-      <a href="#contato" class="block md:inline hover:text-accent transition duration-200">Contato</a>
-      <a class="z-20">
+      <a href="<?php echo is_front_page() ? '#sobre' : esc_url( home_url('/#sobre') ); ?>" class="block md:inline hover:text-accent transition duration-200">Sobre</a>
+      <a href="<?php echo is_front_page() ? '#servicos' : esc_url( home_url('/#servicos') ); ?>" class="block md:inline hover:text-accent transition duration-200">Serviços</a>
+      <a href="<?php echo esc_url( home_url('/contato') ); ?>" class="block md:inline hover:text-accent transition duration-200">Contato</a>
     </nav>
       <!-- LOADING SCREEN -->
       <div id="loading-screen">
@@ -95,9 +114,12 @@
 
   <!-- SCRIPT DO MENU MOBILE -->
   <script>
-    const menuToggle = document.getElementById('menu-toggle');
-    const menu = document.getElementById('menu');
-    menuToggle.addEventListener('click', () => {
-      menu.classList.toggle('hidden');
-    });
+    (function () {
+      const menuToggle = document.getElementById('menu-toggle');
+      const menu = document.getElementById('menu');
+      if (!menuToggle || !menu) return;
+      menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+    })();
   </script>
