@@ -5,53 +5,124 @@
  */
 
 get_header();
+
+$hero_video = get_theme_file_uri('assets/videos/rochas-hero.mp4');
+$hero_img   = get_theme_file_uri('assets/images/hero-rochas-fallback.jpg'); // opcional
+$whatsapp   = 'https://wa.me/5527999999999'; // troque aqui pelo número real
 ?>
 
 <style>
+/* =====================================================================
+   Trade Expansion — Rochas Ornamentais
+   P0: contraste + consistência + cara de SaaS premium
+   ===================================================================== */
 :root {
-  --primary: #484942;
   --secondary: #102724;
-  --accent: #5D2713;
-  --text: #E1E2DA;
   --cream: #F1F1D9;
+  --text: #E1E2DA;
+  --ink: #1D1F1E;
   --gold: #D6A354;
+
+  /* Fallbacks (se o tema já define esses tokens, ótimo) */
+  --primary: var(--primary, #102724);
+  --accent: var(--accent, #D6A354);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Volkhorn', Georgia, serif;
-  color: var(--primary);
+.te-rochas {
+  font-family: 'Vollkorn', Georgia, serif;
   overflow-x: hidden;
 }
+
+.te-rochas section {
+  position: relative;
+  width: 100%;
+  clear: both;
+}
+
+/* Loader frosted (padrão premium) */
+#te-loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(241,241,217,0.92);
+  backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .8s ease, visibility .8s ease;
+}
+
+#te-loader .te-loader__inner { text-align: center; }
+
+#te-loader .te-loader__spin {
+  width: 54px;
+  height: 54px;
+  border: 2px solid rgba(16,39,36,0.22);
+  border-top-color: rgba(214,163,84,0.95);
+  border-radius: 9999px;
+  animation: teSpin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+#te-loader .te-loader__txt {
+  font-size: .85rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(16,39,36,0.82);
+}
+
+@keyframes teSpin { to { transform: rotate(360deg); } }
 
 /* HERO */
 .rochas-hero {
   position: relative;
-  height: 80vh;
-  min-height: 600px;
+  height: 100vh;
+  min-height: 640px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #F1F1D9 0%, #E5E5D5 100%);
+  background: radial-gradient(1200px 600px at 50% 25%, rgba(214, 163, 84, 0.16), transparent 60%),
+              linear-gradient(135deg, #102724 0%, #0b1b18 100%);
 }
 
-.rochas-hero::before {
-  content: '';
+.rochas-hero__glow {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
+  background: radial-gradient(1000px 520px at 50% 15%, rgba(214,163,84,0.18), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rochas-hero__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%) scale(1.12);
+  object-fit: cover;
+  opacity: 0.22;
+  will-change: transform;
+  z-index: 0;
+}
+
+.rochas-hero__img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  background-image: url('https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=1920&q=80');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.4;
+  object-fit: cover;
+  opacity: 0.12;
+  z-index: 0;
+}
+
+.rochas-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(16, 39, 36, 0.45) 0%, rgba(16, 39, 36, 0.92) 70%, rgba(16, 39, 36, 1) 100%);
   z-index: 0;
 }
 
@@ -60,76 +131,173 @@ body {
   z-index: 1;
   text-align: center;
   padding: 0 2rem;
-  max-width: 1000px;
-}
-
-.rochas-hero h1 {
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 300;
-  color: var(--primary);
-  margin-bottom: 1rem;
-  line-height: 1.2;
-}
-
-.rochas-hero p {
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  color: rgba(72, 73, 66, 0.8);
-  margin-bottom: 2rem;
-  font-weight: 300;
+  max-width: 1050px;
 }
 
 .rochas-badge {
-  display: inline-block;
-  background: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  background: rgba(214, 163, 84, 0.14);
+  border: 1px solid rgba(214, 163, 84, 0.35);
   color: var(--cream);
-  padding: 0.8rem 1.8rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  letter-spacing: 0.1em;
-  margin-bottom: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
 }
 
-/* VALUE PROPOSITION */
+.rochas-hero h1 {
+  font-size: clamp(2.6rem, 6.5vw, 5rem);
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 1rem;
+  line-height: 1.08;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rochas-hero p {
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  color: rgba(241, 241, 217, 0.88);
+  margin: 0 auto 2.1rem;
+  max-width: 820px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.rochas-hero__actions {
+  display: flex;
+  justify-content: center;
+  gap: .8rem;
+  flex-wrap: wrap;
+}
+
+.te-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  padding: 1rem 1.6rem;
+  border-radius: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: .92rem;
+}
+
+.te-btn--primary {
+  background: var(--gold);
+  color: var(--secondary);
+  border: 1px solid rgba(214,163,84,0.55);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
+}
+
+.te-btn--primary:hover { transform: translateY(-2px); }
+
+.te-btn--ghost {
+  background: rgba(0,0,0,0.20);
+  color: var(--cream);
+  border: 1px solid rgba(241,241,217,0.22);
+}
+
+.te-btn--ghost:hover {
+  transform: translateY(-2px);
+  border-color: rgba(214,163,84,0.55);
+}
+
+.te-scroll {
+  position: absolute;
+  bottom: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(241,241,217,0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: .72rem;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  z-index: 1;
+}
+
+.te-scroll__bar {
+  width: 22px;
+  height: 36px;
+  border: 1px solid rgba(241,241,217,0.35);
+  border-radius: 9999px;
+  position: relative;
+}
+
+.te-scroll__dot {
+  width: 6px;
+  height: 6px;
+  background: rgba(214,163,84,0.9);
+  border-radius: 9999px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 8px;
+  animation: teScroll 1.2s ease-in-out infinite;
+}
+
+@keyframes teScroll {
+  0%, 100% { transform: translateX(-50%) translateY(0); opacity: .9; }
+  50% { transform: translateX(-50%) translateY(10px); opacity: .35; }
+}
+
+/* VANTAGENS */
 .rochas-vantagem {
-  background: linear-gradient(180deg, #ffffff 0%, #F5F5E8 100%);
-  padding: 5rem 2rem;
+  background: linear-gradient(180deg, rgba(16, 39, 36, 1) 0%, rgba(11, 27, 24, 1) 100%);
+  padding: 5.2rem 2rem;
 }
 
 .rochas-vantagem-grid {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.6rem;
   text-align: center;
 }
 
 .rochas-vantagem-card {
-  padding: 2rem;
+  padding: 2.2rem 1.9rem;
+  background: rgba(241, 241, 217, 0.96);
+  border: 1px solid rgba(214, 163, 84, 0.20);
+  border-radius: 18px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
 }
 
 .rochas-vantagem-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2.7rem;
+  margin-bottom: .8rem;
 }
 
 .rochas-vantagem-card h3 {
-  font-size: 1.5rem;
-  color: var(--primary);
-  margin-bottom: 1rem;
-  font-weight: 400;
+  font-size: 1.45rem;
+  color: #1d1f1e;
+  margin-bottom: .75rem;
+  font-weight: 600;
+  letter-spacing: .02em;
 }
 
 .rochas-vantagem-card p {
   font-size: 1rem;
-  color: rgba(72, 73, 66, 0.75);
-  line-height: 1.6;
+  color: rgba(29, 31, 30, 0.78);
+  line-height: 1.7;
 }
 
 /* CATÁLOGO */
 .rochas-catalogo {
-  background: linear-gradient(180deg, #E5E5D5 0%, #D8D8C8 100%);
-  padding: 5rem 2rem;
+  background: radial-gradient(1200px 600px at 50% 0%, rgba(214, 163, 84, 0.12), transparent 60%),
+              linear-gradient(180deg, rgba(16, 39, 36, 1) 0%, rgba(11, 27, 24, 1) 100%);
+  padding: 5.2rem 2rem;
 }
 
 .rochas-catalogo-header {
@@ -139,10 +307,18 @@ body {
 }
 
 .rochas-catalogo-header h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  color: var(--primary);
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  color: var(--cream);
   margin-bottom: 1rem;
-  font-weight: 300;
+  font-weight: 600;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+
+.rochas-catalogo-header p {
+  color: rgba(241, 241, 217, 0.85);
+  font-weight: 400;
+  line-height: 1.65;
 }
 
 /* FILTROS */
@@ -151,49 +327,52 @@ body {
   margin: 0 auto 3rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: .8rem;
   justify-content: center;
 }
 
 .rochas-filtro {
-  padding: 0.8rem 1.5rem;
-  border: 2px solid rgba(72, 73, 66, 0.2);
-  background: white;
-  border-radius: 50px;
+  padding: .85rem 1.4rem;
+  border: 1px solid rgba(214, 163, 84, 0.22);
+  background: rgba(241, 241, 217, 0.96);
+  border-radius: 9999px;
   cursor: pointer;
-  font-family: 'Volkhorn', serif;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
+  font-family: 'Vollkorn', serif;
+  font-size: .95rem;
+  transition: all 0.25s ease;
+  color: rgba(16,39,36,0.92);
 }
 
 .rochas-filtro:hover,
 .rochas-filtro.ativo {
-  background: var(--accent);
-  color: var(--cream);
-  border-color: var(--accent);
+  background: var(--gold);
+  color: var(--secondary);
+  border-color: rgba(214,163,84,0.85);
+  transform: translateY(-1px);
 }
 
-/* GRID DE ROCHAS */
+/* GRID */
 .rochas-grid {
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  gap: 1.7rem;
 }
 
 .rocha-card {
-  background: white;
-  border-radius: 12px;
+  background: rgba(241, 241, 217, 0.98);
+  border: 1px solid rgba(214, 163, 84, 0.18);
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+  transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
   cursor: pointer;
 }
 
 .rocha-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 18px 70px rgba(0, 0, 0, 0.22);
 }
 
 .rocha-imagem {
@@ -211,60 +390,61 @@ body {
   transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.rocha-card:hover .rocha-imagem img {
-  transform: scale(1.08);
-}
+.rocha-card:hover .rocha-imagem img { transform: scale(1.08); }
 
-.rocha-info {
-  padding: 1.5rem;
-}
+.rocha-info { padding: 1.5rem; }
 
 .rocha-tipo {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent);
-  margin-bottom: 0.5rem;
-  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(16,39,36,0.85);
+  margin-bottom: 0.55rem;
+  font-weight: 800;
 }
 
 .rocha-nome {
-  font-size: 1.3rem;
-  color: var(--primary);
-  margin-bottom: 0.8rem;
-  font-weight: 400;
+  font-size: 1.32rem;
+  color: #1d1f1e;
+  margin-bottom: .75rem;
+  font-weight: 700;
+  letter-spacing: .02em;
 }
 
 .rocha-descricao {
-  font-size: 0.95rem;
-  color: rgba(72, 73, 66, 0.7);
-  line-height: 1.5;
-  margin-bottom: 1.5rem;
+  font-size: 0.98rem;
+  color: rgba(29, 31, 30, 0.76);
+  line-height: 1.55;
+  margin-bottom: 1.2rem;
   min-height: 3em;
 }
 
 .rocha-cta {
-  display: inline-block;
-  padding: 0.8rem 1.5rem;
-  background: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .82rem 1.35rem;
+  background: var(--secondary);
   color: var(--cream);
   text-decoration: none;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
+  border-radius: 9999px;
+  font-size: 0.86rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+  border: 1px solid rgba(16,39,36,0.2);
 }
 
 .rocha-cta:hover {
-  background: var(--primary);
+  background: var(--gold);
+  color: var(--secondary);
   transform: translateX(3px);
 }
 
 /* SEÇÃO INSPEÇÃO */
 .rochas-inspecao {
   background: linear-gradient(135deg, #102724 0%, #0d1f1c 100%);
-  padding: 5rem 2rem;
+  padding: 5.2rem 2rem;
   color: var(--text);
 }
 
@@ -273,16 +453,17 @@ body {
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 3.5rem;
   align-items: center;
 }
 
 .rochas-inspecao-imagem {
   width: 100%;
-  height: 400px;
-  border-radius: 12px;
+  height: 420px;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(214,163,84,0.18);
 }
 
 .rochas-inspecao-imagem img {
@@ -292,71 +473,75 @@ body {
 }
 
 .rochas-inspecao-texto h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2rem, 4vw, 3.1rem);
   color: var(--cream);
-  margin-bottom: 1.5rem;
-  font-weight: 300;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  text-transform: uppercase;
 }
 
 .rochas-inspecao-texto p {
   font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 1.5rem;
-  opacity: 0.9;
+  line-height: 1.85;
+  margin-bottom: 1.2rem;
+  opacity: 0.92;
 }
 
 .rochas-inspecao-lista {
   list-style: none;
-  margin: 2rem 0;
+  margin: 1.8rem 0;
+  padding: 0;
 }
 
 .rochas-inspecao-lista li {
   display: flex;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: .9rem;
   font-size: 1rem;
 }
 
 .rochas-inspecao-lista span:first-child {
-  color: var(--gold);
-  font-weight: bold;
+  color: rgba(214,163,84,0.92);
+  font-weight: 900;
   flex-shrink: 0;
 }
 
 .rochas-inspecao-cta {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background: var(--accent);
-  color: var(--cream);
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: 1rem 1.7rem;
+  background: var(--gold);
+  color: var(--secondary);
   text-decoration: none;
-  border-radius: 50px;
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-  margin-top: 1.5rem;
-  transition: all 0.3s ease;
+  border-radius: 9999px;
+  font-size: 0.92rem;
+  letter-spacing: 0.10em;
+  margin-top: 1.1rem;
+  transition: all 0.25s ease;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .rochas-inspecao-cta:hover {
-  background: var(--cream);
-  color: var(--accent);
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.35);
 }
 
-/* RESPONSIVE */
+/* Responsivo */
 @media (max-width: 968px) {
   .rochas-grid {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1.5rem;
+    gap: 1.3rem;
   }
 
   .rochas-inspecao-content {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.8rem;
   }
 
-  .rochas-inspecao-imagem {
-    height: 300px;
-  }
+  .rochas-inspecao-imagem { height: 320px; }
 
   .rochas-filtros {
     justify-content: flex-start;
@@ -366,435 +551,212 @@ body {
 }
 
 @media (max-width: 480px) {
-  .rochas-hero h1 {
-    font-size: 2rem;
-  }
-
-  .rochas-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .rochas-filtro {
-    padding: 0.7rem 1.2rem;
-    font-size: 0.85rem;
-  }
+  .rochas-hero h1 { font-size: 2.05rem; }
+  .rochas-grid { grid-template-columns: 1fr; }
+  .rochas-filtro { padding: 0.75rem 1.15rem; font-size: 0.85rem; }
 }
 </style>
 
-<!-- HERO -->
-<section class="rochas-hero">
-  <div class="rochas-hero-content">
-    <div class="rochas-badge">💎 <?php _e( 'Rochas Ornamentais Brasileiras', 'tradeexpansion' ); ?></div>
-    <h1><?php _e( 'Onde a Natureza Encontra a Perfeição', 'tradeexpansion' ); ?></h1>
-    <p><?php _e( 'Direto da pedreira para seu projeto. Todo pedido inclui inspeção de qualidade gratuita.', 'tradeexpansion' ); ?></p>
-  </div>
-</section>
+<div class="te-rochas">
 
-<!-- VANTAGENS -->
-<section class="rochas-vantagem">
-  <div class="rochas-vantagem-grid">
-    <div class="rochas-vantagem-card">
-      <div class="rochas-vantagem-icon">🏔️</div>
-      <h3><?php _e( 'Origem Direta', 'tradeexpansion' ); ?></h3>
-      <p><?php _e( 'Fonte direta das pedreiras brasileiras sem intermediários.', 'tradeexpansion' ); ?></p>
-    </div>
-    <div class="rochas-vantagem-card">
-      <div class="rochas-vantagem-icon">🔍</div>
-      <h3><?php _e( 'Inspeção Gratuita', 'tradeexpansion' ); ?></h3>
-      <p><?php _e( 'Valor de R$ 2.500 incluído em todo pedido. Qualidade garantida.', 'tradeexpansion' ); ?></p>
-    </div>
-    <div class="rochas-vantagem-card">
-      <div class="rochas-vantagem-icon">🌍</div>
-      <h3><?php _e( 'Logística Global', 'tradeexpansion' ); ?></h3>
-      <p><?php _e( 'De 1 chapa até container cheio. Sem pedido mínimo.', 'tradeexpansion' ); ?></p>
+  <!-- Loader -->
+  <div id="te-loader" aria-hidden="true">
+    <div class="te-loader__inner">
+      <div class="te-loader__spin"></div>
+      <div class="te-loader__txt">Carregando catálogo…</div>
     </div>
   </div>
-</section>
 
-<!-- CATÁLOGO -->
-<section class="rochas-catalogo">
-  <div class="rochas-catalogo-header">
-    <h2><?php _e( 'Explore Nossa Coleção', 'tradeexpansion' ); ?></h2>
-    <p><?php _e( '100+ materiais disponíveis. Granitos, quartzitos e mármores premium.', 'tradeexpansion' ); ?></p>
-  </div>
+  <!-- HERO -->
+  <section class="rochas-hero">
+    <div class="rochas-hero__glow" aria-hidden="true"></div>
 
-  <!-- FILTROS -->
-  <div class="rochas-filtros">
-    <button class="rochas-filtro ativo" data-filter="*"><?php _e( 'Todas', 'tradeexpansion' ); ?></button>
-    <button class="rochas-filtro" data-filter="granito"><?php _e( 'Granitos', 'tradeexpansion' ); ?></button>
-    <button class="rochas-filtro" data-filter="quartzito"><?php _e( 'Quartzitos', 'tradeexpansion' ); ?></button>
-    <button class="rochas-filtro" data-filter="marmore"><?php _e( 'Mármores', 'tradeexpansion' ); ?></button>
-  </div>
+    <video class="rochas-hero__video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="<?php echo esc_url($hero_video); ?>" type="video/mp4" />
+    </video>
 
-  <!-- GRID DE ROCHAS -->
-  <div class="rochas-grid">
-    <?php
-    $args = array(
-      'post_type'      => 'rocha',
-      'posts_per_page' => -1,
-      'orderby'        => 'meta_value_num',
-      'meta_key'       => '_rocha_ordem',
-      'order'          => 'ASC',
-      'meta_query'     => array(
-        array(
-          'key'    => '_rocha_ordem',
-          'value'  => 0,
-          'compare' => '!=',
-          'type'   => 'NUMERIC'
+    <img class="rochas-hero__img" src="<?php echo esc_url($hero_img); ?>" alt="" aria-hidden="true" />
+
+    <div class="rochas-hero__overlay" aria-hidden="true"></div>
+
+    <div class="rochas-hero-content">
+      <div class="rochas-badge">💎 <?php _e( 'Rochas Ornamentais Brasileiras', 'tradeexpansion' ); ?></div>
+      <h1><?php _e( 'Catálogo premium. Aceite previsível.', 'tradeexpansion' ); ?></h1>
+      <p><?php _e( 'Origem direta, inspeção técnica e evidência por lote — para reduzir disputa e aumentar segurança na operação.', 'tradeexpansion' ); ?></p>
+
+      <div class="rochas-hero__actions">
+        <a class="te-btn te-btn--primary" href="#catalogo"><?php _e( 'Explorar catálogo', 'tradeexpansion' ); ?></a>
+        <a class="te-btn te-btn--ghost" href="<?php echo esc_url($whatsapp); ?>" target="_blank" rel="noopener"><?php _e( 'WhatsApp', 'tradeexpansion' ); ?></a>
+      </div>
+    </div>
+
+    <div class="te-scroll" aria-hidden="true">
+      <div class="te-scroll__bar"><div class="te-scroll__dot"></div></div>
+      <span><?php _e('Desça', 'tradeexpansion'); ?></span>
+    </div>
+  </section>
+
+  <!-- VANTAGENS -->
+  <section class="rochas-vantagem">
+    <div class="rochas-vantagem-grid">
+      <div class="rochas-vantagem-card">
+        <div class="rochas-vantagem-icon">🏔️</div>
+        <h3><?php _e( 'Origem direta', 'tradeexpansion' ); ?></h3>
+        <p><?php _e( 'Acesso a fornecedores e materiais com histórico de consistência e padrão.', 'tradeexpansion' ); ?></p>
+      </div>
+      <div class="rochas-vantagem-card">
+        <div class="rochas-vantagem-icon">🔍</div>
+        <h3><?php _e( 'Inspeção técnica', 'tradeexpansion' ); ?></h3>
+        <p><?php _e( 'Checklist + registro fotográfico por lote, antes do embarque.', 'tradeexpansion' ); ?></p>
+      </div>
+      <div class="rochas-vantagem-card">
+        <div class="rochas-vantagem-icon">🌍</div>
+        <h3><?php _e( 'Logística e transparência', 'tradeexpansion' ); ?></h3>
+        <p><?php _e( 'Operação rastreável — menos surpresa no destino e mais previsibilidade no aceite.', 'tradeexpansion' ); ?></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATÁLOGO -->
+  <section id="catalogo" class="rochas-catalogo">
+    <div class="rochas-catalogo-header">
+      <h2><?php _e( 'Explore nossa coleção', 'tradeexpansion' ); ?></h2>
+      <p><?php _e( 'Materiais selecionados. Granitos, quartzitos e mármores — com transparência técnica na operação.', 'tradeexpansion' ); ?></p>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="rochas-filtros" role="tablist" aria-label="Filtros de rochas">
+      <button class="rochas-filtro ativo" data-filter="*" role="tab" aria-selected="true"><?php _e( 'Todas', 'tradeexpansion' ); ?></button>
+      <button class="rochas-filtro" data-filter="granito" role="tab" aria-selected="false"><?php _e( 'Granitos', 'tradeexpansion' ); ?></button>
+      <button class="rochas-filtro" data-filter="quartzito" role="tab" aria-selected="false"><?php _e( 'Quartzitos', 'tradeexpansion' ); ?></button>
+      <button class="rochas-filtro" data-filter="marmore" role="tab" aria-selected="false"><?php _e( 'Mármores', 'tradeexpansion' ); ?></button>
+    </div>
+
+    <!-- GRID DE ROCHAS -->
+    <div class="rochas-grid" id="rochasGrid">
+      <?php
+      $args = array(
+        'post_type'      => 'rocha',
+        'posts_per_page' => -1,
+        'orderby'        => 'meta_value_num',
+        'meta_key'       => '_rocha_ordem',
+        'order'          => 'ASC',
+        'meta_query'     => array(
+          array(
+            'key'    => '_rocha_ordem',
+            'value'  => 0,
+            'compare' => '!=',
+            'type'   => 'NUMERIC'
+          )
         )
-      )
-    );
+      );
 
-    $rochas = new WP_Query( $args );
+      $rochas = new WP_Query( $args );
 
-    if ( $rochas->have_posts() ) {
-      while ( $rochas->have_posts() ) {
-        $rochas->the_post();
-        $tipo = get_the_terms( get_the_ID(), 'rocha_tipo' );
-        $tipo_slug = $tipo ? strtolower( str_replace( ' ', '', $tipo[0]->name ) ) : '';
-        ?>
-        <div class="rocha-card" data-tipo="<?php echo esc_attr( $tipo_slug ); ?>">
-          <div class="rocha-imagem">
-            <?php if ( has_post_thumbnail() ) : ?>
-              <?php the_post_thumbnail( 'medium_large', array( 'alt' => get_the_title() ) ); ?>
-            <?php else : ?>
-              <img src="https://via.placeholder.com/400x300?text=<?php echo urlencode( get_the_title() ); ?>" alt="<?php the_title_attribute(); ?>" />
-            <?php endif; ?>
+      if ( $rochas->have_posts() ) {
+        while ( $rochas->have_posts() ) {
+          $rochas->the_post();
+          $tipo = get_the_terms( get_the_ID(), 'rocha_tipo' );
+          $tipo_slug = $tipo ? strtolower( str_replace( ' ', '', $tipo[0]->name ) ) : '';
+          ?>
+          <div class="rocha-card" data-tipo="<?php echo esc_attr( $tipo_slug ); ?>">
+            <div class="rocha-imagem">
+              <?php if ( has_post_thumbnail() ) : ?>
+                <?php the_post_thumbnail( 'medium_large', array( 'alt' => get_the_title() ) ); ?>
+              <?php else : ?>
+                <img src="https://via.placeholder.com/400x300?text=<?php echo urlencode( get_the_title() ); ?>" alt="<?php the_title_attribute(); ?>" />
+              <?php endif; ?>
+            </div>
+            <div class="rocha-info">
+              <?php if ( $tipo ) : ?>
+                <div class="rocha-tipo"><?php echo esc_html( $tipo[0]->name ); ?></div>
+              <?php endif; ?>
+              <div class="rocha-nome"><?php the_title(); ?></div>
+              <div class="rocha-descricao"><?php echo wp_trim_words( get_the_excerpt(), 15 ); ?></div>
+              <a href="<?php echo esc_url( home_url('/contato') ); ?>" class="rocha-cta"><?php _e( 'Solicitar cotação', 'tradeexpansion' ); ?> →</a>
+            </div>
           </div>
-          <div class="rocha-info">
-            <?php if ( $tipo ) : ?>
-              <div class="rocha-tipo"><?php echo esc_html( $tipo[0]->name ); ?></div>
-            <?php endif; ?>
-            <div class="rocha-nome"><?php the_title(); ?></div>
-            <div class="rocha-descricao"><?php echo wp_trim_words( get_the_excerpt(), 15 ); ?></div>
-            <a href="#contato" class="rocha-cta"><?php _e( 'Solicitar Cotação', 'tradeexpansion' ); ?></a>
-          </div>
-        </div>
-        <?php
-      }
-      wp_reset_postdata();
-    } else {
-      echo '<p>' . __( 'Nenhuma rocha encontrada. Adicione rochas no painel administrativo.', 'tradeexpansion' ) . '</p>';
-    }
-    ?>
-  </div>
-</section>
-
-<!-- SEÇÃO INSPEÇÃO -->
-<section class="rochas-inspecao">
-  <div class="rochas-inspecao-content">
-    <div class="rochas-inspecao-imagem">
-      <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=800&q=80" alt="<?php _e( 'Inspeção de Rochas', 'tradeexpansion' ); ?>" />
-    </div>
-    <div class="rochas-inspecao-texto">
-      <h2><?php _e( 'Inspeção de Qualidade Incluída', 'tradeexpansion' ); ?></h2>
-      <p><?php _e( 'Cada compra inclui inspeção profissional de qualidade. Isso significa que suas rochas são verificadas antes do envio.', 'tradeexpansion' ); ?></p>
-      
-      <ul class="rochas-inspecao-lista">
-        <li><span>✓</span> <span><?php _e( 'Detecção de microfissuras invisíveis', 'tradeexpansion' ); ?></span></li>
-        <li><span>✓</span> <span><?php _e( 'Verificação de consistência de cor', 'tradeexpansion' ); ?></span></li>
-        <li><span>✓</span> <span><?php _e( 'Dimensões precisas medidas', 'tradeexpansion' ); ?></span></li>
-        <li><span>✓</span> <span><?php _e( 'Relatório detalhado incluído', 'tradeexpansion' ); ?></span></li>
-      </ul>
-
-      <a href="<?php echo home_url( '/inspecao' ); ?>" class="rochas-inspecao-cta"><?php _e( 'Saiba Mais Sobre Nossa Inspeção', 'tradeexpansion' ); ?> →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ==================== FRONTEND FORM - SÓ PARA ADMINS ==================== -->
-
-<?php
-// Verifica se o usuário é ADMIN
-if ( current_user_can( 'manage_options' ) ) {
-    
-    // Processa o formulário quando enviado
-    if ( $_SERVER['REQUEST_METHOD'] === 'POST' && isset( $_POST['adicionar_rocha_nonce'] ) ) {
-        
-        if ( wp_verify_nonce( $_POST['adicionar_rocha_nonce'], 'adicionar_rocha_action' ) ) {
-            
-            $nome = sanitize_text_field( $_POST['nome_rocha'] );
-            $sku = sanitize_text_field( $_POST['sku_rocha'] );
-            $tipo = sanitize_text_field( $_POST['tipo_rocha'] );
-            $cor = sanitize_text_field( $_POST['cor_rocha'] );
-            $descricao = wp_kses_post( $_POST['descricao_rocha'] );
-            
-            $erro = false;
-            $mensagem = '';
-            
-            if ( empty( $nome ) ) {
-                $erro = true;
-                $mensagem = __( '❌ Erro: Nome do material é obrigatório!', 'tradeexpansion' );
-            } elseif ( ! preg_match( '/^[A-Z]{3}-[0-9]{3}$/', $sku ) ) {
-                $erro = true;
-                $mensagem = __( '❌ Erro: SKU deve ter o formato XXX-000 (3 letras, hífen, 3 números)', 'tradeexpansion' );
-            } else {
-                $sku_existe = get_posts( array(
-                    'post_type'      => 'rocha',
-                    'posts_per_page' => 1,
-                    'meta_query'     => array(
-                        array(
-                            'key'   => '_rocha_sku',
-                            'value' => $sku,
-                        )
-                    ),
-                    'fields'         => 'ids'
-                ));
-            
-                if ( ! empty( $sku_existe ) ) {
-                    $erro = true;
-                    $mensagem = sprintf( 
-                        __( '❌ Erro: O SKU %s já existe! Use um número diferente.', 'tradeexpansion' ), 
-                        '<strong>' . esc_html( $sku ) . '</strong>'
-                    );
-                }
-            }
-            
-            if ( ! $erro && empty( $tipo ) ) {
-                $erro = true;
-                $mensagem = __( '❌ Erro: Selecione um tipo de rocha!', 'tradeexpansion' );
-            }
-            
-            if ( ! $erro && empty( $cor ) ) {
-                $erro = true;
-                $mensagem = __( '❌ Erro: Selecione uma cor!', 'tradeexpansion' );
-            }
-            
-            if ( ! $erro ) {
-                $post_id = wp_insert_post( array(
-                    'post_title'   => $nome,
-                    'post_content' => $descricao,
-                    'post_type'    => 'rocha',
-                    'post_status'  => 'publish',
-                ));
-                
-                if ( ! is_wp_error( $post_id ) ) {
-                    update_post_meta( $post_id, '_rocha_sku', $sku );
-                    wp_set_post_terms( $post_id, intval( $tipo ), 'rocha_tipo' );
-                    wp_set_post_terms( $post_id, intval( $cor ), 'rocha_cor' );
-                    
-                    echo '<div style="background: #d4edda; border: 3px solid #28a745; color: #155724; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; font-size: 1.1rem; font-weight: 600;">
-                        ✅ ' . sprintf( __( 'Rocha "%s" adicionada com sucesso!', 'tradeexpansion' ), esc_html( $nome ) ) . '<br>
-                        <small style="color: #155724;">' . __( 'Atualizando página...', 'tradeexpansion' ) . '</small>
-                    </div>';
-                    
-                    echo '<script>setTimeout(function() { location.reload(); }, 2000);</script>';
-                    exit;
-                }
-            }
-            
-            if ( $erro ) {
-                ?>
-                <div style="background: #f8d7da; border: 3px solid #f5c6cb; color: #721c24; padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem; font-size: 1.05rem; font-weight: 600;">
-                    <?php echo $mensagem; ?>
-                </div>
-                <?php
-            }
+          <?php
         }
-    }
-    
-    $tipos = get_terms( array( 'taxonomy' => 'rocha_tipo', 'hide_empty' => false ) );
-    $cores = get_terms( array( 'taxonomy' => 'rocha_cor', 'hide_empty' => false ) );
-    ?>
-    
-    <!-- FORMULÁRIO -->
-    <section style="background: linear-gradient(180deg, #D8D8C8 0%, #C0C0B0 100%); padding: 5rem 2rem; margin-top: 3rem;">
-        <div style="max-width: 800px; margin: 0 auto;">
-            
-            <h2 style="font-size: 2.5rem; font-weight: 300; color: var(--primary); margin-bottom: 1rem; text-align: center;">
-                <?php _e( '➕ Adicionar Nova Rocha', 'tradeexpansion' ); ?>
-            </h2>
-            <p style="text-align: center; color: rgba(72, 73, 66, 0.7); margin-bottom: 2.5rem;">
-                <?php _e( 'Preencha o formulário abaixo para cadastrar um novo material.', 'tradeexpansion' ); ?>
-            </p>
-            
-            <form method="POST" style="background: white; padding: 2.5rem; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1);">
-                
-                <?php wp_nonce_field( 'adicionar_rocha_action', 'adicionar_rocha_nonce' ); ?>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary);">
-                        <?php _e( 'Nome do Material', 'tradeexpansion' ); ?> *
-                    </label>
-                    <input 
-                        type="text" 
-                        name="nome_rocha" 
-                        required 
-                        placeholder="<?php _e( 'Ex: Emerald Green', 'tradeexpansion' ); ?>"
-                        style="width: 100%; padding: 0.8rem; border: 2px solid #ccc; border-radius: 6px; font-size: 1rem; font-family: 'Volkhorn', serif;"
-                    />
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary);">
-                        <?php _e( 'SKU (Código Único)', 'tradeexpansion' ); ?> *
-                    </label>
-                    <input 
-                        type="text" 
-                        name="sku_rocha" 
-                        required 
-                        placeholder="<?php _e( 'Ex: TUL-056', 'tradeexpansion' ); ?>"
-                        maxlength="7"
-                        pattern="[A-Z]{3}-[0-9]{3}"
-                        style="width: 100%; padding: 0.8rem; border: 2px solid #ccc; border-radius: 6px; font-size: 1rem; font-family: monospace;"
-                    />
-                    <small style="display: block; margin-top: 0.5rem; color: #666;">
-                        📌 <?php _e( 'Formato: 3 LETRAS - 3 NÚMEROS (ex: TUL-056)', 'tradeexpansion' ); ?>
-                    </small>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary);">
-                        <?php _e( 'Tipo de Rocha', 'tradeexpansion' ); ?> *
-                    </label>
-                    <select 
-                        name="tipo_rocha" 
-                        required 
-                        style="width: 100%; padding: 0.8rem; border: 2px solid #ccc; border-radius: 6px; font-size: 1rem; font-family: 'Volkhorn', serif;"
-                    >
-                        <option value=""><?php _e( 'Selecione um tipo', 'tradeexpansion' ); ?></option>
-                        <?php foreach ( $tipos as $tipo ) : ?>
-                            <option value="<?php echo esc_attr( $tipo->term_id ); ?>">
-                                <?php echo esc_html( $tipo->name ); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary);">
-                        <?php _e( 'Cor', 'tradeexpansion' ); ?> *
-                    </label>
-                    <select 
-                        name="cor_rocha" 
-                        required 
-                        style="width: 100%; padding: 0.8rem; border: 2px solid #ccc; border-radius: 6px; font-size: 1rem; font-family: 'Volkhorn', serif;"
-                    >
-                        <option value=""><?php _e( 'Selecione uma cor', 'tradeexpansion' ); ?></option>
-                        <?php foreach ( $cores as $cor ) : ?>
-                            <option value="<?php echo esc_attr( $cor->term_id ); ?>">
-                                <?php echo esc_html( $cor->name ); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                
-                <div style="margin-bottom: 2rem;">
-                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--primary);">
-                        <?php _e( 'Descrição', 'tradeexpansion' ); ?>
-                    </label>
-                    <textarea 
-                        name="descricao_rocha" 
-                        placeholder="<?php _e( 'Descreva o material...', 'tradeexpansion' ); ?>"
-                        style="width: 100%; padding: 0.8rem; border: 2px solid #ccc; border-radius: 6px; font-size: 1rem; font-family: 'Volkhorn', serif; min-height: 120px;"
-                    ></textarea>
-                </div>
-                
-                <button 
-                    type="submit" 
-                    style="width: 100%; padding: 1.2rem; background: var(--accent); color: var(--cream); border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; font-family: 'Volkhorn', serif;"
-                    onmouseover="this.style.background='var(--primary)'; this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.2)';"
-                    onmouseout="this.style.background='var(--accent)'; this.style.transform='translateY(0)'; this.style.boxShadow='none';"
-                >
-                    <?php _e( '✅ Adicionar Rocha', 'tradeexpansion' ); ?>
-                </button>
-                
-            </form>
-            
-        </div>
-    </section>
-    
-    <?php
-} // Fim da verificação de admin
-?>
+        wp_reset_postdata();
+      } else {
+        echo '<p style="color: rgba(241,241,217,0.85); text-align:center;">' . __( 'Nenhuma rocha encontrada. Adicione rochas no painel administrativo.', 'tradeexpansion' ) . '</p>';
+      }
+      ?>
+    </div>
+  </section>
+
+  <!-- SEÇÃO INSPEÇÃO -->
+  <section class="rochas-inspecao">
+    <div class="rochas-inspecao-content">
+      <div class="rochas-inspecao-imagem">
+        <img src="https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=1200&q=80&auto=format&fit=crop" alt="<?php _e( 'Inspeção de Rochas', 'tradeexpansion' ); ?>" />
+      </div>
+      <div class="rochas-inspecao-texto">
+        <h2><?php _e( 'Inspeção antes do embarque', 'tradeexpansion' ); ?></h2>
+        <p><?php _e( 'Inspeção técnica reduz disputa no destino e aumenta previsibilidade no aceite. Você aprova com base em critério e evidência.', 'tradeexpansion' ); ?></p>
+
+        <ul class="rochas-inspecao-lista">
+          <li><span>✓</span> <span><?php _e( 'Checklist por lote e acabamento', 'tradeexpansion' ); ?></span></li>
+          <li><span>✓</span> <span><?php _e( 'Registro fotográfico completo', 'tradeexpansion' ); ?></span></li>
+          <li><span>✓</span> <span><?php _e( 'Medições e conferência de padrão', 'tradeexpansion' ); ?></span></li>
+          <li><span>✓</span> <span><?php _e( 'Relatório objetivo para decisão', 'tradeexpansion' ); ?></span></li>
+        </ul>
+
+        <a href="<?php echo esc_url( home_url( '/inspecao' ) ); ?>" class="rochas-inspecao-cta"><?php _e( 'Saiba mais sobre inspeção', 'tradeexpansion' ); ?> →</a>
+      </div>
+    </div>
+  </section>
+
+</div>
 
 <script>
+// Loader
+window.addEventListener('load', function() {
+  const loader = document.getElementById('te-loader');
+  if (!loader) return;
+  setTimeout(function() {
+    loader.style.opacity = '0';
+    loader.style.visibility = 'hidden';
+    setTimeout(function(){ loader.remove(); }, 850);
+  }, 520);
+});
+
+// Parallax suave no hero
+window.addEventListener('scroll', function() {
+  const scrolled = window.pageYOffset || document.documentElement.scrollTop || 0;
+  const heroVideo = document.querySelector('.rochas-hero__video');
+  if (!heroVideo) return;
+  if (scrolled < window.innerHeight) {
+    heroVideo.style.transform = `translate(-50%, calc(-50% + ${scrolled * 0.18}px)) scale(1.12)`;
+  }
+});
+
+// Filtros (funcionando)
 document.addEventListener('DOMContentLoaded', function() {
-    var skuInput = document.querySelector('input[name="sku_rocha"]');
-    var formulario = document.querySelector('form[method="POST"]');
-    var botaoEnviar = formulario.querySelector('button[type="submit"]');
-    
-    if ( ! skuInput ) return;
-    
-    skuInput.addEventListener('input', function() {
-        var sku = this.value.trim().toUpperCase();
-        
-        if ( ! sku ) {
-            remover_aviso_sku();
-            botaoEnviar.disabled = false;
-            botaoEnviar.style.opacity = '1';
-            botaoEnviar.style.cursor = 'pointer';
-            return;
-        }
-        
-        if ( ! /^[A-Z]{3}-[0-9]{3}$/.test(sku) ) {
-            mostrar_aviso_sku('📌 Formato: 3 LETRAS - 3 NÚMEROS (ex: TUL-056)', 'aviso');
-            botaoEnviar.disabled = false;
-            return;
-        }
-        
-        verificar_sku_existe(sku);
-    });
-    
-    function verificar_sku_existe(sku) {
-        fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'action=verificar_sku_rocha&sku=' + encodeURIComponent(sku)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.existe) {
-                mostrar_aviso_sku('❌ Este SKU já existe! Digite outro número.', 'erro');
-                botaoEnviar.disabled = true;
-                botaoEnviar.style.opacity = '0.5';
-                botaoEnviar.style.cursor = 'not-allowed';
-            } else {
-                mostrar_aviso_sku('✅ SKU disponível!', 'sucesso');
-                botaoEnviar.disabled = false;
-                botaoEnviar.style.opacity = '1';
-                botaoEnviar.style.cursor = 'pointer';
-            }
-        });
-    }
-    
-    function mostrar_aviso_sku(mensagem, tipo) {
-        remover_aviso_sku();
-        
-        var aviso = document.createElement('div');
-        aviso.id = 'aviso_sku';
-        aviso.style.marginTop = '0.5rem';
-        aviso.style.padding = '0.8rem';
-        aviso.style.borderRadius = '6px';
-        aviso.style.fontSize = '0.9rem';
-        aviso.style.fontWeight = '600';
-        
-        if (tipo === 'erro') {
-            aviso.style.background = '#f8d7da';
-            aviso.style.color = '#721c24';
-            aviso.style.border = '2px solid #f5c6cb';
-        } else if (tipo === 'sucesso') {
-            aviso.style.background = '#d4edda';
-            aviso.style.color = '#155724';
-            aviso.style.border = '2px solid #28a745';
+  const btns = document.querySelectorAll('.rochas-filtro');
+  const cards = document.querySelectorAll('.rocha-card');
+
+  if (!btns.length || !cards.length) return;
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => { b.classList.remove('ativo'); b.setAttribute('aria-selected','false'); });
+      btn.classList.add('ativo');
+      btn.setAttribute('aria-selected','true');
+
+      const filter = btn.getAttribute('data-filter');
+
+      cards.forEach(card => {
+        const tipo = (card.getAttribute('data-tipo') || '').toLowerCase();
+        if (filter === '*' || tipo === filter) {
+          card.style.display = '';
         } else {
-            aviso.style.background = '#fff3cd';
-            aviso.style.color = '#856404';
-            aviso.style.border = '2px solid #ffc107';
+          card.style.display = 'none';
         }
-        
-        aviso.innerHTML = mensagem;
-        skuInput.parentElement.appendChild(aviso);
-    }
-    
-    function remover_aviso_sku() {
-        var aviso = document.getElementById('aviso_sku');
-        if (aviso) {
-            aviso.remove();
-        }
-    }
+      });
+    });
+  });
 });
 </script>
 

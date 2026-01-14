@@ -94,10 +94,19 @@ $produtos = [
 ];
 ?>
 
-<!-- HERO SECTION com Slideshow -->
-<section class="relative h-[70vh] flex items-center justify-center overflow-hidden">
-  <div class="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-primary"></div>
-  <div class="absolute inset-0 opacity-20">
+<!-- HERO (Premium) -->
+<section class="relative h-[78vh] min-h-[620px] flex items-center justify-center overflow-hidden bg-secondary">
+  <!-- Glow + overlay -->
+  <div class="absolute inset-0 bg-[radial-gradient(1000px_520px_at_50%_15%,rgba(214,163,84,0.16),transparent_60%)]"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-secondary/40 via-secondary/70 to-secondary"></div>
+
+  <!-- Vídeo opcional (se não existir, o slideshow garante o fundo) -->
+  <video class="hero-video absolute inset-0 w-full h-full object-cover opacity-25" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+    <source src="<?php echo esc_url( get_template_directory_uri() . '/assets/videos/catalogo-hero.mp4' ); ?>" type="video/mp4" />
+  </video>
+
+  <!-- Slideshow de materiais (prova visual) -->
+  <div class="absolute inset-0 opacity-25">
     <div class="slideshow-container w-full h-full">
       <?php foreach (array_slice($produtos, 0, 4) as $index => $produto) : ?>
         <div class="slide <?php echo $index === 0 ? 'active' : ''; ?> absolute inset-0 w-full h-full transition-opacity duration-1000">
@@ -106,13 +115,36 @@ $produtos = [
       <?php endforeach; ?>
     </div>
   </div>
-  <div class="relative z-10 text-center px-6 text-custom1">
+
+  <div class="relative z-10 text-center px-6 text-custom1 max-w-5xl">
+    <p class="inline-flex items-center gap-2 uppercase tracking-[0.22em] text-xs md:text-sm mb-5 px-5 py-3 rounded-full border border-accent/40 bg-black/20 backdrop-blur-sm">
+      <span class="h-2 w-2 rounded-full bg-accent"></span>
+      <?php _e('Rigor Técnico • Transparência Total • Qualidade Verificável', 'tradeexpansion'); ?>
+    </p>
+
     <h1 class="text-5xl md:text-6xl font-bold mb-4 tracking-wide uppercase">
       <?php _e('Catálogo Premium de Rochas Ornamentais', 'tradeexpansion'); ?>
     </h1>
-    <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">
-      <?php _e('Excelência brasileira em granitos, mármores, quartzitos e quartzos para projetos internacionais', 'tradeexpansion'); ?>
+
+    <p class="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-custom1/90">
+      <?php _e('Granitos, mármores e quartzitos selecionados — com critérios de qualidade, documentação e apoio de inspeção técnica quando necessário.', 'tradeexpansion'); ?>
     </p>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="<?php echo esc_url( home_url('/contato') ); ?>" class="bg-accent text-custom1 px-8 py-4 rounded-xl font-semibold hover:bg-accent/90 transition inline-flex items-center justify-center gap-2">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <?php _e('Solicitar Cotação', 'tradeexpansion'); ?>
+      </a>
+
+      <a href="<?php echo get_template_directory_uri(); ?>/assets/docs/catalogo-rochas.pdf" download class="bg-black/25 text-custom1 px-8 py-4 rounded-xl font-semibold hover:bg-black/35 transition inline-flex items-center justify-center gap-2 border border-custom1/15">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <?php _e('Baixar PDF', 'tradeexpansion'); ?>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -143,6 +175,27 @@ $produtos = [
       <button class="filter-btn" data-filter="colorido">
         <?php _e('Coloridos', 'tradeexpansion'); ?>
       </button>
+    </div>
+  </div>
+</section>
+
+<!-- DIVISOR VISUAL (PROVA) -->
+<section class="bg-secondary py-10">
+  <div class="max-w-6xl mx-auto px-6 md:px-20">
+    <div class="rounded-3xl overflow-hidden border border-custom1/10 bg-black/20">
+      <div class="p-7 md:p-10">
+        <p class="uppercase tracking-[0.22em] text-custom1/70 text-xs md:text-sm">Evidência em vez de promessa</p>
+        <h2 class="text-3xl md:text-4xl font-bold tracking-wide uppercase text-custom1 mt-3">Seleção premium com critério técnico.</h2>
+        <p class="text-custom1/85 mt-4 max-w-3xl leading-relaxed">
+          Cada material do catálogo pode ser respaldado por inspeção, registro fotográfico e checklist — para reduzir disputa e aumentar previsibilidade no aceite.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-4 gap-px bg-custom1/10">
+        <div class="h-44 md:h-56 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1542315192-1f61a82c3c3f?w=1200&q=80');"></div>
+        <div class="h-44 md:h-56 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1604147706283-7b01a06b3f91?w=1200&q=80');"></div>
+        <div class="h-44 md:h-56 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1581093458791-9f3c3900aa98?w=1200&q=80');"></div>
+        <div class="h-44 md:h-56 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=1200&q=80');"></div>
+      </div>
     </div>
   </div>
 </section>
@@ -212,7 +265,7 @@ $produtos = [
         </svg>
         <?php _e('Baixar Catálogo Completo (PDF)', 'tradeexpansion'); ?>
       </a>
-      <a href="#contato" 
+      <a href="<?php echo esc_url( home_url('/contato') ); ?>"
          class="bg-accent text-custom1 px-8 py-4 rounded-xl font-semibold hover:bg-accent/90 transition inline-flex items-center justify-center gap-2">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -224,28 +277,35 @@ $produtos = [
 </section>
 
 <style>
-  .filter-btn {
-    padding: 0.5rem 1.25rem;
+    .filter-btn {
+    padding: 0.55rem 1.25rem;
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 600;
-    border: 2px solid rgba(16, 39, 36, 0.2);
-    color: rgba(16, 39, 36, 0.7);
-    background-color: white;
+    border: 1px solid rgba(214, 163, 84, 0.22);
+    color: rgba(29, 31, 30, 0.82);
+    background-color: rgba(241, 241, 217, 0.96);
     transition: all 0.2s ease;
     cursor: pointer;
   }
   .filter-btn:hover {
-    border-color: #102724;
-    color: #102724;
+    border-color: rgba(214, 163, 84, 0.55);
+    transform: translateY(-1px);
   }
   .filter-btn.active {
     background-color: #102724;
     color: #F1F1D9;
-    border-color: #102724;
+    border-color: rgba(214, 163, 84, 0.35);
   }
   .product-card {
     animation: fadeIn 0.5s ease-in-out;
+  }
+    .product-card .relative {
+    border: 1px solid rgba(214, 163, 84, 0.18);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+  }
+  .product-card .mt-4 h3 { color: #F1F1D9; }
+  .product-card .mt-4 p { color: rgba(241, 241, 217, 0.72);
   }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
@@ -352,8 +412,7 @@ $produtos = [
             </div>
           </div>
 
-          <a href="#contato" class="inline-block bg-accent text-custom1 px-8 py-3 rounded-xl font-semibold hover:bg-accent/90 transition">
-            <?php _e('Solicitar Cotação', 'tradeexpansion'); ?>
+          <a href="<?php echo esc_url( home_url('/contato') ); ?>" class="inline-block bg-accent text-custom1 px-8 py-3 rounded-xl font-semibold hover:bg-accent/90 transition">            <?php _e('Solicitar Cotação', 'tradeexpansion'); ?>
           </a>
         </div>
       </div>
@@ -394,7 +453,9 @@ $produtos = [
     slides[currentSlide].classList.add('active');
   }
 
+  if (slides.length > 1) {
   setInterval(nextSlide, 4000);
+}
 </script>
 
 <?php get_footer(); ?>
