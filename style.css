@@ -3,62 +3,60 @@
 /* VARIÁVEIS GLOBAIS */
 :root {
     /* Paleta principal da Trade Expansion */
-    --primary: #484942;          /* Cinza/Verde Sóbrio */
-    --secondary: #102724;        /* Verde Floresta Profundo */
-    --accent: #5D2713;           /* Marrom Terra / Destaque */
-    --cream: #F1F1D9;            /* Creme Premium */
-    --gold: #C9A961;             /* Dourado Fosco */
-    --text: #E1E2DA;             /* Texto Claro em fundos escuros */
-    --text-dark: #102724;        /* Texto Escuro em fundos claros */
-    
-    /* Cores auxiliares */
-    --dark: #050808;
+    --primary: #484942;          /* Cor primária */
+    --secondary: #102724;        /* Fundo escuro / base */
+    --accent: #5D2713;           /* Realce (accent) */
+    --cream: #F1F1D9;            /* Custom light */
+    --text: #E1E2DA;             /* Cor de texto principal */
+
+    /* Cores auxiliares já usadas no tema */
+    --dark: #7f7e7e;
+    --gold: #C9A961;
     --gray: #9b9898;
     --success: #28a745;
     --error: #dc3545;
 
-    /* Configurações Globais */
-    --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    --font-serif: 'Vollkorn', serif;
+    /* Animação e fontes globais */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-serif: 'Volkhov', serif;
     --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* ESTILO GLOBAL */
+/* ESTILO GLOBAL – APLICA A TODAS AS PÁGINAS */
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, var(--secondary) 0%, #0a1f1c 100%);
+    background: linear-gradient(135deg, var(--secondary) 0%, #183834 100%);
     color: var(--text);
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
 }
 
-/* Conteúdo principal centralizado */
+/* Conteúdo principal centralizado em todas as páginas */
 main,
 .site-main,
 .content-area {
-    width: 100%;
+    max-width: 1100px;
     margin: 0 auto;
+    padding: 40px 20px 60px;
 }
 
-/* Tipografia Premium */
+/* Títulos no padrão “inspeção”: serif, claros e com leve espaçamento */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
     color: var(--cream);
-    letter-spacing: -0.02em;
+    letter-spacing: 0.03em;
     margin-top: 0;
-    line-height: 1.2;
 }
 
+/* Parágrafos e texto geral */
 p, li, span, label {
-    font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.7;
-    color: rgba(225, 226, 218, 0.9);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
 }
 
-/* Links */
+/* Links com realce elegante */
 a {
     color: var(--cream);
     text-decoration: none;
@@ -67,32 +65,23 @@ a {
 
 a:hover {
     color: var(--gold);
+    text-decoration: underline;
 }
 
-/* UTILITIES - PREMIUM DESIGN */
-
-/* Glassmorphism */
-.glass-panel {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+/* Blocos de conteúdo em “cartão”, parecidos com a área branca do formulário de inspeção */
+.te-card,
+.entry-content > *:not(.alignfull):not(.alignwide) {
+    background: rgba(255, 255, 255, 0.9);
+    color: #102724;
+    border-radius: 12px;
+    padding: 24px 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    margin-bottom: 24px;
 }
 
-.glass-panel-dark {
-    background: rgba(16, 39, 36, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(241, 241, 217, 0.1);
-}
-
-/* Text Reveal Gradient */
-.text-gradient {
-    background: linear-gradient(90deg, var(--cream) 0%, var(--gold) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.entry-content > .wp-block-group.has-background {
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 /* LOADING SCREEN */
@@ -102,13 +91,14 @@ a:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--secondary);
+    background: var(--dark);
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
 #loading-screen.hidden {
@@ -116,50 +106,18 @@ a:hover {
     visibility: hidden;
 }
 
-.loading-content {
-    text-align: center;
-}
-
 .loading-logo {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--gold);
     font-family: var(--font-serif);
-    font-weight: 400;
+    font-weight: 300;
     letter-spacing: 0.1em;
-    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
 }
 
-.loading-bar-container {
-    width: 200px;
-    height: 2px;
-    background: rgba(241, 241, 217, 0.1);
-    margin: 0 auto 15px;
-    position: relative;
-    overflow: hidden;
-}
-
-.loading-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 0%;
-    background: var(--gold);
-    animation: loadProgress 2s ease-in-out forwards;
-}
-
-.loading-text {
-    font-family: var(--font-sans);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    color: rgba(241, 241, 217, 0.6);
-}
-
-@keyframes loadProgress {
-    0% { width: 0%; }
-    50% { width: 60%; }
-    100% { width: 100%; }
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
 /* FLOATING CTA */
@@ -176,19 +134,17 @@ a:hover {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 900;
-    box-shadow: 0 5px 20px rgba(0,0,0, 0.4);
+    z-index: 100;
+    box-shadow: 0 5px 20px rgba(155, 123, 92, 0.4);
     transition: var(--transition);
     font-size: 1.5rem;
     text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.1);
 }
 
 .floating-cta:hover {
     background: var(--gold);
-    color: var(--secondary);
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 10px 30px rgba(201, 169, 97, 0.3);
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 10px 30px rgba(155, 123, 92, 0.6);
 }
 
 @media (max-width: 768px) {
@@ -201,274 +157,426 @@ a:hover {
     }
 }
 
-/* FORMULÁRIOS GERAIS - Contraste Alto (Fundo Branco) */
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"],
-input[type="password"],
-textarea,
-select {
-    width: 100%;
-    padding: 14px 16px;
-    background-color: #ffffff !important;
-    border: 1px solid #e0e4e2;
-    border-radius: 4px;
-    color: var(--text-dark) !important;
-    font-family: var(--font-sans);
-    font-size: 1rem;
-    transition: var(--transition);
+/* ANIMAÇÕES */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-    outline: none;
-    border-color: var(--secondary);
-    box-shadow: 0 0 0 3px rgba(16, 39, 36, 0.1);
+.animate-slide-up {
+    animation: slideUp 0.9s ease-out;
 }
-
-/* Labels Escuras para fundo claro */
-.te-form-label {
-    display: block;
-    color: var(--secondary);
-    font-weight: 600;
-    margin-bottom: 8px;
-    font-size: 0.9rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-button[type="submit"],
-.btn-primary {
-    background: var(--secondary);
-    color: var(--cream);
-    padding: 14px 32px;
-    border: none;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: var(--transition);
-    font-family: var(--font-sans);
-    font-weight: 600;
-    display: inline-block;
-}
-
-button[type="submit"]:hover,
-.btn-primary:hover {
-    background: var(--gold);
-    color: var(--secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-.btn-secondary {
-    background: transparent;
-    color: var(--cream);
-    border: 1px solid rgba(241, 241, 217, 0.3);
-    padding: 14px 32px;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: var(--transition);
-    font-family: var(--font-sans);
-    font-weight: 600;
-    display: inline-block;
-}
-
-.btn-secondary:hover {
-    border-color: var(--gold);
-    color: var(--gold);
-}
-
-
-/* ANIMATIONS - SCROLL REVEAL */
-.fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-.fade-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-.delay-100 { transition-delay: 0.1s; }
-.delay-200 { transition-delay: 0.2s; }
-.delay-300 { transition-delay: 0.3s; }
-
-/* Placeholder Styling */
-::placeholder {
-    color: #999 !important;
-    opacity: 1;
-    font-style: italic;
-}
-
-
 /* ============================================
-   PÁGINA DE NOVO RELATÓRIO / ESPECÍFICOS
+   PÁGINA DE NOVO RELATÓRIO - ESTILO VERDE
    ============================================ */
 
 /* Fundo verde para a página de formulário de relatório */
 body.page-template-default .container,
 .te-form-relatorio-container {
-    background: linear-gradient(135deg, var(--secondary) 0%, #0a1f1c 100%) !important;
+    background: linear-gradient(135deg, #102724 0%, #102724 100%) !important;
     min-height: 100vh;
     padding: 40px 20px;
 }
 
-/* Título e labels em branco para contraste */
+/* Título "Novo Relatório" em branco */
 .te-form-relatorio-container h1,
 .te-form-relatorio-container h2,
-.te-form-relatorio-container h3,
-.te-form-relatorio-container label {
+.te-form-relatorio-container h3 {
     color: #ffffff !important;
     text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Inputs específicos do relatório (já cobertos pelo global, mas reforçando) */
-.te-form-relatorio-container input,
+/* Labels dos campos em branco */
+.te-form-relatorio-container label {
+    color: #ffffff !important;
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Inputs e textareas com fundo branco */
+.te-form-relatorio-container input[type="text"],
+.te-form-relatorio-container input[type="number"],
 .te-form-relatorio-container textarea,
 .te-form-relatorio-container select {
     background: #ffffff !important;
-    color: #333333 !important;
     border: 2px solid rgba(255,255,255,0.3);
+    color: #333333 !important; /* Texto escuro quando digitado */
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%;
+    transition: all 0.3s ease;
 }
 
+/* Efeito ao focar no campo */
 .te-form-relatorio-container input:focus,
-.te-form-relatorio-container textarea:focus {
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.2);
+.te-form-relatorio-container textarea:focus,
+.te-form-relatorio-container select:focus {
+    border-color: #FFD700; /* Dourado ao focar */
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255,215,0,0.2);
 }
 
-/* Botão de submit do relatório */
-.te-form-relatorio-container button[type="submit"] {
+/* PLACEHOLDERS CLAROS - Isso resolve o problema principal! */
+.te-form-relatorio-container input::placeholder,
+.te-form-relatorio-container textarea::placeholder {
+    color: #999999 !important; /* Cinza claro visível */
+    opacity: 1;
+    font-style: italic;
+}
+
+/* Select com opção padrão também mais clara */
+.te-form-relatorio-container select option[value=""] {
+    color: #999999;
+    font-style: italic;
+}
+
+/* Botão de submit verde escuro com hover dourado */
+.te-form-relatorio-container button[type="submit"],
+.te-form-relatorio-container input[type="submit"] {
     background: #004d00 !important;
     color: #ffffff !important;
     border: none;
+    padding: 15px 40px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
     margin-top: 20px;
 }
 
-.te-form-relatorio-container button[type="submit"]:hover {
-    background: var(--gold) !important;
-    color: var(--secondary) !important;
+.te-form-relatorio-container button[type="submit"]:hover,
+.te-form-relatorio-container input[type="submit"]:hover {
+    background: #FFD700 !important; /* Dourado no hover */
+    color: #004d00 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
-/* Seção Cavaletes / Bundles */
+/* Seção "Bundles / Chapas" com destaque */
+.te-form-relatorio-container .bundles-section {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 8px;
+    margin: 30px 0;
+    border-left: 4px solid #FFD700;
+}
+
+/* ============================================
+   FORMULÁRIO DE RELATÓRIO - DESIGN VERDE
+   ============================================ */
+
+.te-form-relatorio-container {
+    background: linear-gradient(135deg, #102724 0%, #183834 100%);
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.te-form-relatorio-container h1 {
+    color: #ffffff;
+    font-size: 32px;
+    margin: 0 0 30px 0;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.te-relatorio-form {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Seções do Formulário */
+.te-form-section {
+    background: rgba(255, 255, 255, 0.659);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.te-form-section h3 {
+    color: #006400;
+    font-size: 20px;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e0e4e2;
+}
+
+.te-help-text {
+    color: #999;
+    font-size: 14px;
+    margin: -10px 0 20px 0;
+    font-style: italic;
+}
+
+/* Campos */
+.te-field {
+    margin-bottom: 20px;
+}
+
+.te-field label {
+    display: block;
+    color: #828282;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.te-field input[type="text"],
+.te-field input[type="number"],
+.te-field input[type="email"],
+.te-field textarea,
+.te-field select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e4e2;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #102724 !important;
+    background: #ffffff !important;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.te-field input:focus,
+.te-field textarea:focus,
+.te-field select:focus {
+    outline: none;
+    border-color: #006400;
+    box-shadow: 0 0 0 3px rgba(0,100,0,0.1);
+}
+
+/* Placeholders claros */
+.te-field input::placeholder,
+.te-field textarea::placeholder {
+    color: #999999 !important;
+    opacity: 1;
+    font-style: italic;
+}
+
+/* Campos em linha (lado a lado) */
+.te-field-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Upload de Arquivo */
+.te-field input[type="file"] {
+    padding: 10px;
+    background: #f8f8f8 !important;
+    border: 2px dashed #ccc;
+    cursor: pointer;
+}
+
+.te-field input[type="file"]:hover {
+    border-color: #006400;
+    background: #f0f9f0 !important;
+}
+
+/* ============================================
+   CAVALETES (Seções Repetíveis)
+   ============================================ */
+
+#te-cavaletes-container {
+    margin-bottom: 20px;
+}
+
 .te-cavalete {
     background: #d2d3d2;
     border: 2px solid #e0e4e2;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
-    color: var(--secondary);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.te-cavalete:hover {
+    border-color: #006400;
+    box-shadow: 0 2px 8px rgba(0,100,0,0.1);
+}
+
+.te-cavalete-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e0e4e2;
 }
 
 .te-cavalete-header h4 {
-    color: var(--secondary);
+    color: #006400;
+    font-size: 18px;
+    margin: 0;
+    font-weight: 700;
 }
 
 .te-btn-remove-cavalete {
-    background: var(--error);
-    color: #fff;
+    background: #dc3545;
+    color: #ffffff;
     border: none;
     width: 32px;
     height: 32px;
     border-radius: 50%;
     cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Ajuste fino para inputs de arquivo */
-input[type="file"] {
-    padding: 10px;
-    background: #f8f8f8 !important;
-    border: 2px dashed #ccc;
-    cursor: pointer;
-    color: var(--secondary);
+.te-btn-remove-cavalete:hover {
+    background: #c82333;
+    transform: scale(1.1);
 }
-/* ======================= PARALLAX & ORGANIC SHAPES ======================= */
 
-/* Container Parallax */
-.parallax-hero {
+.te-cavalete-fields {
+    display: grid;
+    gap: 15px;
+}
+
+/* Múltiplas Fotos */
+.te-photos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.te-photo-item {
     position: relative;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    perspective: 1000px;
 }
 
-/* Camadas */
-.parallax-layer {
-    position: absolute;
+.te-photo-item input[type="file"] {
+    font-size: 12px;
+    padding: 8px;
+}
+
+/* Ações dos Cavaletes */
+.te-actions-cavaletes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+    #add-slab{ margin:.5rem 0 1rem; }
+  </style>
+  <?php
+  return ob_get_clean();
+;
+
+/* ======================= CARREGADO PREMIUM DESIGN ======================= */
+
+/* VARIÁVEIS GLOBAIS */
+:root {
+    --primary: #484942;
+    --accent: #9B7B5C;
+    --cream: #F5F2ED;
+    --dark: #2A2A2A;
+    --gold: #C9A961;
+    --gray: #888888;
+    --success: #28a745;
+    --error: #dc3545;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --font-serif: 'Volkhorn', serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* LOADING SCREEN */
+#loading-screen {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    will-change: transform;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
 }
 
-.layer-0 {
-    z-index: 0;
+#loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
 }
 
-.layer-1 {
-    z-index: 1;
+.loading-logo {
+    font-size: 3rem;
+    color: var(--gold);
+    font-family: var(--font-serif);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    animation: pulse 2s ease-in-out infinite;
 }
 
-.layer-2 {
-    z-index: 2;
-    position: relative;
-    pointer-events: auto;
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
-/* Formas Orgânicas de Rocha (Clip-path) */
-.organic-stone {
-    position: absolute;
-    background-size: cover;
-    background-position: center;
-    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5));
-    opacity: 0.9;
+/* FLOATING CTA */
+.floating-cta {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--accent);
+    color: var(--cream);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 5px 20px rgba(155, 123, 92, 0.4);
+    transition: var(--transition);
+    font-size: 1.5rem;
+    text-decoration: none;
 }
 
-.stone-shape-1 {
-    clip-path: polygon(15% 0, 100% 10%, 85% 100%, 0% 85%);
+.floating-cta:hover {
+    background: var(--gold);
+    transform: scale(1.1) translateY(-5px);
+    box-shadow: 0 10px 30px rgba(155, 123, 92, 0.6);
 }
 
-.stone-shape-2 {
-    clip-path: polygon(10% 20%, 90% 0, 100% 80%, 20% 100%);
-}
-
-.stone-shape-3 {
-    clip-path: polygon(0% 15%, 85% 0, 100% 85%, 15% 100%);
-}
-
-/* Glass Panel Adjustment for Parallax Overlap */
-.glass-panel-overlap {
-    background: rgba(16, 39, 36, 0.4);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 2rem;
-}
-
-/* Mobile Performance */
 @media (max-width: 768px) {
-    .parallax-layer {
-        transform: none !important;
+    .floating-cta {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
     }
-    
-    .layer-1 {
-        display: none;
+}
+
+/* ANIMAÇÕES */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
 }
