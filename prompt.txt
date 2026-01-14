@@ -1,0 +1,37 @@
+Persona: Atue como um Copywriter de elite focado no mercado B2B de luxo e commodities, e um UX Designer especialista em plataformas de transparência logística.
+Contexto da Marca:
+A Trade Expansion não é apenas uma trading. Ela é uma empresa de Inteligência, Intermeddiação e Inspeção Técnica. O site deve transparecer "Rigor Técnico" e "Transparência Total" e "Segurança nas Operações". A tipografia é a Vollkorn (serifada, clássica, passa autoridade) e as cores são baseadas em tons de verde floresta (#102724) e creme (#F1F1D9).
+Diretrizes de Conteúdo por Página:
+1. HOME (A Autoridade Global)
+Hero Section:
+Headline: "Sua visão técnica no mercado global de rochas e commodities."
+Subheadline: "Aliamos expertise aduaneira com tecnologia de inspeção em tempo real. Tenha o controle total da sua carga, da extração ao porto, através do nosso dashboard exclusivo."
+CTA: "Acesse o Portal de Inspeção" (Botão Secundário) e "Solicite uma Consultoria" (Botão Primário).
+Seção "O Diferencial Trade Expansion": Focar em 3 pilares:
+Rigor de Inspeção: (Mencionar a precisão técnica no setor de rochas).
+Transparência Digital: (Vender o benefício do seu sistema de relatórios em tempo real que você já codificou).
+Inteligência Aduaneira: (Segurança jurídica e otimização de custos).
+Seção de Prova de Valor: "Transformamos dados técnicos em decisões seguras." (Mostrar o layout do dashboard de forma simplificada).
+2. PÁGINA: ROCHAS ORNAMENTAIS (Template Premium)
+Conceito: Esta página deve ser visualmente impactante.
+Headline: "A excelência da geodiversidade brasileira, selecionada por especialistas."
+Copy: Falar sobre a curadoria de Mármores, Granitos e Quartzitos. O texto deve enfatizar que a Trade Expansion não apenas vende, mas valida cada bloco/chapa através de inspeção rigorosa.
+CTA: "Baixar Catálogo Técnico PDF".
+3. PÁGINA: INSPEÇÃO TÉCNICA (Onde o seu código brilha)
+Headline: "Relatórios detalhados. Incerteza zero."
+Copy: "Nosso processo de inspeção segue padrões globais. Fornecemos fotos em alta resolução, análises laboratoriais e medições precisas, tudo acessível via portal exclusivo."
+Processo (Passo a Passo):
+Auditoria no Local.
+Coleta de Dados e Fotos (via app).
+Geração de Relatório Digital.
+Liberação Logística Segura.
+4. SOBRE (A História de Confiança)
+Foco: O DNA da empresa. A transição para uma operação "Paperless" e tecnológica.
+Headline: "Comprometidos com a precisão, movidos pela confiança."
+Ajustes de UX (Baseado no seu CSS):
+Explorar o "Loading Screen": Já que você tem um loading-screen no CSS, use-o para reforçar a marca. O texto de carregamento pode ser algo como: "Validando dados de inspeção..." ou "Conectando você ao mercado global...". Isso cria expectativa.
+Dashboard Preview: No site público, use o estilo do seu client-dashboard.css para criar um "Mockup" (uma imagem ou seção que imite o portal). Isso prova para o cliente que vocês são tecnológicos e organizados.
+Contraste dos Formulários: Conforme seu CSS de formulários (te-form), garanta que no Antigravity os campos tenham o fundo branco e labels bem escuras. O contraste alto passa uma sensação de limpeza e seriedade, essencial para quem lida com documentos de exportação.
+Floating CTA: O seu botão flutuante (floating-cta) deve estar presente em todas as páginas, mas no mobile, garanta que ele não cubra informações importantes dos relatórios.
+
+Analise o prompt, deixe organizado para aplicar as alterações e me sugira algumas pequenas melhorias (como parallax, etc) para tornar um site preimium, sofisticado e "com cara de site caro", antes de seguir com as efetivas mudanças .

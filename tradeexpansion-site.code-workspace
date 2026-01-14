@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Desktop/Mesa - Vitor’s Mac mini/ai-assistente"
+		}
+	],
+	"settings": {
+		"git.ignoreLimitWarning": true
+	}
+}

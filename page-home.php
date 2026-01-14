@@ -18,6 +18,91 @@
     <style>
         /* Estilos específicos da Home */
 
+        /* Layered Parallax (Hero) */
+        .parallax-hero {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            background: #102724; /* Forest Green (Layer 0 base) */
+        }
+
+        .parallax-layer {
+            position: absolute;
+            inset: 0;
+            will-change: transform;
+        }
+
+        .parallax-hero .layer-0 {
+            z-index: 0;
+        }
+
+        .parallax-hero .layer-1 {
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .parallax-hero .layer-2 {
+            z-index: 2;
+            position: relative;
+        }
+
+        .parallax-hero .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .parallax-hero .hero-overlay {
+            background: radial-gradient(circle at center, rgba(16, 39, 36, 0.4) 0%, rgba(5, 8, 8, 0.9) 100%);
+            position: absolute;
+            inset: 0;
+        }
+
+        .organic-stone {
+            position: absolute;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.95;
+            filter: saturate(1.05) contrast(1.05);
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+            /* “Formato orgânico” sem depender de PNG transparente */
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Fade-in-up */
+        .fade-up {
+            opacity: 0;
+            transform: translate3d(0, 18px, 0);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .parallax-layer,
+            .organic-stone,
+            .fade-up {
+                transition: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+        }
+
         /* Pillars Section */
         .pillars-section {
             padding: 100px 0;
@@ -181,13 +266,11 @@
             <!-- LAYER 0: Background -->
             <div class="parallax-layer layer-0">
                 <video class="hero-video" autoplay muted loop playsinline
-                    poster="<?php echo get_template_directory_uri(); ?>/assets/images/hero-home-fallback.jpg"
-                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; object-fit: cover; opacity: 0.6;">
+                    poster="<?php echo get_template_directory_uri(); ?>/assets/images/hero-home-fallback.jpg">
                     <source src="<?php echo get_template_directory_uri(); ?>/assets/videos/hero-home.mp4"
                         type="video/mp4" />
                 </video>
-                <div class="hero-overlay"
-                    style="background: radial-gradient(circle at center, rgba(16, 39, 36, 0.4) 0%, rgba(5, 8, 8, 0.9) 100%); position: absolute; inset:0;">
+                <div class="hero-overlay">
                 </div>
             </div>
 
@@ -415,35 +498,59 @@
 
     <!-- Scripts para Animações -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Scroll Reveal Observer
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, { threshold: 0.1 });
+        (() => {
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-            document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-        });
+            // Fade-in-up (IntersectionObserver)
+            document.addEventListener('DOMContentLoaded', () => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.12 });
 
-        document.addEventListener('scroll', function () {
-            // Parallax Logic
-            if (window.innerWidth <= 768) return; // Disable on mobile
+                document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+            });
 
-            const scrolled = window.scrollY;
+            // Layered Parallax only for Hero (smooth via rAF)
+            if (prefersReduced || isMobile) return;
+
             const hero = document.getElementById('home-hero');
+            if (!hero) return;
 
-            // Check if hero is visible to save resources
-            if (scrolled < hero.offsetHeight) {
-                // Layer 1 (Stones) moves slower (0.4 speed)
-                const stones = hero.querySelector('.layer-1');
-                if (stones) {
-                    stones.style.transform = `translateY(${scrolled * 0.4}px)`;
+            const layer0 = hero.querySelector('.layer-0');
+            const layer1 = hero.querySelector('.layer-1');
+
+            let currentY = window.scrollY;
+            let targetY = window.scrollY;
+
+            const lerp = (a, b, t) => a + (b - a) * t;
+
+            function tick() {
+                targetY = window.scrollY;
+                currentY = lerp(currentY, targetY, 0.10); // smoothness
+
+                // Only animate while the hero is on screen (cheap optimization)
+                const heroHeight = hero.offsetHeight || 0;
+                if (currentY < heroHeight + 200) {
+                    // Layer 1 (stones) speed ~ 0.4
+                    if (layer1) {
+                        layer1.style.transform = `translate3d(0, ${(currentY * 0.4).toFixed(2)}px, 0)`;
+                    }
+                    // Subtle depth on background/video
+                    if (layer0) {
+                        layer0.style.transform = `translate3d(0, ${(currentY * 0.12).toFixed(2)}px, 0)`;
+                    }
                 }
+
+                requestAnimationFrame(tick);
             }
-        });
+
+            requestAnimationFrame(tick);
+        })();
     </script>
 
     <?php get_footer(); ?>
