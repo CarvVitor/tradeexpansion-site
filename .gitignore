@@ -1,0 +1,66 @@
+# --------------------------------------------------------------------
+# Ignorar arquivos e pastas desnecessárias (macOS / sistema)
+# --------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*.log
+
+# --------------------------------------------------------------------
+# Ignorar diretórios do Local WP
+# --------------------------------------------------------------------
+logs/
+sql/
+conf/
+*/logs/
+*/sql/
+
+# --------------------------------------------------------------------
+# Ignorar vendors e dependências
+# --------------------------------------------------------------------
+node_modules/
+vendor/
+npm-debug.log
+yarn-error.log
+
+# --------------------------------------------------------------------
+# Ignorar arquivos de build/transpilação (se usar no futuro)
+# --------------------------------------------------------------------
+*.map
+*.lock
+*.cache
+dist/
+build/
+
+# --------------------------------------------------------------------
+# Ignorar arquivos sensíveis
+# --------------------------------------------------------------------
+local-config.php
+wp-config-local.php
+*.env
+.env.*
+
+# --------------------------------------------------------------------
+# Ignorar arquivos de upload grandes
+# (opcional – habilitar se você não quiser versionar assets pesados)
+# --------------------------------------------------------------------
+*.zip
+*.tar.gz
+*.gz
+*.7z
+*.rar
+
+# --------------------------------------------------------------------
+# WordPress core – NÃO versionar
+# (só deixe seu tema dentro de wp-content/themes)
+# --------------------------------------------------------------------
+wp-admin/
+wp-includes/
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+
+# Permitir inclusão de arquivos específicos dentro de uploads (se quiser)
+!wp-content/uploads/.gitkeepapp/public/wp-content/themes/tradeexpansion_old_backup/

@@ -1,0 +1,199 @@
+<?php
+// ... existing content of client-portal/views/dashboard.php ...
+
+// Locate the loop rendering "Relatório" cards and find the actions container <div class="te-card-actions">.
+// Inside that container, after any existing "Ver PDF" button, insert the following:
+
+<?php if ( function_exists('te_portal_client_can_edit') && te_portal_client_can_edit(get_the_ID()) ) : ?>
+  <a class="te-btn te-btn--ghost te-btn--edit" href="<?php echo esc_url( home_url( '/editar-relatorio/?id=' . get_the_ID() ) ); ?>">
+    <span aria-hidden="true">✏️</span><span>Editar</span>
+  </a>
+<?php elseif ( current_user_can('edit_post', get_the_ID()) ) : ?>
+  <a class="te-btn te-btn--ghost te-btn--edit" href="<?php echo esc_url( get_edit_post_link( get_the_ID() ) ); ?>">
+    <span aria-hidden="true">✏️</span><span>Editar</span>
+  </a>
+<?php endif; ?>
+
+// Repeat the same insertion inside the actions container for the "Inspeções" loop, linking to /editar-relatorio/?id=... if appropriate.
+
+// ... rest of client-portal/views/dashboard.php file ...
+
+// In functions.php, append the following at the end (before any closing ?> if present):
+
+/**
+ * Verifica se o usuário atual (ou informado) pode editar este post pelo portal.
+ * Regras: Admin/Editor sempre; Cliente somente se for o dono (tec_cliente_id == user_id).
+ */
+if ( ! function_exists('te_portal_client_can_edit') ) {
+  function te_portal_client_can_edit( $post_id, $user_id = 0 ) {
+    $user_id = $user_id ?: get_current_user_id();
+    if ( ! $user_id ) return false;
+
+    $u = get_userdata( $user_id );
+    if ( ! $u ) return false;
+
+    // Admins/editores liberados
+    if ( user_can( $u, 'manage_options' ) || user_can( $u, 'edit_others_posts' ) ) {
+      return true;
+    }
+
+    // Apenas clientes donos do post
+    if ( ! in_array( 'cliente', (array) $u->roles, true ) ) {
+      return false;
+    }
+
+    $owner = (int) get_post_meta( $post_id, 'tec_cliente_id', true );
+    return $owner === (int) $user_id;
+  }
+}
+
+/**
+ * Shortcode [te_edit_relatorio] — formulário front-end para editar Relatório (CPT tec_relatorio).
+ * Uso: criar uma página "Editar Relatório" com o shortcode e acessar via /editar-relatorio/?id=POST_ID
+ */
+add_shortcode('te_edit_relatorio', function( $atts ){
+  $atts    = shortcode_atts( ['id' => 0], $atts, 'te_edit_relatorio' );
+  $post_id = (int) ( $atts['id'] ?: ( $_GET['id'] ?? 0 ) );
+
+  if ( ! $post_id ) return '<p>Relatório não informado.</p>';
+
+  $post = get_post( $post_id );
+  if ( ! $post || 'tec_relatorio' !== $post->post_type ) {
+    return '<p>Relatório inválido.</p>';
+  }
+
+  if ( ! te_portal_client_can_edit( $post_id ) ) {
+    return '<p>Você não tem permissão para editar este relatório.</p>';
+  }
+
+  // Salvar envio
+  if ( 'POST' === $_SERVER['REQUEST_METHOD']
+    && isset($_POST['te_edit_relatorio_nonce'])
+    && wp_verify_nonce( $_POST['te_edit_relatorio_nonce'], 'te_edit_relatorio_' . $post_id ) ) {
+
+    $title  = isset($_POST['te_title'])  ? wp_strip_all_tags($_POST['te_title'])  : $post->post_title;
+    $resumo = isset($_POST['te_resumo']) ? wp_kses_post($_POST['te_resumo'])      : $post->post_content;
+
+    // Arrays de bundles/chapas
+    $id_arr   = $_POST['slab_ident']   ?? [];
+    $mat_arr  = $_POST['slab_material']?? [];
+    $acab_arr = $_POST['slab_acab']    ?? [];
+    $qtd_arr  = $_POST['slab_qtd']     ?? [];
+    $comp_arr = $_POST['slab_comp']    ?? [];
+    $alt_arr  = $_POST['slab_alt']     ?? [];
+    $esp_arr  = $_POST['slab_esp']     ?? [];
+    $obs_arr  = $_POST['slab_obs']     ?? [];
+
+    $rows  = max( count($id_arr), count($mat_arr), count($qtd_arr), count($comp_arr), count($alt_arr), count($esp_arr) );
+    $slabs = [];
+    for ( $i = 0; $i < $rows; $i++ ) {
+      $slabs[] = [
+        'ident'      => sanitize_text_field( $id_arr[$i]   ?? '' ),
+        'material'   => sanitize_text_field( $mat_arr[$i]  ?? '' ),
+        'acabamento' => sanitize_text_field( $acab_arr[$i] ?? '' ),
+        'quantidade' => (float) str_replace(',', '.', $qtd_arr[$i]  ?? 0),
+        'comp_m'     => (float) str_replace(',', '.', $comp_arr[$i] ?? 0),
+        'altura_m'   => (float) str_replace(',', '.', $alt_arr[$i]  ?? 0),
+        'espess_cm'  => (float) str_replace(',', '.', $esp_arr[$i]  ?? 0),
+        'obs'        => sanitize_text_field( $obs_arr[$i]  ?? '' ),
+      ];
+    }
+
+    // Atualiza post
+    wp_update_post([
+      'ID'           => $post_id,
+      'post_title'   => $title,
+      'post_content' => $resumo,
+    ]);
+
+    // Guarda bundles como JSON
+    update_post_meta( $post_id, 'tec_slabs_json', wp_json_encode( $slabs ) );
+
+    /**
+     * Hook para integrar com Airtable/Sheets quando quiser.
+     * do_action( 'te_portal_relatorio_updated', $post_id, get_current_user_id(), $slabs );
+     */
+    do_action( 'te_portal_relatorio_updated', $post_id, get_current_user_id(), $slabs );
+
+    // Redireciona de volta ao dashboard
+    wp_safe_redirect( add_query_arg( ['updated' => '1'], home_url('/dashboard/') ) );
+    exit;
+  }
+
+  // Prefill
+  $title   = get_the_title( $post_id );
+  $resumo  = $post->post_content;
+  $slabs_j = get_post_meta( $post_id, 'tec_slabs_json', true );
+  $slabs   = json_decode( $slabs_j, true );
+  if ( ! is_array($slabs) || empty($slabs) ) {
+    $slabs = [
+      ['ident'=>'','material'=>'','acabamento'=>'','quantidade'=>'','comp_m'=>'','altura_m'=>'','espess_cm'=>'','obs'=>'']
+    ];
+  }
+
+  ob_start(); ?>
+  <section class="te-edit">
+    <h1>Editar Relatório</h1>
+
+    <form method="post">
+      <?php wp_nonce_field( 'te_edit_relatorio_' . $post_id, 'te_edit_relatorio_nonce' ); ?>
+
+      <label>Título do relatório</label>
+      <input type="text" name="te_title" value="<?php echo esc_attr( $title ); ?>" required>
+
+      <label>Resumo</label>
+      <textarea name="te_resumo" rows="4"><?php echo esc_textarea( $resumo ); ?></textarea>
+
+      <h3 style="margin-top:1rem">Bundles / Chapas</h3>
+      <div id="slab-rows">
+        <?php foreach ( $slabs as $row ) : ?>
+          <div class="slab-row">
+            <input placeholder="Ident."           name="slab_ident[]"    value="<?php echo esc_attr( $row['ident']      ?? '' ); ?>">
+            <input placeholder="Descrição/Material" name="slab_material[]" value="<?php echo esc_attr( $row['material']   ?? '' ); ?>">
+            <input placeholder="Acabamento"       name="slab_acab[]"     value="<?php echo esc_attr( $row['acabamento'] ?? '' ); ?>">
+            <input placeholder="Quant."           name="slab_qtd[]"      value="<?php echo esc_attr( $row['quantidade'] ?? '' ); ?>">
+            <input placeholder="Comp. (m)"        name="slab_comp[]"     value="<?php echo esc_attr( $row['comp_m']     ?? '' ); ?>">
+            <input placeholder="Altura (m)"       name="slab_alt[]"      value="<?php echo esc_attr( $row['altura_m']   ?? '' ); ?>">
+            <input placeholder="Espess. (cm)"     name="slab_esp[]"      value="<?php echo esc_attr( $row['espess_cm']  ?? '' ); ?>">
+            <input placeholder="Obs."             name="slab_obs[]"      value="<?php echo esc_attr( $row['obs']        ?? '' ); ?>">
+          </div>
+        <?php endforeach; ?>
+      </div>
+
+      <button type="button" id="add-slab">+ Adicionar linha</button>
+
+      <p style="margin-top:1rem">
+        <button class="te-btn" type="submit">Salvar alterações</button>
+        <a class="te-btn te-btn--ghost" href="<?php echo esc_url( home_url('/dashboard/') ); ?>">Cancelar</a>
+      </p>
+    </form>
+  </section>
+
+  <script>
+  (function(){
+    var btn = document.getElementById('add-slab');
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var wrap = document.getElementById('slab-rows');
+      var last = wrap.querySelector('.slab-row:last-child');
+      var clone = last.cloneNode(true);
+      clone.querySelectorAll('input').forEach(function(i){ i.value=''; });
+      wrap.appendChild(clone);
+    });
+  })();
+  </script>
+
+  <style>
+    .te-edit form input, .te-edit form textarea{
+      width:100%; padding:.6rem .8rem; margin:.25rem 0 .75rem;
+      border:1px solid rgba(0,0,0,.15); border-radius:8px;
+    }
+    .slab-row{
+      display:grid; grid-template-columns:90px 1fr 140px 90px 110px 110px 110px 1fr;
+      gap:.5rem; margin-bottom:.5rem;
+    }
+    #add-slab{ margin:.5rem 0 1rem; }
+  </style>
+  <?php
+  return ob_get_clean();
+});
