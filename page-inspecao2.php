@@ -21,52 +21,53 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 
     body {
         background: var(--te-green);
-        /* Shorthand to overwrite theme's background-image gradient */
         margin: 0;
         overflow-x: hidden;
     }
 
-    /* === UI OVERRIDES START === */
-    /* Transparent Header Integration */
+    /* === UI OVERRIDES (CRITICAL) === */
+    /* Force Transparent Fixed Header */
     #teHeader {
-        background: transparent !important;
-        box-shadow: none !important;
         position: fixed !important;
-        /* Fixed to stay on top while scrolling */
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 999 !important;
-        transition: background 0.5s ease;
+        background: transparent !important;
         border: none !important;
+        box-shadow: none !important;
+        z-index: 9999 !important;
     }
 
-    /* Ensure text readability on transparent background */
+    /* Whitewash Logo & Menu for contrast */
+    #teHeader img,
+    #teHeader svg,
     #teHeader a,
     #teHeader span,
     #teHeader button {
-        color: #ffffff !important;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        filter: brightness(0) invert(1) !important;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     }
 
-    /* Hide Global Footer & Floating CTA */
+    /* Remove original flags border if needed */
+    #teHeader img.rounded-full {
+        border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    /* Hide Standard Footer */
     footer,
     .floating-cta {
         display: none !important;
     }
 
-    /* === UI OVERRIDES END === */
-
-    /* MAIN WRAPPER */
+    /* === SCROLLY LAYOUT === */
     .scrolly-wrapper {
         position: relative;
         width: 100%;
-        /* 600vh total height for 5 stages (roughly 100vh per stage + buffer) */
-        height: 600vh;
+        height: 1000vh;
+        /* Increased for "Cinematic" feel */
         background-color: var(--te-green);
     }
 
-    /* STICKY CANVAS CONTAINER */
     .sticky-canvas-container {
         position: sticky;
         top: 0;
@@ -79,22 +80,18 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 
     canvas#stone-canvas {
         display: block;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        /* Controlled by JS */
-    }
-
-    /* LOADING SCREEN */
-    #scrolly-loader {
-        position: fixed;
-        top: 0;
-        left: 0;
+        /* Positioning handled by generic cover logic, but we center it generally */
         width: 100%;
         height: 100%;
+    }
+
+    /* LOADER */
+    #scrolly-loader {
+        position: fixed;
+        inset: 0;
         background: var(--te-green);
-        z-index: 9999;
+        /* Solid green to hide everything */
+        z-index: 10000;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -105,13 +102,13 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
     }
 
     .loader-spinner {
-        width: 50px;
-        height: 50px;
-        border: 2px solid rgba(214, 163, 84, 0.2);
+        width: 60px;
+        height: 60px;
+        border: 3px solid rgba(214, 163, 84, 0.2);
         border-top-color: var(--te-gold);
         border-radius: 50%;
         animation: spin 1s linear infinite;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
     }
 
     @keyframes spin {
@@ -120,7 +117,7 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         }
     }
 
-    /* TEXT OVERLAYS (STAGES) */
+    /* TEXT OVERLAYS */
     .scrolly-text-layer {
         position: absolute;
         top: 0;
@@ -128,7 +125,6 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         width: 100%;
         height: 100%;
         pointer-events: none;
-        /* Let clicks pass through to potential canvas interactions if any */
         z-index: 10;
     }
 
@@ -136,136 +132,141 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         position: absolute;
         width: 100%;
         height: 100vh;
-        /* One viewport height */
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Opacity controlled by GSAP, but starting transparent helps avoid flash */
         opacity: 0;
+        /* JS handles visibility */
     }
 
-    /* Positioning of stages based on percentage of execution - approximate visual placement */
-    /* Note: Logic is driven by ScrollTrigger, but these help visualization */
+    /* Staggered visual placement helpers */
     .scrolly-stage:nth-child(1) {
-        top: 50vh;
+        top: 100vh;
     }
 
     .scrolly-stage:nth-child(2) {
-        top: 150vh;
+        top: 300vh;
     }
 
     .scrolly-stage:nth-child(3) {
-        top: 250vh;
+        top: 500vh;
     }
 
     .scrolly-stage:nth-child(4) {
-        top: 350vh;
+        top: 700vh;
     }
 
     .scrolly-stage:nth-child(5) {
-        top: 450vh;
+        top: 900vh;
     }
 
     .glass-panel {
-        background: rgba(16, 39, 36, 0.4);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: rgba(16, 39, 36, 0.45);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         border: 1px solid rgba(241, 241, 217, 0.15);
-        padding: 2.5rem 3rem;
-        border-radius: 16px;
-        max-width: 500px;
+        padding: 3rem 4rem;
+        border-radius: 20px;
+        max-width: 600px;
         color: var(--te-cream);
         pointer-events: auto;
-        /* Re-enable pointer events for buttons */
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        /* Note: transform removed here as GSAP handles movement */
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        text-align: center;
+    }
+
+    /* Layout variated alignment */
+    .stage-left .glass-panel {
+        margin-right: 30%;
+        text-align: left;
+    }
+
+    .stage-right .glass-panel {
+        margin-left: 30%;
+        text-align: right;
+    }
+
+    .stage-center .glass-panel {
+        margin: 0 auto;
+        text-align: center;
     }
 
     .glass-panel h2 {
         font-family: 'Vollkorn', serif;
-        font-size: 2.2rem;
-        margin: 0 0 0.5rem 0;
+        font-size: 2.8rem;
+        margin: 0 0 1rem 0;
         color: var(--te-gold);
+        line-height: 1.1;
     }
 
     .glass-panel p {
         font-family: sans-serif;
-        font-size: 1.1rem;
-        line-height: 1.6;
+        font-size: 1.25rem;
+        line-height: 1.7;
         margin: 0;
-        opacity: 0.9;
+        opacity: 0.95;
+        font-weight: 300;
     }
 
-    /* Specific Stage Alignments */
-    .stage-center {
-        justify-content: center;
-        text-align: center;
-    }
-
-    .stage-left {
-        justify-content: flex-start;
-        padding-left: 10%;
-    }
-
-    .stage-right {
-        justify-content: flex-end;
-        padding-right: 10%;
-    }
-
-    /* Contact Button */
     .btn-contact {
         display: inline-block;
-        margin-top: 1.5rem;
-        padding: 1rem 2rem;
+        margin-top: 2rem;
+        padding: 1.2rem 2.8rem;
         background: var(--te-gold);
         color: var(--te-green);
         text-decoration: none;
         font-weight: 700;
-        border-radius: 50px;
-        transition: transform 0.2s;
+        font-size: 1.1rem;
+        border-radius: 100px;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(214, 163, 84, 0.3);
     }
 
     .btn-contact:hover {
-        transform: scale(1.05);
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(214, 163, 84, 0.5);
+        background: #e0b468;
     }
 
-    /* CUSTOM INTEGRATED FOOTER */
-    .integrated-footer {
-        position: fixed;
+    /* CUSTOM MINIMAL FOOTER */
+    .custom-footer {
+        position: absolute;
         bottom: 0;
         left: 0;
         width: 100%;
-        padding: 1.5rem 2rem;
-        background: linear-gradient(to top, rgba(16, 39, 36, 0.95), transparent);
-        color: rgba(255, 255, 255, 0.6);
+        padding: 3rem;
         text-align: center;
-        font-size: 0.85rem;
-        z-index: 20;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+        z-index: 50;
         opacity: 0;
-        /* Hidden initially, revealed by GSAP */
-        pointer-events: none;
-        /* Let events pass until visible */
     }
 
-    /* Mobile Adjustments */
     @media (max-width: 768px) {
+        .scrolly-wrapper {
+            height: 800vh;
+        }
+
+        /* Slightly shorter on mobile */
         .glass-panel {
-            padding: 1.5rem;
-            margin: 0 1rem;
-            max-width: 100%;
+            padding: 2rem;
+            margin: 0 1.5rem !important;
+            width: auto;
+            max-width: none;
         }
 
         .glass-panel h2 {
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
 
         .stage-left,
-        .stage-right {
+        .stage-right,
+        .stage-center {
             justify-content: center;
-            padding-left: 1rem;
-            padding-right: 1rem;
+        }
+
+        .stage-left .glass-panel,
+        .stage-right .glass-panel {
             text-align: center;
-            /* Center everything on mobile usually looks better */
         }
     }
 </style>
@@ -273,48 +274,41 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 <!-- LOADER -->
 <div id="scrolly-loader">
     <div class="loader-spinner"></div>
-    <div>Carregando Inspeção...</div>
+    <div style="font-size: 1.2rem; letter-spacing: 0.05em;">Carregando Experiência...</div>
+    <div id="loader-progress" style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">0%</div>
 </div>
 
-<!-- MAIN CONTAINER -->
+<!-- WRAPPER -->
 <div class="scrolly-wrapper">
-
-    <!-- STICKY CANVAS -->
     <div class="sticky-canvas-container">
         <canvas id="stone-canvas"></canvas>
     </div>
 
-    <!-- TEXT STAGES -->
     <div class="scrolly-text-layer">
-        <!-- Stages 1-5 -->
         <div class="scrolly-stage stage-center" id="stage-1">
             <div class="glass-panel">
                 <h2>A Origem</h2>
                 <p>Seleção rigorosa na pedreira.</p>
             </div>
         </div>
-
         <div class="scrolly-stage stage-left" id="stage-2">
             <div class="glass-panel">
                 <h2>Curadoria Técnica</h2>
                 <p>Identificando o bloco perfeito com critérios objetivos.</p>
             </div>
         </div>
-
         <div class="scrolly-stage stage-right" id="stage-3">
             <div class="glass-panel">
                 <h2>Engenharia de Precisão</h2>
                 <p>A transformação bruta em chapas de alta performance.</p>
             </div>
         </div>
-
         <div class="scrolly-stage stage-left" id="stage-4">
             <div class="glass-panel">
                 <h2>Refinamento</h2>
                 <p>Escaneamento digital de veios, fissuras e integridade.</p>
             </div>
         </div>
-
         <div class="scrolly-stage stage-center" id="stage-5">
             <div class="glass-panel">
                 <h2>Incerteza Zero</h2>
@@ -322,71 +316,55 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
                 <a href="/contato" class="btn-contact">Falar com Especialista</a>
             </div>
         </div>
+    </div>
 
+    <div class="custom-footer">
+        © <?php echo date('Y'); ?> Trade Expansion. Excellence in Natural Stone.
     </div>
 </div>
 
-<!-- INTEGRATED FOOTER -->
-<div class="integrated-footer" id="te-footer-overlay">
-    © <?php echo date('Y'); ?> Trade Expansion - Excellence in Stone Inspection.
-</div>
-
-<!-- GSAP + SCROLLTRIGGER -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        console.log("Initializing Retina Scrollytelling...");
+        console.log("Initializing Cinematic Scrollytelling...");
 
         gsap.registerPlugin(ScrollTrigger);
 
         const canvas = document.getElementById("stone-canvas");
-        const context = canvas.getContext("2d", { alpha: false });
-        // Apply Hardware Accelerated Filter (Contrast/Brightness pop)
+        const context = canvas.getContext("2d", { alpha: false }); // Optimize
+        // Apply Hardware filter
         context.filter = 'contrast(1.1) brightness(1.05)';
 
         const totalFrames = 300;
         const framePath = "<?php echo $base_asset_path; ?>";
+        const images = [];
 
-        // State object to hold current frame index
+        // Playhead for GSAP
         const playhead = { frame: 0 };
 
-        // Images cache
-        const images = [];
-        const imagesToLoadInitially = 50;
-        let imagesLoadedCount = 0;
-        let isLoaded = false;
+        let loadedCount = 0;
 
-        // Helper to format frame number (e.g., 1 -> "001")
-        const getFrameUrl = (index) => {
-            const paddedIndex = String(index + 1).padStart(3, '0');
-            return `${framePath}frame_${paddedIndex}.jpg`;
-        };
-
-        // --- 1. RESIZE & CANVAS SETUP (RETINA FIX) ---
+        // --- 1. RESIZE WITH RETINA SUPPORT ---
         function resizeCanvas() {
-            // Get Device Pixel Ratio (e.g., 2 for Retina, 3 for Super Retina)
             const dpr = window.devicePixelRatio || 1;
 
-            // CSS Display Size (Visual)
-            const displayWidth = window.innerWidth;
-            const displayHeight = window.innerHeight;
+            // CSS dimensions
+            const w = window.innerWidth;
+            const h = window.innerHeight;
 
-            // Internal Canvas Size (Physical Pixels)
-            canvas.width = displayWidth * dpr;
-            canvas.height = displayHeight * dpr;
+            canvas.style.width = w + "px";
+            canvas.style.height = h + "px";
 
-            // Enforce CSS size to match window
-            canvas.style.width = displayWidth + "px";
-            canvas.style.height = displayHeight + "px";
+            // Logical Dimensions (Internal buffer)
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
 
-            // --- Note: We do NOT use context.scale(dpr, dpr) here.
-            // Instead, we will scale the image drawing coordinates to map 
-            // the visual dimensions to the physical pixel dimensions manually 
-            // to ensure "cover" logic works on the physical buffer. ---
+            // Important: Scale context so drawing operations use CSS pixels
+            context.scale(dpr, dpr);
 
-            // Re-apply filter after resize (context reset)
+            // Re-apply filter (context reset on resize)
             context.filter = 'contrast(1.1) brightness(1.05)';
 
             render();
@@ -395,162 +373,162 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
 
-        // --- 2. IMAGE PRELOADING ---
+        // --- 2. PRELOAD ALL IMAGES (STRICT) ---
         function preloadImages() {
+            const updateProgress = () => {
+                const pct = Math.round((loadedCount / totalFrames) * 100);
+                const el = document.getElementById("loader-progress");
+                if (el) el.innerText = pct + "%";
+            };
+
             for (let i = 0; i < totalFrames; i++) {
                 const img = new Image();
-                img.src = getFrameUrl(i);
+                // Format ID
+                const paddedIndex = String(i + 1).padStart(3, '0');
+                img.src = `${framePath}frame_${paddedIndex}.jpg`;
+
+                img.onload = () => {
+                    loadedCount++;
+                    updateProgress();
+                    if (loadedCount === totalFrames) {
+                        startExperience();
+                    }
+                };
+                img.onerror = () => {
+                    // If a frame fails, we count it anyway to avoid hanging
+                    console.warn("Frame failed:", i);
+                    loadedCount++;
+                    updateProgress();
+                    if (loadedCount === totalFrames) {
+                        startExperience();
+                    }
+                };
                 images.push(img);
-
-                if (i < imagesToLoadInitially) {
-                    img.onload = () => {
-                        imagesLoadedCount++;
-                        // Update loader text occasionally
-                        if (imagesLoadedCount % 10 === 0) {
-                            const loaderTxt = document.querySelector('#scrolly-loader div:not(.loader-spinner)');
-                            if (loaderTxt) loaderTxt.innerText = `Carregando Imersão... ${Math.round((imagesLoadedCount / imagesToLoadInitially) * 100)}%`;
-                        }
-
-                        if (imagesLoadedCount === imagesToLoadInitially && !isLoaded) {
-                            startAnimation();
-                        }
-                    };
-                    img.onerror = () => {
-                        console.error(`Failed to load frame ${i}: ${img.src}`);
-                        const loaderTxt = document.querySelector('#scrolly-loader div:not(.loader-spinner)');
-                        if (loaderTxt) loaderTxt.innerHTML = `<span style="color:#ff6b6b">Erro.<br>${img.src}</span>`;
-                    };
-                }
             }
         }
 
-        // --- 3. RENDER LOOP (ASPECT FILL / COVER) ---
-        // Mimic 'object-fit: cover' behavior
+        // --- 3. RENDER (COVER LOGIC) ---
         function render() {
-            const img = images[Math.round(playhead.frame)]; // Round to nearest integer frame
+            // Use floor/round to pick frame
+            const frameIndex = Math.min(totalFrames - 1, Math.round(playhead.frame));
+            const img = images[frameIndex];
+
             if (!img || !img.complete) return;
 
-            // Current logical dimensions
-            const cw = canvas.width;  // Physical width
-            const ch = canvas.height; // Physical height
+            // Visual Canvas Size (CSS pixels, since we used context.scale)
+            const canvasW = canvas.width / (window.devicePixelRatio || 1);
+            const canvasH = canvas.height / (window.devicePixelRatio || 1);
 
-            // We want to fill 'cw' and 'ch' with 'img' preserving aspect ratio.
             const imgRatio = img.width / img.height;
-            const canvasRatio = cw / ch;
+            const canvasRatio = canvasW / canvasH;
 
-            let drawWidth, drawHeight, offsetX, offsetY;
+            // Cover Logic
+            let drawW, drawH, offsetX, offsetY;
 
             if (canvasRatio > imgRatio) {
-                // Canvas is wider relative to height -> Limit by Width
-                drawWidth = cw;
-                drawHeight = cw / imgRatio;
+                // Screen is wider -> Fit width, crop height
+                drawW = canvasW;
+                drawH = canvasW / imgRatio;
                 offsetX = 0;
-                offsetY = (ch - drawHeight) / 2;
+                offsetY = (canvasH - drawH) / 2;
             } else {
-                // Canvas is taller relative to width -> Limit by Height
-                drawHeight = ch;
-                drawWidth = ch * imgRatio;
-                offsetX = (cw - drawWidth) / 2;
+                // Screen is taller -> Fit height, crop width
+                drawH = canvasH;
+                drawW = canvasH * imgRatio;
+                offsetX = (canvasW - drawW) / 2;
                 offsetY = 0;
             }
 
-            // Draw to physical pixels
-            context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+            // Draw
+            context.drawImage(img, offsetX, offsetY, drawW, drawH);
         }
 
-        // --- 4. START ANIMATION (INIT) ---
-        function startAnimation() {
-            isLoaded = true;
-
-            // Hide loader
+        // --- 4. START EXPERIENCE ---
+        function startExperience() {
+            // Fade out loader
             gsap.to("#scrolly-loader", {
                 opacity: 0,
                 duration: 1.0,
-                ease: "power2.out",
-                onComplete: () => {
-                    document.getElementById("scrolly-loader").style.display = 'none';
-                }
+                onComplete: () => { document.getElementById("scrolly-loader").style.display = 'none'; }
             });
 
-            // Setup ScrollTrigger for Image Sequence
+            // Setup Main Timeline
+            // Scrub 2.5 for "Weighty" feel
             gsap.to(playhead, {
                 frame: totalFrames - 1,
-                snap: "frame", // Optional: snap to whole numbers if jittery, but 'round' in render handles it
                 ease: "none",
                 scrollTrigger: {
                     trigger: ".scrolly-wrapper",
                     start: "top top",
                     end: "bottom bottom",
-                    scrub: 1.5, // Momentum scrubbing
+                    scrub: 2.5,
                 },
                 onUpdate: render
             });
 
-            setupTextAnimations();
-            render(); // First frame
+            setupCinematicText();
+            setupFooter();
+            render();
         }
 
-        // --- 5. CINEMATIC TEXT REVEAL (Blur Focus) ---
-        function setupTextAnimations() {
-            const stages = ["#stage-1", "#stage-2", "#stage-3", "#stage-4", "#stage-5"];
+        // --- 5. TEXT ANIMATION (No Overlap) ---
+        function setupCinematicText() {
+            // Total scroll range is large. We assign specific slots.
+            // Stage 1: 5% - 18%
+            // Stage 2: 25% - 38%
+            // Stage 3: 45% - 58%
+            // Stage 4: 65% - 78%
+            // Stage 5: 85% - 95%
 
-            stages.forEach((stageId, index) => {
-                const startPct = index * 0.2;
+            const stages = [
+                { id: "#stage-1", start: 0.05, end: 0.18 },
+                { id: "#stage-2", start: 0.25, end: 0.38 },
+                { id: "#stage-3", start: 0.45, end: 0.58 },
+                { id: "#stage-4", start: 0.65, end: 0.78 },
+                { id: "#stage-5", start: 0.85, end: 0.95 }
+            ];
 
-                // "Focus Reveal": Blur + Opacity + slight Y move
-                // We animate the .glass-panel inside the stage
-                const panel = document.querySelector(`${stageId} .glass-panel`);
+            stages.forEach((stage) => {
+                const panel = document.querySelector(`${stage.id} .glass-panel`);
+                if (!panel) return;
 
-                if (panel) {
-                    gsap.fromTo(panel,
-                        {
-                            opacity: 0,
-                            y: 40,
-                            filter: "blur(15px)"
-                        },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            filter: "blur(0px)",
-                            duration: 1,
-                            ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: ".scrolly-wrapper",
-                                start: `top+=${startPct * 100}% top`,
-                                end: `top+=${(startPct + 0.1) * 100}% top`,
-                                scrub: true,
-                                toggleActions: "play reverse play reverse"
-                            }
+                // Animate In: Blur -> Sharp + Fade Up
+                gsap.fromTo(panel,
+                    { opacity: 0, y: 50, filter: "blur(20px)" },
+                    {
+                        opacity: 1, y: 0, filter: "blur(0px)",
+                        scrollTrigger: {
+                            trigger: ".scrolly-wrapper",
+                            // Convert pct to scroll pos
+                            start: () => `top+=${stage.start * 100}% top`,
+                            end: () => `top+=${(stage.start + 0.05) * 100}% top`, // Fast reveal
+                            scrub: 1,
+                            toggleActions: "play reverse play reverse"
                         }
-                    );
-
-                    // Fade Out (except last)
-                    if (index < stages.length - 1) {
-                        gsap.to(panel, {
-                            opacity: 0,
-                            y: -40,
-                            filter: "blur(10px)",
-                            scrollTrigger: {
-                                trigger: ".scrolly-wrapper",
-                                start: `top+=${(startPct + 0.15) * 100}% top`,
-                                end: `top+=${(startPct + 0.2) * 100}% top`,
-                                scrub: true
-                            }
-                        });
                     }
-                }
-            });
+                );
 
-            // Footer Fade In
-            const footer = document.getElementById("te-footer-overlay");
-            gsap.to(footer, {
+                // Animate Out: Fade Down + Blur
+                gsap.to(panel, {
+                    opacity: 0, y: -50, filter: "blur(20px)",
+                    scrollTrigger: {
+                        trigger: ".scrolly-wrapper",
+                        start: () => `top+=${(stage.end - 0.05) * 100}% top`,
+                        end: () => `top+=${stage.end * 100}% top`,
+                        scrub: 1
+                    }
+                });
+            });
+        }
+
+        function setupFooter() {
+            gsap.to(".custom-footer", {
                 opacity: 1,
-                pointerEvents: "auto",
                 scrollTrigger: {
                     trigger: ".scrolly-wrapper",
-                    start: "90% bottom", // Near end
-                    end: "bottom bottom",
-                    scrub: true
+                    start: "98% bottom",
+                    end: "100% bottom",
+                    scrub: 1
                 }
             });
         }
