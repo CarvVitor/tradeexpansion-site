@@ -28,6 +28,7 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
     /* === UI OVERRIDES (CRITICAL) === */
     /* Force Transparent Fixed Header */
     #teHeader {
+        display: none !important;
         position: fixed !important;
         top: 0;
         left: 0;
@@ -274,7 +275,8 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 <!-- LOADER -->
 <div id="scrolly-loader">
     <div class="loader-spinner"></div>
-    <div style="font-size: 1.2rem; letter-spacing: 0.05em;">Carregando Experiência...</div>
+    <div style="font-size: 1.2rem; letter-spacing: 0.05em; text-align: center;">Sincronizando Experiência em Alta
+        Definição...<br><span style="font-size: 0.8em; opacity: 0.8;">[ WebP Optimized ]</span></div>
     <div id="loader-progress" style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">0%</div>
 </div>
 
@@ -334,6 +336,8 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 
         const canvas = document.getElementById("stone-canvas");
         const context = canvas.getContext("2d", { alpha: false }); // Optimize
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
         // Apply Hardware filter
         context.filter = 'contrast(1.1) brightness(1.05)';
 
@@ -344,7 +348,7 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         // Playhead for GSAP
         const playhead = { frame: 0 };
 
-        let loadedCount = 0;
+        // loadedCount moved to local scope
 
         // --- 1. RESIZE WITH RETINA SUPPORT ---
         function resizeCanvas() {
@@ -373,38 +377,46 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         window.addEventListener("resize", resizeCanvas);
         resizeCanvas();
 
-        // --- 2. PRELOAD ALL IMAGES (STRICT) ---
+        // --- 2. PRELOAD ALL IMAGES (SMART PARALLEL) ---
         function preloadImages() {
+            const promises = [];
+            let localLoadedCount = 0;
+
             const updateProgress = () => {
-                const pct = Math.round((loadedCount / totalFrames) * 100);
+                localLoadedCount++;
+                const pct = Math.round((localLoadedCount / totalFrames) * 100);
                 const el = document.getElementById("loader-progress");
                 if (el) el.innerText = pct + "%";
             };
 
-            for (let i = 0; i < totalFrames; i++) {
-                const img = new Image();
-                // Format ID
-                const paddedIndex = String(i + 1).padStart(3, '0');
-                img.src = `${framePath}frame_${paddedIndex}.jpg`;
+            console.log("Starting Parallel WebP Preload...");
 
-                img.onload = () => {
-                    loadedCount++;
-                    updateProgress();
-                    if (loadedCount === totalFrames) {
-                        startExperience();
-                    }
-                };
-                img.onerror = () => {
-                    // If a frame fails, we count it anyway to avoid hanging
-                    console.warn("Frame failed:", i);
-                    loadedCount++;
-                    updateProgress();
-                    if (loadedCount === totalFrames) {
-                        startExperience();
-                    }
-                };
-                images.push(img);
+            for (let i = 0; i < totalFrames; i++) {
+                const promise = new Promise((resolve, reject) => {
+                    const img = new Image();
+                    const paddedIndex = String(i + 1).padStart(3, '0');
+                    // WebP Format logic
+                    img.src = `${framePath}frame_${paddedIndex}.webp`;
+
+                    img.onload = () => {
+                        updateProgress();
+                        resolve(img);
+                    };
+                    img.onerror = () => {
+                        console.warn("Frame failed:", i);
+                        updateProgress();
+                        resolve(img); // Resolve anyway to keep going
+                    };
+                    // Store in exact index
+                    images[i] = img;
+                });
+                promises.push(promise);
             }
+
+            Promise.all(promises).then(() => {
+                console.log("All frames synced. Starting experience.");
+                startExperience();
+            });
         }
 
         // --- 3. RENDER (COVER LOGIC) ---
