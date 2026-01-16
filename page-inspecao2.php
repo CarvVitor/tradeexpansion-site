@@ -25,39 +25,101 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         overflow-x: hidden;
     }
 
-    /* === UI OVERRIDES (CRITICAL) === */
-    /* Force Transparent Fixed Header */
-    #teHeader {
+    /* === UI OVERRIDES (THEME KILLER) === */
+    /* Forçar o desaparecimento de qualquer elemento do tema original */
+    #masthead, .site-header, .header-wrapper, #colophon, .site-footer, .footer-wrapper, 
+    header, footer, .entry-header, .entry-footer, #header, #footer {
         display: none !important;
-        position: fixed !important;
+        height: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+    body, html { margin: 0 !important; padding: 0 !important; background: #102724 !important; }
+
+    /* Ajuste do novo Header/Footer customizado */
+    .custom-scrolly-ui { color: #F1F1D9; font-family: 'Vollkorn', serif; }
+
+    /* Custom Header */
+    .custom-scrolly-header {
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        z-index: 9999 !important;
+        padding: 30px 50px;
+        z-index: 1000;
+        background: linear-gradient(to bottom, rgba(16,39,36,0.9), transparent);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-sizing: border-box;
+        transition: opacity 0.3s ease;
     }
 
-    /* Whitewash Logo & Menu for contrast */
-    #teHeader img,
-    #teHeader svg,
-    #teHeader a,
-    #teHeader span,
-    #teHeader button {
-        filter: brightness(0) invert(1) !important;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    .custom-scrolly-header .logo {
+        color: #F1F1D9;
+        font-family: 'Vollkorn', serif;
+        font-weight: 700;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        text-decoration: none;
+        letter-spacing: 0.05em;
     }
 
-    /* Remove original flags border if needed */
-    #teHeader img.rounded-full {
-        border-color: rgba(255, 255, 255, 0.3) !important;
+    .custom-scrolly-header .nav-link {
+        color: #D6A354;
+        text-decoration: none;
+        font-family: sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
-    /* Hide Standard Footer */
-    footer,
-    .floating-cta {
-        display: none !important;
+    .custom-scrolly-header .nav-link:hover {
+        color: #F1F1D9;
+    }
+
+    /* Custom Footer */
+    .custom-scrolly-footer {
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        text-align: center;
+        z-index: 50;
+        opacity: 0; /* Hidden initially, GSAP reveals */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        pointer-events: auto;
+    }
+
+    .custom-scrolly-footer .social-icons {
+        display: flex;
+        gap: 20px;
+    }
+
+    .custom-scrolly-footer .social-icons a {
+        color: var(--te-gold);
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: color 0.3s;
+    }
+    
+    .custom-scrolly-footer .social-icons a:hover {
+        color: var(--te-cream);
+    }
+    
+    .custom-scrolly-footer .copyright {
+        color: rgba(241, 241, 217, 0.5);
+        font-size: 0.85rem;
+        font-family: sans-serif;
+        letter-spacing: 0.05em;
     }
 
     /* === SCROLLY LAYOUT === */
@@ -272,6 +334,16 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
     }
 </style>
 
+
+<!-- CUSTOM HEADER -->
+<nav class="custom-scrolly-header custom-scrolly-ui">
+    <a href="/" class="logo">Trade Expansion</a>
+    <a href="/" class="nav-link">
+        <span>Voltar para o Início</span>
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12h18M3 12l6-6m-6 6l6 6"/></svg>
+    </a>
+</nav>
+
 <!-- LOADER -->
 <div id="scrolly-loader">
     <div class="loader-spinner"></div>
@@ -320,9 +392,15 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         </div>
     </div>
 
-    <div class="custom-footer">
-        © <?php echo date('Y'); ?> Trade Expansion. Excellence in Natural Stone.
-    </div>
+    <footer class="custom-scrolly-footer custom-scrolly-ui">
+        <div class="social-icons">
+            <a href="#" target="_blank">Instagram</a>
+            <a href="#" target="_blank">LinkedIn</a>
+        </div>
+        <div class="copyright">
+            © <?php echo date('Y'); ?> Trade Expansion. Excellence in Natural Stone.
+        </div>
+    </footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -480,6 +558,7 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 
             setupCinematicText();
             setupFooter();
+            setupHeader(); // UI Fade
             render();
         }
 
@@ -534,12 +613,27 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         }
 
         function setupFooter() {
-            gsap.to(".custom-footer", {
+            gsap.to(".custom-scrolly-footer", {
                 opacity: 1,
                 scrollTrigger: {
                     trigger: ".scrolly-wrapper",
                     start: "98% bottom",
                     end: "100% bottom",
+                    scrub: 1
+                }
+            });
+        }
+        
+        function setupHeader() {
+            // Fade header slightly on scroll
+            gsap.to(".custom-scrolly-header", {
+                backgroundColor: "rgba(16,39,36,0.0)", // More transparent
+                paddingTop: "15px", // Compact
+                paddingBottom: "15px",
+                scrollTrigger: {
+                    trigger: ".scrolly-wrapper",
+                    start: "top top",
+                    end: "10% top",
                     scrub: 1
                 }
             });
