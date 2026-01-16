@@ -8,25 +8,31 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
+
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Inspeção Técnica | Trade Expansion</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
 
     <?php wp_head(); ?>
 
     <style>
         /* === RESET & CORE === */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            background-color: #102724; 
-            overflow-x: hidden; 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #102724;
+            overflow-x: hidden;
             font-family: 'Vollkorn', serif;
             color: #F1F1D9;
         }
@@ -45,7 +51,7 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             background: rgba(16, 39, 36, 0.4);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .nav-logo {
@@ -69,23 +75,27 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
             gap: 8px;
             transition: opacity 0.3s;
         }
-        .nav-back:hover { opacity: 0.8; }
 
-        /* === CANVAS LAYOUT === */
-        canvas { 
-            display: block; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            z-index: 1; 
+        .nav-back:hover {
+            opacity: 0.8;
         }
 
-        #scrolly-container { 
-            height: 1000vh; /* LONG SCROLL */
-            position: relative; 
-            z-index: 2; 
+        /* === CANVAS LAYOUT === */
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        #scrolly-container {
+            height: 1000vh;
+            /* LONG SCROLL */
+            position: relative;
+            z-index: 2;
         }
 
         /* === TEXT LAYERS === */
@@ -108,7 +118,7 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
             left: 50%;
             transform: translate(-50%, -50%) translateY(30px);
             text-align: center;
-            
+
             background: rgba(16, 39, 36, 0.6);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -145,12 +155,14 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
             justify-content: center;
             transition: opacity 0.6s ease-out;
         }
+
         .loader-percent {
             font-size: 4rem;
             font-weight: 700;
             color: #D6A354;
             font-variant-numeric: tabular-nums;
         }
+
         .loader-label {
             margin-top: 10px;
             font-family: sans-serif;
@@ -169,11 +181,12 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
             text-align: center;
             font-family: sans-serif;
             font-size: 0.8rem;
-            color: rgba(255,255,255,0.4);
+            color: rgba(255, 255, 255, 0.4);
             opacity: 0;
         }
     </style>
 </head>
+
 <body>
 
     <!-- NAV -->
@@ -181,7 +194,11 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
         <a href="/" class="nav-logo">Trade Expansion</a>
         <a href="/" class="nav-back">
             <span>Voltar</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
         </a>
     </nav>
 
@@ -247,10 +264,10 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
                 canvas.width = window.innerWidth * dpr;
                 canvas.height = window.innerHeight * dpr;
                 context.scale(dpr, dpr);
-                
+
                 context.imageSmoothingEnabled = true;
                 context.imageSmoothingQuality = "high";
-                
+
                 render();
             }
             window.addEventListener("resize", resize);
@@ -260,13 +277,13 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
             function render() {
                 const frameIndex = Math.min(totalFrames - 1, Math.round(playhead.frame));
                 const img = images[frameIndex];
-                
+
                 if (!img || !img.complete) return;
 
                 const dpr = window.devicePixelRatio || 1;
                 const canvasW = canvas.width / dpr;
                 const canvasH = canvas.height / dpr;
-                
+
                 const imgRatio = img.width / img.height;
                 const canvasRatio = canvasW / canvasH;
 
@@ -299,7 +316,7 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
                     img.src = `${framePath}frame_${id}.webp`;
                     img.onload = () => {
                         loaded++;
-                        loaderVal.innerText = Math.round((loaded/totalFrames)*100) + "%";
+                        loaderVal.innerText = Math.round((loaded / totalFrames) * 100) + "%";
                         resolve(img);
                     };
                     img.onerror = () => {
@@ -313,9 +330,11 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
 
             Promise.all(promises).then(() => {
                 // FADE OUT LOADER
-                gsap.to("#headless-loader", { opacity: 0, duration: 0.8, onComplete: () => {
-                    document.getElementById("headless-loader").style.display = 'none';
-                }});
+                gsap.to("#headless-loader", {
+                    opacity: 0, duration: 0.8, onComplete: () => {
+                        document.getElementById("headless-loader").style.display = 'none';
+                    }
+                });
                 startExperience();
             });
 
@@ -375,12 +394,14 @@ $base_asset_path = get_template_directory_uri() . '/assets/Video%20Frames%20Sequ
                         scrub: true
                     }
                 });
-                
+
                 render();
             }
         });
     </script>
-    
+
     <?php wp_footer(); ?>
+    <h1>TESTE DE VERSAO 2.0</h1>
 </body>
+
 </html>
