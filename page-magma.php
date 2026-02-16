@@ -1,7 +1,18 @@
 <?php
+/**
+ * Template Name: Magma Report Page
+ */
+
+// Proteção de acesso: Apenas usuários logados podem ver esta página
+if (!is_user_logged_in()) {
+    wp_redirect(home_url('/area-do-cliente/'));
+    exit;
+}
+
 // ============================================
 // PROXY API (Handle before any HTML output)
 // ============================================
+
 if (isset($_GET['proxy_action']) && $_GET['proxy_action'] === 'fetch_sheet') {
     header('Content-Type: application/json');
     header('Access-Control-Allow-Origin: *');

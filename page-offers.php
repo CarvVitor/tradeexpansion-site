@@ -1,4 +1,10 @@
+<?php
+/**
+ * Template Name: Slab Offers Page
+ */
+?>
 <!doctype html>
+
 <html lang="en">
 
 <head>
