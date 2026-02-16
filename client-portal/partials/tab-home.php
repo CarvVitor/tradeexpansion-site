@@ -2,10 +2,11 @@
 /**
  * Tab: Home (KPIs & Insights)
  */
-if (!defined('ABSPATH')) exit;
+if (!defined('ABSPATH'))
+    exit;
 
 // Idioma baseado no cliente: Magma e Global Marmol -> Espanhol. Restante -> Português.
-$is_spanish_client = false; 
+$is_spanish_client = false;
 $client_name = $current_user->display_name;
 if (stripos($client_name, 'Magma') !== false || stripos($client_name, 'Global Marmol') !== false) {
     $is_spanish_client = true;
@@ -28,7 +29,7 @@ $labels = [
 ];
 ?>
 
-<div class="space-y-12">
+<section data-tab-panel="home" class="<?php echo $active_tab === 'home' ? '' : 'hidden'; ?> space-y-12">
     <!-- KPI Header -->
     <div class="flex flex-col gap-2 border-b border-white/5 pb-6">
         <h2 class="text-3xl font-bold text-white"><?php echo $labels['title']; ?></h2>
@@ -50,26 +51,31 @@ $labels = [
         </div>
 
         <!-- Relatórios Aprovados -->
-        <?php 
-        $aprovados = array_filter($reports, function($r) { return strtolower($r['status_slug'] ?? '') === 'aprovado'; });
+        <?php
+        $aprovados = array_filter($reports, function ($r) {
+            return strtolower($r['status_slug'] ?? '') === 'aprovado'; });
         $taxa_aprovacao = count($reports) > 0 ? (count($aprovados) / count($reports)) * 100 : 0;
         ?>
         <div class="luxury-card p-8 group">
             <div class="flex items-center justify-between mb-4">
                 <span class="label-secondary"><?php echo $labels['quality']; ?></span>
-                <div class="w-2 h-2 rounded-full bg-emerald-400 transition-all group-hover:shadow-[0_0_10px_#34d399]"></div>
+                <div class="w-2 h-2 rounded-full bg-emerald-400 transition-all group-hover:shadow-[0_0_10px_#34d399]">
+                </div>
             </div>
-            <p class="text-5xl font-bold text-white tracking-tighter"><?php echo number_format($taxa_aprovacao, 0); ?>%</p>
+            <p class="text-5xl font-bold text-white tracking-tighter"><?php echo number_format($taxa_aprovacao, 0); ?>%
+            </p>
             <p class="label-secondary opacity-40 mt-4"><?php echo $labels['approval']; ?></p>
         </div>
 
         <!-- Materiais Únicos -->
-        <?php 
+        <?php
         $materiais = [];
-        foreach($inspections as $ins) {
-            if (!empty($ins['materials'])) {
-                foreach($ins['materials'] as $m) {
-                    $materiais[] = $m['name'];
+        if (!empty($inspections)) {
+            foreach ($inspections as $ins) {
+                if (!empty($ins['materials'])) {
+                    foreach ($ins['materials'] as $m) {
+                        $materiais[] = $m['name'];
+                    }
                 }
             }
         }
@@ -78,7 +84,8 @@ $labels = [
         <div class="luxury-card p-8 group">
             <div class="flex items-center justify-between mb-4">
                 <span class="label-secondary"><?php echo $labels['mix']; ?></span>
-                <div class="w-2 h-2 rounded-full bg-blue-400 transition-all group-hover:shadow-[0_0_10px_#60a5fa]"></div>
+                <div class="w-2 h-2 rounded-full bg-blue-400 transition-all group-hover:shadow-[0_0_10px_#60a5fa]">
+                </div>
             </div>
             <p class="text-5xl font-bold text-white tracking-tighter"><?php echo $materiais_unicos; ?></p>
             <p class="label-secondary opacity-40 mt-4"><?php echo $labels['materials']; ?></p>
@@ -87,7 +94,8 @@ $labels = [
         <div class="luxury-card p-8 group">
             <div class="flex items-center justify-between mb-4">
                 <span class="label-secondary"><?php echo $labels['logistics']; ?></span>
-                <div class="w-2 h-2 rounded-full bg-rose-400 transition-all group-hover:shadow-[0_0_10px_#f87171]"></div>
+                <div class="w-2 h-2 rounded-full bg-rose-400 transition-all group-hover:shadow-[0_0_10px_#f87171]">
+                </div>
             </div>
             <p class="text-3xl font-bold text-white tracking-tighter"><?php echo $labels['active']; ?></p>
             <p class="label-secondary opacity-40 mt-4"><?php echo $labels['monitoring']; ?></p>
@@ -109,55 +117,55 @@ $labels = [
             </div>
         </div>
     </div>
-</div>
+</section>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const ctxTrend = document.getElementById('inspectionsTrendChart').getContext('2d');
-    new Chart(ctxTrend, {
-        type: 'line',
-        data: {
-            labels: ['Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov'],
-            datasets: [{
-                label: 'Inspeções',
-                data: [12, 19, 15, 25, 22, 30],
-                borderColor: '#D6A354',
-                backgroundColor: 'rgba(214, 163, 84, 0.1)',
-                borderWidth: 2,
-                fill: true,
-                tension: 0.4
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.3)' } },
-                x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.3)' } }
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctxTrend = document.getElementById('inspectionsTrendChart').getContext('2d');
+        new Chart(ctxTrend, {
+            type: 'line',
+            data: {
+                labels: ['Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov'],
+                datasets: [{
+                    label: 'Inspeções',
+                    data: [12, 19, 15, 25, 22, 30],
+                    borderColor: '#D6A354',
+                    backgroundColor: 'rgba(214, 163, 84, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: 'rgba(255,255,255,0.3)' } },
+                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.3)' } }
+                }
             }
-        }
-    });
+        });
 
-    const ctxDist = document.getElementById('materialsDistributionChart').getContext('2d');
-    new Chart(ctxDist, {
-        type: 'doughnut',
-        data: {
-            labels: ['Granito', 'Quartzito', 'Mármore'],
-            datasets: [{
-                data: [45, 30, 25],
-                backgroundColor: ['#D6A354', '#10b981', '#3b82f6'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.5)', padding: 20 } }
+        const ctxDist = document.getElementById('materialsDistributionChart').getContext('2d');
+        new Chart(ctxDist, {
+            type: 'doughnut',
+            data: {
+                labels: ['Granito', 'Quartzito', 'Mármore'],
+                datasets: [{
+                    data: [45, 30, 25],
+                    backgroundColor: ['#D6A354', '#10b981', '#3b82f6'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: 'rgba(255,255,255,0.5)', padding: 20 } }
+                }
             }
-        }
+        });
     });
-});
 </script>

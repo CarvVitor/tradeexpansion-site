@@ -4,9 +4,19 @@
  */
 
 // Proteção de acesso: Apenas usuários logados podem ver esta página
-if (!is_user_logged_in()) {
-    wp_redirect(home_url('/area-do-cliente/'));
-    exit;
+if (function_exists('is_user_logged_in')) {
+    if (!is_user_logged_in()) {
+        wp_redirect(home_url('/area-do-cliente/'));
+        exit;
+    }
+} else {
+    // Se o WordPress não foi carregado (acesso direto ao arquivo), 
+    // permitimos apenas se for uma ação de proxy específica, caso contrário bloqueamos.
+    if (!isset($_GET['proxy_action'])) {
+        header('HTTP/1.0 403 Forbidden');
+        echo 'Direct access not allowed.';
+        exit;
+    }
 }
 
 // ============================================
@@ -54,36 +64,25 @@ if (isset($_GET['proxy_action']) && $_GET['proxy_action'] === 'fetch_sheet') {
     exit; // Stop here, don't render HTML
 }
 
-// ============================================
-// MAIN PAGE LOGIC
-// ============================================
+// Main Page Logic: WordPress User Context
+$current_wp_user = wp_get_current_user();
+$user_display_name = $current_wp_user->display_name;
 
-// Get the logged-in user from Basic Auth or similar environment variables
-$user_login = $_SERVER['PHP_AUTH_USER'] ?? ($_SERVER['REMOTE_USER'] ?? '');
+// Permissões baseadas em metadados ou slugs de usuário
+$user_slug = $current_wp_user->user_login;
 
-// Default permissions (nothing visible)
+// Default permissions
 $can_view_favorita = false;
 $can_view_policast = false;
 
-// Define Access Rules
-// admin.magma -> Can see everything
-// magma.favbr -> Can see ONLY Favorita
-// magma.policast -> Can see ONLY Policast
-
-if ($user_login === 'admin.magma') {
+// Regras de Acesso baseadas no Slug ou Capability
+if (current_user_can('manage_options') || $user_slug === 'admin.magma') {
     $can_view_favorita = true;
     $can_view_policast = true;
-    $user_display_name = 'Admin';
-} elseif ($user_login === 'magma.favbr') {
+} elseif ($user_slug === 'magma.favbr' || get_user_meta($current_wp_user->ID, 'tec_magma_access', true) === 'favorita') {
     $can_view_favorita = true;
-    $user_display_name = 'Favorita do Brasil';
-} elseif ($user_login === 'magma.policast') {
+} elseif ($user_slug === 'magma.policast' || get_user_meta($current_wp_user->ID, 'tec_magma_access', true) === 'policast') {
     $can_view_policast = true;
-    $user_display_name = 'Policast';
-} else {
-    // If no user is logged in (development?), maybe handle gracefully or show error
-    $user_display_name = 'Guest';
-    // For safety, show nothing by default in production
 }
 
 // Data Arrays (PHP) - RESTORED ORIGINAL DATA
