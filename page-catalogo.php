@@ -93,6 +93,57 @@ $produtos = [
   ],
 ];
 ?>
+<style>
+  /* Trade Expansion — Loader Premium (Frosted) */
+  #te-loader {
+    position: fixed;
+    inset: 0;
+    background: rgba(241, 241, 217, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .85s ease, visibility .85s ease;
+  }
+
+  #te-loader .te-loader__inner { text-align: center; }
+
+  #te-loader .te-loader__spin {
+    width: 54px;
+    height: 54px;
+    border: 2px solid rgba(16, 39, 36, 0.22);
+    border-top-color: rgba(214, 163, 84, 0.95);
+    border-radius: 9999px;
+    animation: teSpin 1s linear infinite;
+    margin: 0 auto 1rem;
+  }
+
+  #te-loader .te-loader__txt {
+    font-family: 'Vollkorn', Georgia, serif;
+    font-size: .85rem;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: rgba(16, 39, 36, 0.82);
+  }
+
+  @keyframes teSpin { to { transform: rotate(360deg); } }
+
+  /* Parallax suave no vídeo do hero */
+  .hero-video {
+    will-change: transform;
+    transform: translateY(0px) scale(1.02);
+  }
+</style>
+
+<!-- Loader (Premium Frosted) -->
+<div id="te-loader" aria-hidden="true">
+  <div class="te-loader__inner">
+    <div class="te-loader__spin"></div>
+    <div class="te-loader__txt">Validando catálogo e evidências…</div>
+  </div>
+</div>
 
 <!-- HERO (Premium) -->
 <section class="relative h-[78vh] min-h-[620px] flex items-center justify-center overflow-hidden bg-secondary">
@@ -321,6 +372,34 @@ $produtos = [
 </style>
 
 <script>
+  // Loader
+  window.addEventListener('load', function () {
+    const loader = document.getElementById('te-loader');
+    if (!loader) return;
+
+    setTimeout(function () {
+      loader.style.opacity = '0';
+      loader.style.visibility = 'hidden';
+
+      setTimeout(function () {
+        loader.remove();
+      }, 900);
+    }, 520);
+  });
+
+  // Parallax leve (hero-video)
+  window.addEventListener('scroll', function () {
+    const scrolled = window.pageYOffset || document.documentElement.scrollTop || 0;
+    const video = document.querySelector('.hero-video');
+    if (!video) return;
+
+    // aplica só no primeiro viewport
+    if (scrolled < window.innerHeight) {
+      const y = Math.min(scrolled * 0.12, 90);
+      video.style.transform = `translateY(${y}px) scale(1.06)`;
+    }
+  }, { passive: true });
+
   // Sistema de Filtros
   const filterBtns = document.querySelectorAll('.filter-btn');
   const productCards = document.querySelectorAll('.product-card');
@@ -426,6 +505,7 @@ $produtos = [
     });
 
     modal.classList.remove('hidden');
+    document.documentElement.style.overflow = 'hidden';
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
   }
@@ -434,6 +514,7 @@ $produtos = [
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
   }
 
   closeModalBtn.addEventListener('click', closeModal);

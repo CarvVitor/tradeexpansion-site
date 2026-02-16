@@ -8,7 +8,7 @@ get_header();
 
 $hero_video = get_theme_file_uri('assets/videos/rochas-hero.mp4');
 $hero_img   = get_theme_file_uri('assets/images/hero-rochas-fallback.jpg'); // opcional
-$whatsapp   = 'https://wa.me/5527999999999'; // troque aqui pelo número real
+$whatsapp   = 'https://wa.me/5527997274344'; // troque aqui pelo número real
 ?>
 
 <style>

@@ -8,7 +8,7 @@ get_header();
 
 $hero_video = get_theme_file_uri('assets/videos/inspection-hero.mp4');
 $hero_img   = get_theme_file_uri('assets/images/hero-rochas-fallback.jpg'); // fallback
-$whatsapp   = 'https://wa.me/5527999999999';
+$whatsapp   = 'https://wa.me/5527997274344';
 ?>
 
 <style>

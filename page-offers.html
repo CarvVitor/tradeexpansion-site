@@ -1,0 +1,1762 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Material Offers | Trade Expansion</title>
+
+  <!-- Typography: Vollkorn -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #D6A354;
+      --secondary: #5D2713;
+      --bg-dark: #102724;
+      --bg-header: #0b1d1b;
+      --bg-card: rgba(16, 39, 36, 0.85);
+      --text-bright: #F1F1D9;
+      --text-muted: #a8b0bf;
+      --border: rgba(255, 255, 255, 0.08);
+      --glass-blur: blur(16px);
+      --gradient: linear-gradient(135deg, #D6A354, #5D2713);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Vollkorn', serif;
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(214, 163, 84, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(93, 39, 19, 0.15) 0%, transparent 40%);
+      background-attachment: fixed;
+      color: var(--text-bright);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      padding-top: 80px;
+      /* Header space */
+    }
+
+    /* Professional Header */
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: rgba(7, 8, 10, 0.85);
+      backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 1000;
+    }
+
+    .logo-container img {
+      height: 32px;
+      display: block;
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .header-nav a {
+      color: var(--text-bright);
+      text-decoration: none;
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+
+    .header-nav a:hover {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 20px 0;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .hero h1 span {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 18px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Refined Toolbar (Sticky) */
+    .toolbar-wrapper {
+      position: sticky;
+      top: 90px;
+      z-index: 900;
+      margin-bottom: 30px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 12px 25px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .search-box {
+      flex-grow: 1;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 18px;
+      color: var(--text-bright);
+      font-family: inherit;
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(214, 163, 84, 0.2);
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    select,
+    .btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 20px;
+      color: var(--text-bright);
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    select:focus,
+    .btn:hover {
+      border-color: var(--primary);
+      background: rgba(214, 163, 84, 0.1);
+    }
+
+    .unit-toggle {
+      min-width: 60px;
+      font-weight: 700;
+    }
+
+    .unit-toggle.active {
+      background: var(--gradient);
+      border-color: transparent;
+      color: var(--bg-dark);
+    }
+
+    /* Admin Panel */
+    .admin-trigger {
+      font-size: 11px;
+      opacity: 0.4;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      margin-top: 10px;
+    }
+
+    .admin-trigger:hover {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    .admin-actions {
+      display: none;
+      margin: 15px 0;
+      padding: 24px;
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      background: rgba(214, 163, 84, 0.05);
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .admin-controls-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .btn-admin {
+      background: var(--primary);
+      color: var(--bg-dark);
+      font-weight: 700;
+      border: none;
+    }
+
+    .btn-delete {
+      background: rgba(255, 77, 77, 0.1);
+      color: #ff4d4d;
+      border: 1px solid rgba(255, 77, 77, 0.2);
+    }
+
+    .btn-delete:hover {
+      background: #ff4d4d;
+      color: #fff;
+    }
+
+    /* Photo Logic Controls */
+    .photo-admin-btns {
+      display: none;
+      /* Hidden by default */
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .admin-active .photo-admin-btns {
+      display: flex;
+    }
+
+    .btn-upload-small {
+      font-size: 11px;
+      padding: 6px 10px;
+      background: var(--primary);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-clear-small {
+      font-size: 10px;
+      padding: 4px 8px;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-clear-small:hover {
+      color: #ff4d4d;
+      border-color: #ff4d4d;
+    }
+
+    /* Enhanced Table */
+    .table-card {
+      background: var(--bg-card);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+
+    .table-container {
+      overflow-x: auto;
+      width: 100%;
+      /* Custom scrollbar for luxury feel */
+    }
+
+    .table-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .table-container::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 22px 20px;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      font-size: 15px;
+      transition: background 0.2s;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .material-title {
+      font-weight: 700;
+      color: #fff;
+      display: block;
+      font-size: 17px;
+    }
+
+    .price-val {
+      font-weight: 700;
+      color: var(--primary);
+      white-space: nowrap;
+      font-size: 16px;
+    }
+
+    .badge-qty {
+      padding: 5px 12px;
+      background: rgba(214, 163, 84, 0.1);
+      border: 1px solid rgba(214, 163, 84, 0.2);
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Photo Logic */
+    .photo-box {
+      width: 120px;
+      height: 80px;
+      background: #111;
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      position: relative;
+      cursor: zoom-in;
+    }
+
+    .photo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+
+    .photo-box:hover img {
+      transform: scale(1.1);
+    }
+
+    .photo-box .no-img {
+      font-size: 10px;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    .overlay-upload {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      /* hidden unless admin */
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .admin-active .overlay-upload {
+      display: none;
+      /* Disabled in favor of explicit buttons */
+    }
+
+    /* WhatsApp Button */
+    .btn-wa {
+      background: #25D366;
+      border: none;
+      color: #fff;
+      padding: 8px 15px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      gap: 5px;
+      transition: transform 0.2s;
+    }
+
+    .btn-wa:hover {
+      transform: translateY(-2px);
+      background: #128C7E;
+    }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.98);
+      z-index: 4000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      padding: 40px;
+    }
+
+    #lightbox img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 8px;
+      box-shadow: 0 0 50px rgba(214, 163, 84, 0.2);
+    }
+
+    /* Footer */
+    .site-footer {
+      margin-top: 60px;
+      padding: 60px 20px;
+      background: rgba(0, 0, 0, 0.4);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .site-footer .f-logo {
+      height: 40px;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .site-footer p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin: 5px 0;
+    }
+
+    /* Mobile */
+    @media (max-width: 1000px) {
+      .header-nav {
+        display: none;
+      }
+
+      .site-header {
+        padding: 0 20px;
+      }
+
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      th:nth-child(3),
+      td:nth-child(3),
+      th:nth-child(4),
+      td:nth-child(4) {
+        display: none;
+      }
+    }
+
+    /* Tabs */
+    .tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 18px;
+      font-weight: 500;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-family: inherit;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-bright);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* Sub-tabs for Thickness */
+    .sub-tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      margin-top: -10px;
+    }
+
+    .sub-tab-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s;
+    }
+
+    .sub-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-bright);
+    }
+
+    .sub-tab-btn.active {
+      background: rgba(214, 163, 84, 0.15);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* Inspection Promo */
+    .inspection-promo {
+      margin: 60px 0;
+      padding: 40px;
+      background: rgba(214, 163, 84, 0.05);
+      /* Gold tint low opacity */
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .inspection-promo::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(214, 163, 84, 0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    .inspection-promo h2 {
+      margin: 0 0 15px;
+      color: #fff;
+      font-size: 32px;
+    }
+
+    .inspection-promo p {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 25px;
+      font-size: 16px;
+    }
+
+    .btn-inspection {
+      background: var(--primary);
+      color: var(--bg-dark);
+      font-weight: 700;
+      font-size: 16px;
+      padding: 12px 30px;
+      border: none;
+      box-shadow: 0 5px 20px rgba(214, 163, 84, 0.3);
+    }
+
+    .btn-inspection:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(214, 163, 84, 0.5);
+      background: #eec275;
+    }
+
+    @media (max-width: 650px) {
+      body {
+        padding-top: 70px;
+      }
+
+      .site-header {
+        height: 70px;
+      }
+
+      .hero h1 {
+        font-size: 34px;
+      }
+
+      thead {
+        display: none;
+      }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+        border: none;
+      }
+
+      tr {
+        padding: 30px 15px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      td {
+        padding: 8px 0;
+        text-align: right;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .photo-box {
+        width: 100%;
+        height: 200px;
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body id="main-body">
+
+  <header class="site-header">
+    <div class="logo-container">
+      <img src="https://tradeexpansion.com.br/wp-content/themes/tradeexpansion-site-main/assets/images/logo.jpg"
+        alt="Trade Expansion">
+    </div>
+    <nav class="header-nav">
+      <a href="https://tradeexpansion.com.br/">Home</a>
+      <a href="https://tradeexpansion.com.br/rochas/">Slabs</a>
+      <a href="https://tradeexpansion.com.br/contato/">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <section class="hero">
+      <h1>Exclusive <span>Slabs Offers</span></h1>
+      <p>A curated selection of the finest ornamental stones. Direct from our inventory to your project.</p>
+
+      <button id="admin-main-btn" class="admin-trigger" onclick="requestAdminAccess()">Administrator Access</button>
+      <div id="admin-panel" class="admin-actions">
+        <h3 style="margin:0 0 15px; color:var(--primary)">Inventory Manager Dashboard</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">
+          You are now in Edit Mode. Add slab photos to the items below, then export the final file for your clients.
+        </p>
+        <div class="admin-controls-row">
+          <button class="btn btn-admin" onclick="saveState()">Download Final Gallery for Clients</button>
+          <button class="btn btn-delete" onclick="clearLocalPhotos()">Clear Local Workspace</button>
+          <button class="btn" onclick="toggleAdminPanel()">Exit Admin Mode</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+      <button id="tabElite" class="tab-btn active" onclick="switchTab('elite')">Collection I</button>
+      <button id="tabGS" class="tab-btn" onclick="switchTab('gs')">Collection II</button>
+    </div>
+
+    <!-- Sub-tab Navigation (Thickness) -->
+    <div class="sub-tab-nav">
+      <button id="subTab2cm" class="sub-tab-btn active" onclick="switchThickness('2cm')">2cm</button>
+      <button id="subTab3cm" class="sub-tab-btn" onclick="switchThickness('3cm')">3cm</button>
+      <button id="subTabBlocks" class="sub-tab-btn" onclick="switchThickness('blocks')">Blocks</button>
+    </div>
+
+    <!-- Blocks Purchase Terms -->
+    <!-- Blocks Purchase Terms -->
+    <div id="blockTerms"
+      style="display:none; background: rgba(16, 39, 36, 0.4); backdrop-filter: var(--glass-blur); border: 1px solid var(--primary); border-radius: 24px; padding: 30px; margin-bottom: 40px; line-height: 1.6; box-shadow: 0 10px 40px rgba(0,0,0,0.3); position: relative; overflow: hidden;">
+      <div
+        style="position: absolute; top: -50px; right: -50px; width: 150px; height: 150px; background: radial-gradient(circle, rgba(214, 163, 84, 0.1), transparent 70%); pointer-events: none;">
+      </div>
+      <h4
+        style="margin-top:0; color:var(--primary); text-transform:uppercase; letter-spacing:0.2em; font-size:13px; font-weight: 800; display: flex; align-items: center; gap: 10px;">
+        <span style="width: 20px; height: 1px; background: var(--primary);"></span>
+        Block Purchase Terms
+      </h4>
+      <div
+        style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px; font-size: 15px; margin-top: 20px;">
+        <div
+          style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+          <div
+            style="color: var(--primary); font-size: 11px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em;">
+            Logistics & Delivery</div>
+          <p style="margin: 0; color: var(--text-bright);"><strong style="color:var(--primary)">Delivery:</strong> FOB
+            Vitoria (Praia Mole) Port</p>
+          <p style="margin: 5px 0 0; color: var(--text-bright);"><strong style="color:var(--primary)">Shipping:</strong>
+            Break Bulk</p>
+        </div>
+        <div
+          style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+          <div
+            style="color: var(--primary); font-size: 11px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em;">
+            Financial & Verification</div>
+          <p style="margin: 0; color: var(--text-bright);"><strong style="color:var(--primary)">Payment:</strong> 100%
+            Advanced Payment</p>
+          <p style="margin: 5px 0 0; color: var(--text-bright);"><strong
+              style="color:var(--primary)">Inspections:</strong> By appointment</p>
+        </div>
+      </div>
+      <p style="font-size: 11px; color: var(--text-muted); margin: 25px 0 0; font-style: italic; opacity: 0.7;">
+        * For 1 x 20’DB container loading: specialized handling fee of USD 500.00 per container applies.
+      </p>
+    </div>
+
+    <div class="toolbar-wrapper">
+      <div class="toolbar">
+        <div class="search-box">
+          <input type="text" id="qInput" placeholder="Filter by material, code, size..." onkeyup="doSearch()">
+        </div>
+        <div class="controls">
+          <select id="fFilter" onchange="doSearch()">
+            <option value="">All Finishes</option>
+            <option>POLISHED</option>
+            <option>HONED</option>
+            <option>LEATHER</option>
+          </select>
+          <div style="display:flex; gap:2px;">
+            <button id="btnSqft" class="btn unit-toggle active" onclick="setUnit('sqft')">SQFT</button>
+            <button id="btnM2" class="btn unit-toggle" onclick="setUnit('m2')">M²</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-container">
+        <table id="mainTbl">
+          <thead>
+            <tr>
+              <th>Preview</th>
+              <th>Material Name</th>
+              <th>Block #</th>
+              <th>Bundle #</th>
+              <th style="text-align:center" id="thStock">Stock</th>
+              <th id="thSizes">Sizes (cm)</th>
+              <th id="thFinish">Finish</th>
+              <th style="text-align:right" id="hdrPrice">Price ($/SQFT)</th>
+              <th style="text-align:center">Action</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Inspection Promo Section -->
+  <section class="inspection-promo">
+    <h2>Quality You Can Trust</h2>
+    <p>
+      Not sure about the material? Our specialized inspection service provides a detailed report on every slab,
+      ensuring you get exactly what you pay for.
+    </p>
+    <a href="https://tradeexpansion.com.br/inspecao/" target="_blank" class="btn btn-inspection">
+      Learn About Our Verification Process
+    </a>
+  </section>
+
+  <footer class="site-footer">
+    <img src="https://tradeexpansion.com.br/wp-content/themes/tradeexpansion-site-main/assets/images/logo.jpg"
+      alt="Trade Expansion" class="f-logo">
+    <p>Luxury Materials. Unmatched Expertise.</p>
+    <p>&copy; 2026 Trade Expansion. All rights reserved.</p>
+  </footer>
+  </div>
+
+  <div id="lightbox" onclick="this.style.display='none'"><img id="lbImg" src=""></div>
+
+  <div id="blockModal" class="modal-overlay" style="display:none;" onclick="if(event.target===this) closeBlockModal()">
+    <div class="block-details-card" onclick="event.stopPropagation()">
+      <button class="close-btn" onclick="closeBlockModal()">×</button>
+      <div id="blockModalContent"></div>
+    </div>
+  </div>
+
+  <style>
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .block-details-card {
+      background: rgba(16, 39, 36, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      width: 95%;
+      max-width: 1100px;
+      margin: auto;
+      border-radius: 32px;
+      border: 1px solid rgba(214, 163, 84, 0.4);
+      padding: 40px;
+      position: relative;
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.8);
+      animation: modalFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .block-details-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(214, 163, 84, 0.05), transparent 70%);
+      pointer-events: none;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .close-btn:hover {
+      background: var(--primary);
+      color: #000;
+      border-color: var(--primary);
+      transform: rotate(90deg);
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .block-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .gallery-img-box {
+      aspect-ratio: 4/3;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: zoom-in;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, border-color 0.3s;
+    }
+
+    .gallery-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: zoom-in;
+    }
+
+    .gallery-img-box:hover {
+      transform: scale(1.02);
+      border-color: var(--primary);
+    }
+
+    .gallery-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .block-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 25px;
+    }
+
+    .info-item label {
+      display: block;
+      color: var(--primary);
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 5px;
+    }
+
+    .info-item span {
+      font-size: 18px;
+      color: var(--text-bright);
+      font-weight: 500;
+    }
+
+    .photo-box.multi-hint {
+      position: relative;
+    }
+
+    .photo-box.multi-hint::after {
+      content: 'VIEW GALLERY';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 12px 5px 8px;
+      text-align: center;
+      letter-spacing: 0.1em;
+      pointer-events: none;
+    }
+  </style>
+  <input type="file" id="fUpload" style="display:none" accept="image/*" onchange="processFileUpload(event)">
+
+  <script>
+    let currentCollection = 'elite';
+    let currentThickness = '2cm';
+    let currentFolder = "BRA | Red Carpet 2cm/";
+
+    // Collection I - 2cm
+    const dataElite2cm = [
+      { m: "BLACK VERMONT", b: "brBV344", bn: "1", q: 5, s: "293x195x2", f: "POLISHED", p: 1.08, i: "Black Vermont 2cm Bl brBV344 (17-20,22) Bdl 1.jpeg" },
+      { m: "ELEGANT GREY", b: "brEG9645", bn: "1", q: 10, s: "325x197x2", f: "HONED", p: 2.16, i: "Elegant Grey Honed 02cm Bl  brEG9645  (1-10) Bdl 1.jpg" },
+      { m: "ELEGANT GREY", b: "brEG9645", bn: "2", q: 10, s: "325x197x2", f: "HONED", p: 2.16, i: "Elegant Grey Honed 02cm Bl  brEG9645  (11-20) Bdl 2.jpg" },
+      { m: "ELEGANT GREY", b: "brEG9645", bn: "3", q: 10, s: "325x197x2", f: "HONED", p: 2.16, i: "Elegant Grey Honed 02cm Bl  brEG9645  (21-30) Bdl 3.jpg" },
+      { m: "ELEGANT GREY", b: "brEG9645", bn: "4", q: 10, s: "325x197x2", f: "HONED", p: 2.16, i: "Elegant Grey Honed 02cm Bl  brEG9645  (31-40) Bdl 4.jpg" },
+      { m: "ELEGANT GREY", b: "brEG9645", bn: "5", q: 9, s: "325x197x2", f: "HONED", p: 2.16, i: "Elegant Grey Honed 02cm Bl  brEG9645  (41-49) Bdl 5.jpg" },
+      { m: "MONT RANYER", b: "brMR01-15", bn: "1", q: 9, s: "314x193x2", f: "POLISHED", p: 3.24, i: "Mont Ranyer 02cm Bl brMR01-15 (1-9) Bdl 1.jpeg" },
+      { m: "MONT RANYER", b: "brMR01-15", bn: "2", q: 10, s: "313x192x2", f: "POLISHED", p: 3.24, i: "Mont Ranyer 02cm Bl brMR01-15 (10-19) Bdl 2.jpeg" },
+      { m: "MONT RANYER", b: "brMR01-15", bn: "3", q: 10, s: "313x193x2", f: "POLISHED", p: 3.24, i: "Mont Ranyer 02cm Bl brMR01-15 (20-29) Bdl 3.jpeg" },
+      { m: "BRANCO NEVADA", b: "brBN6459", bn: "1", q: 10, s: "300x186x2", f: "POLISHED", p: 3.24, i: "Branco Nevada 2cm Bl brBN6459 (3-5,9,10,12-16) Bdl 1.jpeg" },
+      { m: "BRANCO NEVADA", b: "brBN6459", bn: "2", q: 6, s: "300x186x2", f: "POLISHED", p: 3.24, i: "Branco Nevada 2cm Bl brBN6459 (26-31) Bdl 2.jpeg" },
+      { m: "BRANCO NEVADA", b: "brBN6459", bn: "3", q: 10, s: "300x186x2", f: "POLISHED", p: 3.24, i: "Branco Nevada 2cm Bl brBN6459 (11,17-23,32) Bdl 3.jpeg" },
+      { m: "BALI", b: "brBA5458", bn: "1", q: 9, s: "299x169x2", f: "POLISHED", p: 3.24, i: "Bali 2cm Bl brBA5458 (1-9) Bdl 1.jpg" },
+      { m: "BALI", b: "brBA5458", bn: "2", q: 8, s: "299x169x2", f: "POLISHED", p: 3.24, i: "Bali 2cm Bl brBA5458 (10-17) Bdl 2.jpg" },
+      { m: "BALI", b: "brBA5458", bn: "3", q: 8, s: "299x169x2", f: "POLISHED", p: 3.24, i: "Bali 2cm Bl brBA5458 (18-25) Bdl 3.jpg" },
+      { m: "BALI", b: "brBA5458", bn: "4", q: 8, s: "299x169x2", f: "POLISHED", p: 3.24, i: "Bali 2cm Bl brBA5458 (26-33) Bdl 4.jpg" },
+      { m: "BALI", b: "brBA5458", bn: "5", q: 8, s: "299x169x2", f: "POLISHED", p: 3.24, i: "Bali 2cm Bl brBA5458 (34-41) Bdl 5.jpg" },
+      { m: "BALI", b: "brBA5458", bn: "6", q: 8, s: "299x169x2", f: "POLISHED", p: 3.24, i: "Bali 2cm Bl brBA5458 (42-49) Bdl 6.jpg" },
+      { m: "BALI", b: "brBA5458", bn: "7", q: 8, s: "299x169x2", f: "POLISHED", p: 3.24, i: "Bali 2cm Bl brBA5458 (50-57) Bdl 7.jpg" },
+      { m: "BLUE FANTASY", b: "brBF6681", bn: "6", q: 7, s: "337x193x2", f: "POLISHED", p: 3.24, i: "Blue Fantasy 2cm Bl brBF6681 (43-49) Bdl 6.jpg" },
+      { m: "BLUE FANTASY", b: "brBF6681", bn: "7", q: 9, s: "337x193x2", f: "POLISHED", p: 3.24, i: "Blue Fantasy 2cm Bl brBF6681 (50-58) Bdl 7.jpg" },
+      { m: "BLUE FANTASY", b: "brBF6681", bn: "8", q: 9, s: "337x193x2", f: "POLISHED", p: 3.24, i: "Blue Fantasy 2cm Bl brBF6681 (59-67) Bdl 8.jpg" },
+      { m: "BLACK SWAN", b: "brBS8789", bn: "3", q: 8, s: "340x190x2", f: "POLISHED", p: 3.24, i: "Black Swan 2cm Bl brBS8789 (17-24) Bdl 3.jpg" },
+      { m: "BLACK SWAN", b: "brBS8789", bn: "4", q: 8, s: "340x190x2", f: "POLISHED", p: 3.24, i: "Black Swan 2cm Bl brBS8789 (25-32) Bdl 4.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "1", q: 8, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (2-9) Bdl 1.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "2", q: 8, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (10-17) Bdl 2.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "3", q: 9, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (18-26) Bdl 3.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "4", q: 9, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (27-35) Bdl 4.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "5", q: 9, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (36-44) Bdl 5.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "6", q: 8, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (45-52) Bdl 6.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "7", q: 8, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (53-60) Bdl 7.jpg" },
+      { m: "NERO SAN GABRIEL", b: "brNS8972", bn: "8", q: 8, s: "310x197x2", f: "LEATHER", p: 3.24, i: "Nero San Gabriel Leather 2cm Bl brNS8972 (61-68) Bdl 8.jpg" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "1", q: 9, s: "312x184x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (1-9) Bdl 1.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "2", q: 9, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (10-18) Bdl 2.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "3", q: 9, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (19-27) Bdl 3.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "4", q: 9, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (28-36) Bdl 4.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "5", q: 8, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (37-44) Bdl 5.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "6", q: 8, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365(45-52) Bdl 6.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "7", q: 8, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (53-60) Bdl 7.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "8", q: 8, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (61-68) Bdl 8.JPG" },
+      { m: "NETTUNO GOLD", b: "brNG365", bn: "9", q: 8, s: "312x181x2", f: "POLISHED", p: 4.32, i: "Nettuno Gold 2cm Bl brNG365 (69-76) Bdl 9.JPG" },
+      { m: "BLACK VERMONT", b: "brBV1368", bn: "1", q: 11, s: "313x189x2", f: "POLISHED", p: 4.32, i: "Black Vermont Polida 2cm Bl brBV1368 (26-30,33-38) Bdl 1.jpg" },
+      { m: "BLACK VERMONT", b: "brBV1368", bn: "2", q: 10, s: "313x189x2", f: "POLISHED", p: 4.32, i: "Black Vermont Polida 2cm Bl brBV1368 (40-49) Bdl 2.jpg" },
+      { m: "BLACK VERMONT", b: "brBV1368", bn: "3", q: 10, s: "313x189x2", f: "POLISHED", p: 4.32, i: "Black Vermont Polida 2cm Bl brBV1368 (50-59) Bdl 3.jpg" },
+      { m: "BLACK VERMONT", b: "brBV1368", bn: "4", q: 9, s: "313x189x2", f: "POLISHED", p: 4.32, i: "Black Vermont Polida 2cm Bl brBV1368 (60-68) Bdl 4.jpg" },
+      { m: "BLACK VERMONT", b: "brBV1373", bn: "1", q: 5, s: "310x195x2", f: "HONED", p: 4.32, i: "Black Vermont Honed 2cm Bl brBV1373 (3,37,43,48,60) Bdl 1.jpg" },
+      { m: "NAICA", b: "brNA9609", bn: "1", q: 8, s: "297x185x2", f: "HONED", p: 5.40, i: "Naica Honed 2cm Bl brNA9609 (1-8) Bdl 1.jpg" },
+      { m: "NAICA", b: "brNA9609", bn: "2", q: 9, s: "294x185x2", f: "HONED", p: 5.40, i: "Naica Honed 2cm Bl brNA9609 (9-17) Bdl 2.jpg" },
+      { m: "NAICA", b: "brNA9609", bn: "3", q: 9, s: "287x185x2", f: "HONED", p: 5.40, i: "Naica Honed 2cm Bl brNA9609 (18-26) Bdl 3.jpg" },
+      { m: "SKY WHITE", b: "brSW8161", bn: "1", q: 9, s: "297x195x2", f: "POLISHED", p: 5.40, i: "Sky White 2cm Bl brSW8161 (1-9) Bdl 1.JPG" },
+      { m: "SKY WHITE", b: "brSW8161", bn: "2", q: 10, s: "297x195x2", f: "POLISHED", p: 5.40, i: "Sky White 2cm Bl brSW8161 (10-19) Bdl 2.JPG" },
+      { m: "SKY WHITE", b: "brSW7683", bn: "1", q: 8, s: "298x195x2", f: "POLISHED", p: 5.40, i: "Sky White Top 2cm Bl brSW7683 (1,3-9) Bdl 1.jpg" },
+      { m: "SKY WHITE", b: "brSW7683", bn: "2", q: 8, s: "298x195x2", f: "POLISHED", p: 5.40, i: "Sky White Top 2cm Bl brSW7683 (10-17) Bdl 2.jpg" },
+      { m: "SKY WHITE", b: "brSW8653", bn: "1", q: 9, s: "324x197x2", f: "HONED", p: 5.40, i: "Sky White Honed 2cm Bl brSW8653 (1-9) Bdl 1.JPG" },
+      { m: "SKY WHITE", b: "brSW8653", bn: "2", q: 9, s: "324x197x2", f: "HONED", p: 5.40, i: "Sky White Honed 2cm Bl brSW8653 (10-18) Bdl 2.JPG" },
+      { m: "SKY WHITE", b: "brSW8653", bn: "3", q: 9, s: "324x197x2", f: "HONED", p: 5.40, i: "Sky White Honed 2cm Bl brSW8653 (19-27) Bdl 3.JPG" },
+      { m: "SKY WHITE", b: "brSW8653", bn: "4", q: 10, s: "324x197x2", f: "HONED", p: 5.40, i: "Sky White Honed 2cm Bl brSW8653 (28-37) Bdl 4.JPG" },
+      { m: "SKY WHITE", b: "brSW8653", bn: "5", q: 10, s: "324x197x2", f: "HONED", p: 5.40, i: "Sky White Honed 2cm Bl brSW8653 (38-47) Bdl 5.JPG" },
+      { m: "FUSION", b: "brFU235", bn: "2", q: 9, s: "301x190x2", f: "POLISHED", p: 5.40, i: "Fusion 02cm Bl brFU235 (11-19) Bdl 2.JPG" },
+      { m: "FUSION", b: "brFU235", bn: "3", q: 9, s: "299x196x2", f: "POLISHED", p: 5.40, i: "Fusion 02cm Bl brFU235 (20-28) Bdl 3.JPG" },
+      { m: "FUSION", b: "brFU235", bn: "4", q: 9, s: "300x194x2", f: "POLISHED", p: 5.40, i: "Fusion 02cm Bl brFU235 (29-37) Bdl 4.JPG" },
+      { m: "FUSION", b: "brFU235", bn: "5", q: 9, s: "300x193x2", f: "POLISHED", p: 5.40, i: "Fusion 02cm Bl brFU235 (38-46) Bdl 5.JPG" },
+      { m: "FUSION", b: "brFU235", bn: "6", q: 6, s: "300x193x2", f: "POLISHED", p: 5.40, i: "Fusion 02cm Bl brFU235 (47-52) Bdl 6.JPG" },
+      // TAJ MAHAL - Opções @ $95.00/SQM ($8.83/SQFT)
+      { m: "TAJ MAHAL", b: "brTJ10278", bn: "1", q: 9, s: "342x195x2", f: "HONED", p: 8.83, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10278 (1-9) Bdl 1.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10278", bn: "2", q: 9, s: "342x195x2", f: "HONED", p: 8.83, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10278 (10-18) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10278", bn: "3", q: 9, s: "342x195x2", f: "HONED", p: 8.83, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10278 (19-27) Bdl 3.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10278", bn: "4", q: 9, s: "342x195x2", f: "HONED", p: 8.83, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10278 (28-36) Bdl 4.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ9656", bn: "2", q: 9, s: "323x180x2", f: "HONED", p: 8.83, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed  2cm Bl brTJ9656 (11,13,15-19,24,25) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ9656", bn: "3", q: 8, s: "323x179x2", f: "HONED", p: 8.83, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed  2cm Bl brTJ9656 (26-33) Bdl 3.JPG" },
+      // TAJ MAHAL - Opções @ $135.00/SQM ($12.55/SQFT)
+      { m: "TAJ MAHAL", b: "brTJ10316", bn: "5", q: 10, s: "330x193x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10316 (41-50) Bdl 5.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10316", bn: "6", q: 9, s: "330x193x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10316 (51-59) Bdl 6.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10316", bn: "7", q: 9, s: "330x193x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10316 (60-68) Bdl 7.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10320", bn: "2", q: 9, s: "340x191x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10320 (10-18) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10320", bn: "3", q: 8, s: "340x191x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10320 (19-26) Bdl 3.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10320", bn: "4", q: 8, s: "341x191x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10320 (27-34) Bdl 4.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10364", bn: "3", q: 10, s: "339x198x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10364 (17-27) Bdl 3.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10364", bn: "4", q: 10, s: "339x198x2", f: "HONED", p: 12.55, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10364 (28-36) Bdl 4.JPG" },
+      // TAJ MAHAL - Opções @ $147.00/SQM ($13.66/SQFT)
+      { m: "TAJ MAHAL", b: "brTJ10421", bn: "3", q: 9, s: "338x194x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10421 (18-26) Bdl 3.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10421", bn: "4", q: 9, s: "338x194x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10421 (27-35) Bdl 4.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10421", bn: "5", q: 9, s: "338x194x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10421 (36-44) Bdl 5.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10421", bn: "6", q: 9, s: "338x194x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10421 (45-53) Bdl 6.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10323", bn: "1", q: 11, s: "338x198x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10323  (1-11) Bdl 1.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10323", bn: "2", q: 11, s: "338x190x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10323  (12-22) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10421", bn: "7", q: 9, s: "320x190x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10421 (54-62) Bdl 7.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10504", bn: "1", q: 9, s: "297x194x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10504 (1-9) Bdl 1.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10504", bn: "2", q: 9, s: "297x194x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10504 (10-18) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10504", bn: "3", q: 8, s: "290x185x2", f: "HONED", p: 13.66, i: "BRA | Taj Mahal 2cm /Taj Mahal Honed 2cm Bl brTJ10504 (19-26) Bdl 3.JPG" }
+    ];
+
+    // Collection I - 3cm
+    const dataElite3cm = [
+      // TAJ MAHAL - Opções @ $219.00/SQM ($20.35/SQFT)
+      { m: "TAJ MAHAL", b: "brTJ10237", bn: "7", q: 7, s: "327x196x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10237 (34-40) Bdl 7.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10237", bn: "8", q: 6, s: "327x196x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10237 (42-47) Bdl 8.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "1", q: 5, s: "340x196x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (1-5) Bdl 1.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "2", q: 5, s: "340x197x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (6-10) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "3", q: 5, s: "340x197x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (11-15) Bdl 3.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "4", q: 6, s: "340x197x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (16-21) Bdl 4.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "5", q: 6, s: "340x197x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (22-27) Bdl 5.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "6", q: 6, s: "340x197x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (28-33) Bdl 6.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "7", q: 6, s: "340x194x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (34-39) Bdl 7.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10462", bn: "8", q: 6, s: "340x197x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10462 (40-45) Bdl 8.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10469", bn: "5", q: 6, s: "326x192x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10469 (25-30) Bdl 5.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10469", bn: "6", q: 6, s: "326x194x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10469 (31-36) Bdl 6.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10469", bn: "7", q: 6, s: "328x195x3", f: "HONED", p: 20.35, i: "Taj Mahal Honed 3cm Bl brTJ10469 (37-47) Bdl 7.JPG" },
+      // TAJ MAHAL - Opções @ $199.00/SQM ($18.49/SQFT)
+      { m: "TAJ MAHAL", b: "brTJ10373", bn: "5", q: 6, s: "333x200x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10373 (25-30) Bdl 5.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10373", bn: "6", q: 6, s: "333x200x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10373 (31-36) Bdl 6.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10373", bn: "7", q: 5, s: "334x201x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10373 (37-41) Bdl 7.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10373", bn: "8", q: 5, s: "334x199x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10373 (42-46) Bdl 8.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10373", bn: "9", q: 5, s: "333x191x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10373 (47-51) Bdl 9.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10208", bn: "4", q: 6, s: "333x195x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10208 (16-21) Bdl 4.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10208", bn: "5", q: 6, s: "333x196x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10208 (22-24,26-28) Bdl 5.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10208", bn: "6", q: 6, s: "333x191x3", f: "HONED", p: 18.49, i: "Taj Mahal Honed 3cm Bl brTJ10208 (29-34) Bdl 6.JPG" },
+      // TAJ MAHAL - Opções @ $169.00/SQM ($15.70/SQFT)
+      { m: "TAJ MAHAL", b: "brTJ10389", bn: "1", q: 6, s: "321x198x3", f: "HONED", p: 15.70, i: "Taj Mahal Honed 3cm Bl brTJ10389 (1-6) Bdl 1.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10389", bn: "2", q: 6, s: "322x198x3", f: "HONED", p: 15.70, i: "Taj Mahal Honed 3cm Bl brTJ10389 (7-12) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10389", bn: "3", q: 6, s: "322x198x3", f: "HONED", p: 15.70, i: "Taj Mahal Honed 3cm Bl brTJ10389 (13-18) Bdl 3.JPG" },
+      // TAJ MAHAL - Opções @ $159.00/SQM ($14.77/SQFT)
+      { m: "TAJ MAHAL", b: "brTJ10229", bn: "1", q: 5, s: "340x190x3", f: "HONED", p: 14.77, i: "Taj Mahal Honed 3cm Bl brTJ10229 (1-5) Bdl 1.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10229", bn: "2", q: 5, s: "340x187x3", f: "HONED", p: 14.77, i: "Taj Mahal Honed 3cm Bl brTJ10229 (6-10) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ10229", bn: "3", q: 5, s: "340x187x3", f: "HONED", p: 14.77, i: "Taj Mahal Honed 3cm Bl brTJ10229 (12-16) Bdl 3.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ9753", bn: "2", q: 6, s: "300x202x3", f: "HONED", p: 14.77, i: "Taj Mahal Honed 3cm Bl brTJ9753 (8-13) Bdl 2.JPG" },
+      { m: "TAJ MAHAL", b: "brTJ9753", bn: "3", q: 5, s: "300x202x3", f: "HONED", p: 14.77, i: "Taj Mahal Honed 3cm Bl brTJ9753 (20-24) Bdl 3.JPG" }
+    ];
+
+    const dataEliteBlocks = [
+      { m: "CRISTALLO", b: "brCS09", bn: "1", q: 1, s: "309x192x160 cm", f: "BLOCK", p: 1850, i: "Cristallo S. H.  Bl brCS09 (1) Bdl 1.jpeg" },
+      { m: "CRISTALLO", b: "brCS09", bn: "2", q: 1, s: "309x192x160 cm", f: "BLOCK", p: 1850, i: "Cristallo S. H.  Bl brCS09 (2) Bdl 2.jpeg" },
+      { m: "CRISTALLO", b: "brCS09", bn: "3", q: 1, s: "309x192x160 cm", f: "BLOCK", p: 1850, i: "Cristallo S. H.  Bl brCS09 (3) Bdl 3.jpeg" },
+      { m: "CRISTALLO", b: "brCS09", bn: "4", q: 1, s: "309x192x160 cm", f: "BLOCK", p: 1850, i: "Cristallo S. H.  Bl brCS09 (4) Bdl 4.jpeg" },
+      { m: "CRISTALLO HIMALAYA", b: "brCHSBC512", bn: "1", q: 1, s: "328x203x85 cm", f: "BLOCK", p: 4500, i: "Cristallo Himalaia  Bl brCHSBC512 (1) Bdl 1.jpg" },
+      { m: "CRISTALLO HIMALAYA", b: "brCHSBC512", bn: "2", q: 1, s: "328x203x85 cm", f: "BLOCK", p: 4500, i: "Cristallo Himalaia  Bl brCHSBC512 (2) Bdl 2.jpg" },
+      { m: "CRISTALLO HIMALAYA", b: "brCHSBC512", bn: "3", q: 1, s: "328x203x85 cm", f: "BLOCK", p: 4500, i: "Cristallo Himalaia  Bl brCHSBC512 (3) Bdl 3.jpg" },
+      { m: "CRISTALLO HIMALAYA", b: "brCHSBC512", bn: "4", q: 1, s: "328x203x85 cm", f: "BLOCK", p: 4500, i: "Cristallo Himalaia  Bl brCHSBC512 (4) Bdl 4.jpg" },
+      { m: "CRISTALLO ITAJU", b: "brCI04", bn: "1", q: 1, s: "340x190x125 cm", f: "BLOCK", p: 900, i: "Cristallo Itaju  Bl brCI04 (1) Bdl 1.jpeg" },
+      { m: "CRISTALLO ITAJU", b: "brCI04", bn: "2", q: 1, s: "340x190x125 cm", f: "BLOCK", p: 900, i: "Cristallo Itaju  Bl brCI04 (2) Bdl 2.jpeg" },
+      { m: "CRISTALLO ITAJU", b: "brCI04", bn: "3", q: 1, s: "340x190x125 cm", f: "BLOCK", p: 900, i: "Cristallo Itaju  Bl brCI04 (3) Bdl 3.jpeg" },
+      { m: "CRISTALLO ITAJU", b: "brCI04", bn: "4", q: 1, s: "340x190x125 cm", f: "BLOCK", p: 900, i: "Cristallo Itaju  Bl brCI04 (4) Bdl 4.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP126", bn: "1", q: 1, s: "331x197x199 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP126 (1) Bdl 1.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP126", bn: "2", q: 1, s: "331x197x199 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP126 (2) Bdl 2.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP126", bn: "3", q: 1, s: "331x197x199 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP126 (3) Bdl 3.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP126", bn: "4", q: 1, s: "331x197x199 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP126 (4) Bdl 4.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP141", bn: "1", q: 1, s: "335x201x99 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP141 (1) Bdl 1.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP141", bn: "2", q: 1, s: "335x201x99 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP141 (2) Bdl 2.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP141", bn: "3", q: 1, s: "335x201x99 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP141 (3) Bdl 3.jpeg" },
+      { m: "NEW PATAGONIA", b: "brNP141", bn: "4", q: 1, s: "335x201x99 cm", f: "BLOCK", p: 1700, i: "New Patagonia  Bl brNP141 (4) Bdl 4.jpeg" },
+      { m: "QUARZO BIANCO", b: "brQB384", bn: "1", q: 1, s: "300x167x121 cm", f: "BLOCK", p: 6500, i: "Quarzo Bianco  Bl brQB384 (1) Bdl 1.jpeg" },
+      { m: "QUARZO BIANCO", b: "brQB384", bn: "2", q: 1, s: "300x167x121 cm", f: "BLOCK", p: 6500, i: "Quarzo Bianco  Bl brQB384 (2) Bdl 2.jpeg" },
+      { m: "QUARZO BIANCO", b: "brQB384", bn: "3", q: 1, s: "300x167x121 cm", f: "BLOCK", p: 6500, i: "Quarzo Bianco  Bl brQB384 (3) Bdl 3.jpeg" },
+      { m: "QUARZO BIANCO", b: "brQB384", bn: "4", q: 1, s: "300x167x121 cm", f: "BLOCK", p: 6500, i: "Quarzo Bianco  Bl brQB384 (4) Bdl 4.jpeg" },
+      { m: "BLANC DO BLANC", b: "brBB111", bn: "1", q: 1, s: "322x168x128 cm", f: "BLOCK", p: 900, i: "Blanc do Blacn Bl brBB111 (1) Bdl 1.jpeg" },
+      { m: "BLANC DO BLANC", b: "brBB111", bn: "2", q: 1, s: "322x168x128 cm", f: "BLOCK", p: 900, i: "Blanc do Blacn Bl brBB111 (2) Bdl 2.jpeg" },
+      { m: "BLANC DO BLANC", b: "brBB111", bn: "3", q: 1, s: "322x168x128 cm", f: "BLOCK", p: 900, i: "Blanc do Blacn Bl brBB111 (3) Bdl 3.jpeg" },
+      { m: "BLANC DO BLANC", b: "brBB111", bn: "4", q: 1, s: "322x168x128 cm", f: "BLOCK", p: 900, i: "Blanc do Blacn Bl brBB111 (4) Bdl 4.jpeg" }
+    ];
+
+    // GS Global Partner Data (Prices marked up by 6%)
+    const dataGS2cm = [
+      { m: "LAVEZZI", b: "1485", bn: "1", q: 8, s: "338x186x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1485 Slab 08.JPG" },
+      { m: "LAVEZZI", b: "1485", bn: "2", q: 8, s: "338x186x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1485 Slab 16.JPG" },
+      { m: "LAVEZZI", b: "1485", bn: "3", q: 9, s: "338x186x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1485 Slab 25.JPG" },
+      { m: "LAVEZZI", b: "1485", bn: "4", q: 9, s: "338x186x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1485 Slab 34.JPG" },
+      { m: "LAVEZZI", b: "1274", bn: "1", q: 9, s: "330x192x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1274 Slab 09.png" },
+      { m: "LAVEZZI", b: "1274", bn: "2", q: 9, s: "330x192x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1274 Slab 18.png" },
+      { m: "LAVEZZI", b: "1274", bn: "3", q: 11, s: "330x192x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1274 Slab 29.png" },
+      { m: "LAVEZZI", b: "1274", bn: "4", q: 11, s: "330x192x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1274 Slab 40.png" },
+      { m: "LAVEZZI", b: "1344", bn: "1", q: 10, s: "307x200x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1344 Slab 11.JPG" },
+      { m: "LAVEZZI", b: "1344", bn: "2", q: 10, s: "307x200x2", f: "POLISHED", p: 6.40, i: " LAVEZZI CUARCITA 2CM ___ PRECiO ESPECIAL/Lavezzi 2cm Blk 1344 Slab 21.JPG" },
+      { m: "CALACATTA LAVEZZI", b: "1458", bn: "1", q: 10, s: "321x199x2", f: "POLISHED", p: 6.40, i: " CALACATTA LAVEZZI 2CM ____ PRECIO ESPECIAL/Calacatta Lavezzi 2cm Blk 1458 Slab 11.jpg" },
+      { m: "CALACATTA LAVEZZI", b: "1458", bn: "2", q: 10, s: "321x199x2", f: "POLISHED", p: 6.40, i: " CALACATTA LAVEZZI 2CM ____ PRECIO ESPECIAL/Calacatta Lavezzi 2cm Blk 1458 Slab 21.jpg" },
+      { m: "CALACATTA LAVEZZI", b: "1458", bn: "3", q: 11, s: "321x199x2", f: "POLISHED", p: 6.40, i: " CALACATTA LAVEZZI 2CM ____ PRECIO ESPECIAL/Calacatta Lavezzi 2cm Blk 1458 Slab 31.jpg" },
+      { m: "GIALLO FIORITO", b: "1286", bn: "1", q: 11, s: "304x190x2", f: "POLISHED", p: 2.56, i: " GIALLO FIORITO 2CM ___ CANTERA DE GRANSENA/Giallo Fiorito 2cm Blk 1286 Slab 37.JPG" },
+      { m: "GIALLO FIORITO", b: "1286", bn: "2", q: 11, s: "304x190x2", f: "POLISHED", p: 2.56, i: " GIALLO FIORITO 2CM ___ CANTERA DE GRANSENA/Giallo Fiorito 2cm Blk 1286 Slab 48.JPG" },
+      { m: "IPANEMA BLUE", b: "1200", bn: "1", q: 9, s: "311x190x2", f: "POLISHED", p: 7.39, i: " IPANEMA BLUE CUARCITA 2CM ___ CANTERA DE GRANSENA/Ipanema Blue 2cm Blk 1200 Slab 10.jpeg" },
+      { m: "IPANEMA BLUE", b: "1200", bn: "2", q: 9, s: "311x190x2", f: "POLISHED", p: 7.39, i: " IPANEMA BLUE CUARCITA 2CM ___ CANTERA DE GRANSENA/Ipanema Blue 2cm Blk 1200 Slab 19.jpeg" },
+      { m: "IPANEMA BLUE", b: "1200", bn: "3", q: 9, s: "311x190x2", f: "POLISHED", p: 7.39, i: " IPANEMA BLUE CUARCITA 2CM ___ CANTERA DE GRANSENA/Ipanema Blue 2cm Blk 1200 Slab 28.jpeg" },
+      { m: "IPANEMA BLUE", b: "1200", bn: "4", q: 9, s: "311x190x2", f: "POLISHED", p: 7.39, i: " IPANEMA BLUE CUARCITA 2CM ___ CANTERA DE GRANSENA/Ipanema Blue 2cm Blk 1200 Slab 37.jpeg" },
+      { m: "IPANEMA BLUE", b: "1200", bn: "5", q: 9, s: "311x190x2", f: "POLISHED", p: 7.39, i: " IPANEMA BLUE CUARCITA 2CM ___ CANTERA DE GRANSENA/Ipanema Blue 2cm Blk 1200 Slab 46.jpeg" },
+      { m: "IPANEMA BLUE", b: "1200", bn: "6", q: 9, s: "311x190x2", f: "POLISHED", p: 7.39, i: " IPANEMA BLUE CUARCITA 2CM ___ CANTERA DE GRANSENA/Ipanema Blue 2cm Blk 1200 Slab 55.jpeg" },
+      { m: "IPANEMA BLUE", b: "1200", bn: "7", q: 9, s: "311x190x2", f: "POLISHED", p: 7.39, i: " IPANEMA BLUE CUARCITA 2CM ___ CANTERA DE GRANSENA/Ipanema Blue 2cm Blk 1200 Slab 64.jpeg" },
+      { m: "MARINUS", b: "43", bn: "1", q: 10, s: "292x190x2", f: "POLISHED", p: 3.15, i: " MARINUS 2CM/Marinus 2cm Blk 43 Slab 31.JPG" },
+      { m: "CRYSTAL FUSION", b: "1270", bn: "1", q: 10, s: "310x190x2", f: "POLISHED", p: 8.86, i: " CRYSTAL FUSION 2CM ___ PRECIO ESPECIAL/Crystal Fusion 2cm Blk 1270 Slab 11.JPG" },
+      { m: "CRYSTAL FUSION", b: "1270", bn: "2", q: 10, s: "310x190x2", f: "POLISHED", p: 8.86, i: " CRYSTAL FUSION 2CM ___ PRECIO ESPECIAL/Crystal Fusion 2cm Blk 1270 Slab 21.JPG" },
+      { m: "ALASKA WHITE", b: "5125", bn: "1", q: 10, s: "300x195x2", f: "POLISHED", p: 2.76, i: " ALASKA WHITE 2CM ___ PRECIO ESPECIAL/Alaska White 2cm Blk 5125 Slab 69.jpeg" },
+      { m: "MUSTANG", b: "146", bn: "1", q: 9, s: "296x193x2", f: "POLISHED", p: 5.91, i: " MUSTANG CUARCITA 2CM ___ PRECIO ESPECIAL/Mustang 2cm Blk 146 Slab 48.JPG" },
+      { m: "MUSTANG", b: "146", bn: "2", q: 9, s: "296x193x2", f: "POLISHED", p: 5.91, i: " MUSTANG CUARCITA 2CM ___ PRECIO ESPECIAL/Mustang 2cm Blk 146 Slab 57.JPG" },
+      { m: "MUSTANG", b: "1238", bn: "1", q: 8, s: "316x196x2", f: "POLISHED", p: 5.91, i: " MUSTANG CUARCITA 2CM ___ PRECIO ESPECIAL/Mustang 2cm Blk 1238 Slab 08.JPG" },
+      { m: "MUSTANG", b: "1238", bn: "2", q: 8, s: "316x196x2", f: "POLISHED", p: 5.91, i: " MUSTANG CUARCITA 2CM ___ PRECIO ESPECIAL/Mustang 2cm Blk 1238 Slab 16.JPG" },
+      { m: "MUSTANG", b: "1238", bn: "3", q: 8, s: "316x196x2", f: "POLISHED", p: 5.91, i: " MUSTANG CUARCITA 2CM ___ PRECIO ESPECIAL/Mustang 2cm Blk 1238 Slab 24.JPG" },
+      { m: "MUSTANG", b: "1238", bn: "4", q: 7, s: "316x196x2", f: "POLISHED", p: 5.91, i: " MUSTANG CUARCITA 2CM ___ PRECIO ESPECIAL/Mustang 2cm Blk 1238 Slab 31.JPG" },
+      { m: "ROYAL INDIGO", b: "1248", bn: "1", q: 9, s: "316x191x2", f: "POLISHED", p: 5.91, i: " ROYAL INDIGO 2CM ___ CUARCITA AZUL COM PRECIO ESPECIAL/Royal Indigo 2cm Blk 1248 Slab 09.jpeg" },
+      { m: "ROYAL INDIGO", b: "1248", bn: "2", q: 9, s: "316x191x2", f: "POLISHED", p: 5.91, i: " ROYAL INDIGO 2CM ___ CUARCITA AZUL COM PRECIO ESPECIAL/Royal Indigo 2cm Blk 1248 Slab 18.jpeg" },
+      { m: "ROYAL INDIGO", b: "1248", bn: "3", q: 9, s: "316x191x2", f: "POLISHED", p: 5.91, i: " ROYAL INDIGO 2CM ___ CUARCITA AZUL COM PRECIO ESPECIAL/Royal Indigo 2cm Blk 1248 Slab 27.jpeg" },
+      { m: "ROYAL INDIGO", b: "1248", bn: "4", q: 10, s: "316x191x2", f: "POLISHED", p: 5.91, i: " ROYAL INDIGO 2CM ___ CUARCITA AZUL COM PRECIO ESPECIAL/Royal Indigo 2cm Blk 1248 Slab 37.jpeg" },
+      { m: "ROYAL INDIGO", b: "1248", bn: "5", q: 10, s: "316x191x2", f: "POLISHED", p: 5.91, i: " ROYAL INDIGO 2CM ___ CUARCITA AZUL COM PRECIO ESPECIAL/Royal Indigo 2cm Blk 1248 Slab 47.jpeg" },
+      { m: "ROYAL INDIGO", b: "1248", bn: "6", q: 10, s: "316x191x2", f: "POLISHED", p: 5.91, i: " ROYAL INDIGO 2CM ___ CUARCITA AZUL COM PRECIO ESPECIAL/Royal Indigo 2cm Blk 1248 Slab 57.jpeg" },
+      { m: "ROYAL INDIGO", b: "1248", bn: "7", q: 10, s: "316x191x2", f: "POLISHED", p: 5.91, i: " ROYAL INDIGO 2CM ___ CUARCITA AZUL COM PRECIO ESPECIAL/Royal Indigo 2cm Blk 1248 Slab 67.jpeg" },
+      { m: "NAICA", b: "5447", bn: "1", q: 9, s: "325x200x2", f: "POLISHED", p: 13.29, i: " NAICA 2CM ___ LISTO PARA EMBARQUE/Naica - Taj 2cm Blk 5447 Slab 16.JPG" },
+      { m: "NAICA", b: "5447", bn: "2", q: 9, s: "325x200x2", f: "POLISHED", p: 13.29, i: " NAICA 2CM ___ LISTO PARA EMBARQUE/Naica - Taj 2cm Blk 5447 Slab 25.JPG" },
+      { m: "NAICA", b: "5447", bn: "3", q: 8, s: "325x200x2", f: "POLISHED", p: 13.29, i: " NAICA 2CM ___ LISTO PARA EMBARQUE/Naica - Taj 2cm Blk 5447 Slab 33.JPG" },
+      { m: "MEDINA NEVADO", b: "1057", bn: "1", q: 11, s: "Standard", f: "POLISHED", p: 2.27, i: " MEDINA NEVADO 2CM ____ CANTERA DE GRANSENA/Medina Nevado 2cm Blk 1057 Slab 11.jpeg" },
+      { m: "MEDINA NEVADO", b: "1016", bn: "1", q: 10, s: "Standard", f: "POLISHED", p: 2.27, i: " MEDINA NEVADO 2CM ____ CANTERA DE GRANSENA/Medina Nevado 2cm Blk 1016 Slab 10.JPG" },
+      { m: "MEDINA NEVADO", b: "823", bn: "1", q: 16, s: "Standard", f: "POLISHED", p: 2.27, i: " MEDINA NEVADO 2CM ____ CANTERA DE GRANSENA/Medina Nevado 2cm Blk 823 Slab 16.jpeg" },
+      { m: "BLUE FLOWERS", b: "1099", bn: "1", q: 8, s: "309x186x2", f: "POLISHED", p: 3.94, i: " BLUE FLOWERS 2CM ___ GRANITO AZUL CON PRECIO ESPECIAL/Blue Flowers 2cm Blk 1099 Slab 08.JPG" },
+      { m: "BLUE FLOWERS", b: "1099", bn: "2", q: 8, s: "309x186x2", f: "POLISHED", p: 3.94, i: " BLUE FLOWERS 2CM ___ GRANITO AZUL CON PRECIO ESPECIAL/Blue Flowers 2cm Blk 1099 Slab 16.JPG" }
+    ];
+
+    // For now, GS 3cm is empty
+    const dataGS3cm = [];
+
+    let unit = 'sqft';
+    let targetRow = null;
+
+    function switchTab(collection) {
+      currentCollection = collection;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const btnId = collection === 'elite' ? 'tabElite' : 'tabGS';
+      const btn = document.getElementById(btnId);
+      if (btn) btn.classList.add('active');
+      updateFolder();
+      render();
+    }
+
+    function switchThickness(thickness) {
+      currentThickness = thickness;
+      document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+      const btnId = thickness === '2cm' ? 'subTab2cm' : (thickness === '3cm' ? 'subTab3cm' : 'subTabBlocks');
+      const btn = document.getElementById(btnId);
+      if (btn) btn.classList.add('active');
+
+      // Toggle blocks terms
+      const terms = document.getElementById('blockTerms');
+      if (terms) terms.style.display = thickness === 'blocks' ? 'block' : 'none';
+
+      // Update price header and unit controls visibility
+      const hdrPrice = document.getElementById('hdrPrice');
+      const unitControls = document.querySelector('.controls div[style*="display:flex"]');
+      if (thickness === 'blocks') {
+        if (hdrPrice) hdrPrice.innerText = 'Price ($/TON)';
+        if (unitControls) unitControls.style.display = 'none';
+      } else {
+        if (hdrPrice) hdrPrice.innerText = `Price ($/${unit.toUpperCase()})`;
+        if (unitControls) unitControls.style.display = 'flex';
+      }
+
+      // Update column visibility for blocks
+      const isBlocks = thickness === 'blocks';
+      ['thStock', 'thSizes', 'thFinish'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = isBlocks ? 'none' : '';
+      });
+
+      updateFolder();
+      render();
+    }
+
+    function updateFolder() {
+      if (currentCollection === 'elite') {
+        if (currentThickness === 'blocks') {
+          currentFolder = "BRA_Blocks/Inventory/";
+        } else {
+          currentFolder = currentThickness === '2cm' ? "BRA | Red Carpet 2cm/" : "BRA | Red Carpet 3cm/Favorita BRA | Taj Mahal 3cm-2/";
+        }
+      } else {
+        currentFolder = currentThickness === '2cm' ? "GS | Offers 2cm/" : "GS | Offers 3cm/";
+      }
+    }
+
+    function render() {
+      const photos = JSON.parse(localStorage.getItem('te_photos') || '{}');
+      const body = document.getElementById('inventoryBody');
+      body.innerHTML = '';
+
+      let activeData = [];
+      if (currentCollection === 'elite') {
+        if (currentThickness === '2cm') activeData = dataElite2cm;
+        else if (currentThickness === '3cm') activeData = dataElite3cm;
+        else activeData = dataEliteBlocks;
+      } else {
+        activeData = currentThickness === '2cm' ? dataGS2cm : dataGS3cm;
+      }
+
+      // Grouping logic for blocks
+      let renderData = activeData;
+      if (currentThickness === 'blocks') {
+        const grouped = {};
+        activeData.forEach((item, originalIndex) => {
+          if (!grouped[item.b]) {
+            grouped[item.b] = { ...item, originalIndex, count: 0 };
+          }
+          grouped[item.b].count++;
+        });
+        renderData = Object.values(grouped);
+      }
+
+      renderData.forEach((item, i) => {
+        // Unique ID logic
+        let id;
+        if (currentThickness === 'blocks') {
+          id = `${currentCollection}-item-${item.originalIndex}-${currentThickness}`;
+        } else {
+          id = `${currentCollection}-item-${i}-${currentThickness}`;
+        }
+
+        let price, uLabel;
+        if (currentThickness === 'blocks') {
+          price = item.p;
+          uLabel = '$/TON';
+        } else {
+          price = unit === 'sqft' ? item.p : (item.p * 10.7639);
+          uLabel = unit === 'sqft' ? '$/SQFT' : '$/M²';
+        }
+
+        let photo = '';
+        if (photos[id]) {
+          photo = photos[id];
+        } else if (item.i) {
+          photo = encodeURI(currentFolder + item.i);
+        }
+
+        const row = document.createElement('tr');
+        row.id = id;
+
+        if (currentThickness === 'blocks') {
+          row.innerHTML = `
+              <td data-label="Preview">
+                <div class="photo-box multi-hint" onclick="openBlockModal('${item.b}')">
+                  ${photo ? `<img src="${photo}">` : `<span class="no-img">NO PHOTO</span>`}
+                </div>
+              </td>
+              <td data-label="Material"><span class="material-title">${item.m}</span></td>
+              <td data-label="Block #"><code>${item.b}</code></td>
+              <td data-label="Bundle #">${item.bn}</td>
+              <td data-label="Price" style="text-align:right" class="price-val">${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${uLabel}</td>
+              <td data-label="Action" style="text-align:center">
+                <a href="https://wa.me/5527997274344?text=I'm interested in ${item.m} (Block ${item.b})" target="_blank" class="btn btn-wa">
+                  Enquire
+                </a>
+              </td>
+            `;
+        } else {
+          row.innerHTML = `
+              <td data-label="Preview">
+                <div class="photo-box" onclick="openLightbox('${photo}')">
+                  ${photo ? `<img src="${photo}">` : `<span class="no-img">NO PHOTO</span>`}
+                </div>
+                <div class="photo-admin-btns">
+                  <button class="btn-upload-small" onclick="triggerFile('${id}')">${photo ? 'Change Photo' : 'Add Photo'}</button>
+                  ${photo ? `<button class="btn-clear-small" onclick="clearSinglePhoto('${id}')">Remove</button>` : ''}
+                </div>
+              </td>
+              <td data-label="Material"><span class="material-title">${item.m}</span></td>
+              <td data-label="Block #"><code>${item.b}</code></td>
+              <td data-label="Bundle #">${item.bn}</td>
+              <td data-label="Stock" style="text-align:center" class="col-stock"><span class="badge-qty">${item.q} Slabs</span></td>
+              <td data-label="Sizes" class="col-sizes">${item.s}</td>
+              <td data-label="Finish" class="col-finish">${item.f}</td>
+              <td data-label="Price" style="text-align:right" class="price-val">${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${uLabel}</td>
+              <td data-label="Action" style="text-align:center">
+                <a href="https://wa.me/5527997274344?text=I'm interested in ${item.m} (Block ${item.b}, Bundle ${item.bn})" target="_blank" class="btn btn-wa">
+                  Enquire
+                </a>
+              </td>
+            `;
+        }
+        body.appendChild(row);
+      });
+    }
+
+    function setUnit(u) {
+      unit = u;
+      document.getElementById('btnSqft').classList.toggle('active', u === 'sqft');
+      document.getElementById('btnM2').classList.toggle('active', u === 'm2');
+      document.getElementById('hdrPrice').innerText = `Price ($/${u.toUpperCase()})`;
+      render();
+    }
+
+    function doSearch() {
+      const q = document.getElementById('qInput').value.toUpperCase();
+      const f = document.getElementById('fFilter').value.toUpperCase();
+      document.querySelectorAll('#inventoryBody tr').forEach(r => {
+        const txt = r.innerText.toUpperCase();
+        r.style.display = (txt.includes(q) && txt.includes(f)) ? '' : 'none';
+      });
+    }
+
+    /* Security: SHA-256 Hash of the password */
+    const MASTER_HASH = "6275818269f7bbeea1ccc0f4d706fa9500d64a69451569328cf60bd879d4847f";
+
+    async function hashPassword(str) {
+      const msgUint8 = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function requestAdminAccess() {
+      const pass = prompt("Please enter the Administration Password:");
+      if (!pass) return;
+
+      const inputHash = await hashPassword(pass);
+      if (inputHash === MASTER_HASH) {
+        toggleAdminPanel();
+      } else {
+        alert("Access Denied.");
+      }
+    }
+
+    function toggleAdminPanel() {
+      const p = document.getElementById('admin-panel');
+      const b = document.getElementById('main-body');
+      const btn = document.getElementById('admin-main-btn');
+      const hidden = p.style.display !== 'block';
+
+      p.style.display = hidden ? 'block' : 'none';
+      btn.style.display = hidden ? 'none' : 'block';
+      b.classList.toggle('admin-active', hidden);
+    }
+
+    function triggerFile(id) { targetRow = id; document.getElementById('fUpload').click(); }
+
+    function processFileUpload(e) {
+      const file = e.target.files[0];
+      if (!file || !targetRow) return;
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        const base64 = ev.target.result;
+        const photos = JSON.parse(localStorage.getItem('te_photos') || '{}');
+        photos[targetRow] = base64;
+        localStorage.setItem('te_photos', JSON.stringify(photos));
+        render();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function openLightbox(src) {
+      if (!src) return;
+      const lb = document.getElementById('lightbox');
+      document.getElementById('lbImg').src = src;
+      lb.style.display = 'flex';
+    }
+
+    function openBlockModal(blockId) {
+      const allData = dataEliteBlocks;
+      const group = allData.filter(item => item.b === blockId);
+      if (group.length === 0) return;
+      const first = group[0];
+      const photos = JSON.parse(localStorage.getItem('te_photos') || '{}');
+
+      const modal = document.getElementById('blockModal');
+      const content = document.getElementById('blockModalContent');
+
+      let html = `
+        <div class="block-info-grid">
+          <div class="info-item"><label>Material</label><span>${first.m}</span></div>
+          <div class="info-item"><label>Block #</label><span>${first.b}</span></div>
+          <div class="info-item"><label>Dimensions</label><span>${first.s}</span></div>
+          <div class="info-item"><label>Price</label><span>$${first.p.toLocaleString('en-US', { minimumFractionDigits: 2 })} / TON</span></div>
+        </div>
+        <div style="color:var(--primary); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:15px;">Available Angles</div>
+        <div class="block-gallery">
+      `;
+
+      group.forEach((item, idx) => {
+        // Find the index in the original dataEliteBlocks for photo mapping
+        const originalIdx = allData.indexOf(item);
+        const id = `elite-item-${originalIdx}-blocks`;
+        let photo = photos[id] || encodeURI(currentFolder + item.i);
+        html += `
+          <div class="gallery-img-box" onclick="openLightbox('${photo}')">
+            <img src="${photo}">
+          </div>
+        `;
+      });
+
+      html += `</div>`;
+      content.innerHTML = html;
+      modal.style.display = 'flex';
+      modal.scrollTop = 0;
+    }
+
+    function closeBlockModal() {
+      document.getElementById('blockModal').style.display = 'none';
+    }
+
+
+
+    function saveState() {
+      const clone = document.documentElement.cloneNode(true);
+
+      // 1. Remove all Admin UI
+      const adminElements = clone.querySelectorAll('#admin-panel, .admin-trigger, #fUpload, .photo-admin-btns');
+      adminElements.forEach(el => el.remove());
+      clone.querySelector('#main-body').classList.remove('admin-active');
+
+      // 2. Inject photos
+      const photos = JSON.parse(localStorage.getItem('te_photos') || '{}');
+      Object.keys(photos).forEach(id => {
+        const row = clone.querySelector(`#${id}`);
+        if (row) {
+          const photoBox = row.querySelector('.photo-box');
+          if (photoBox) {
+            photoBox.innerHTML = `<img src="${photos[id]}">`;
+            photoBox.setAttribute('onclick', `openLightbox('${photos[id]}')`);
+          }
+        }
+      });
+
+      // 3. SECURE STRIP: Remove all original scripts and replace with a pure client script
+      clone.querySelectorAll('script').forEach(s => s.remove());
+
+      const clientScript = document.createElement('script');
+      clientScript.textContent = `
+        const dataElite2cm = ${JSON.stringify(dataElite2cm)};
+        const dataElite3cm = ${JSON.stringify(dataElite3cm)};
+        const dataEliteBlocks = ${JSON.stringify(dataEliteBlocks)};
+        const dataGS2cm = ${JSON.stringify(dataGS2cm)};
+        const dataGS3cm = ${JSON.stringify(dataGS3cm)};
+        const photos = ${JSON.stringify(photos)};
+        let currentCollection = 'elite';
+        let currentThickness = '2cm';
+        let currentFolder = "BRA | Red Carpet 2cm/";
+        let unit = 'sqft';
+
+        function switchTab(collection) {
+          currentCollection = collection;
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          const btnId = collection === 'elite' ? 'tabElite' : 'tabGS';
+          const btn = document.getElementById(btnId);
+          if(btn) btn.classList.add('active');
+          updateFolder();
+          render();
+        }
+
+        function switchThickness(thickness) {
+          currentThickness = thickness;
+          document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+          const btnId = thickness === '2cm' ? 'subTab2cm' : (thickness === '3cm' ? 'subTab3cm' : 'subTabBlocks');
+          const btn = document.getElementById(btnId);
+          if (btn) btn.classList.add('active');
+          
+          const terms = document.getElementById('blockTerms');
+          if(terms) terms.style.display = thickness === 'blocks' ? 'block' : 'none';
+
+          const hdrPrice = document.getElementById('hdrPrice');
+          const unitControls = document.querySelector('.controls div[style*="display:flex"]');
+          if (thickness === 'blocks') {
+              if(hdrPrice) hdrPrice.innerText = 'Price ($/TON)';
+              if(unitControls) unitControls.style.display = 'none';
+          } else {
+              if(hdrPrice) hdrPrice.innerText = 'Price ($/' + unit.toUpperCase() + ')';
+              if(unitControls) unitControls.style.display = 'flex';
+          }
+
+          const isBlocks = thickness === 'blocks';
+          ['thStock', 'thSizes', 'thFinish'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = isBlocks ? 'none' : '';
+          });
+
+          updateFolder();
+          render();
+        }
+
+        function updateFolder() {
+          if (currentCollection === 'elite') {
+            if (currentThickness === 'blocks') {
+                currentFolder = "BRA_Blocks/Inventory/";
+            } else {
+                currentFolder = currentThickness === '2cm' ? "BRA | Red Carpet 2cm/" : "BRA | Red Carpet 3cm/Favorita BRA | Taj Mahal 3cm-2/";
+            }
+          } else {
+            currentFolder = currentThickness === '2cm' ? "GS | Offers 2cm/" : "GS | Offers 3cm/";
+          }
+        }
+
+        function setUnit(u) {
+            unit = u;
+            document.getElementById('btnSqft').classList.toggle('active', u === 'sqft');
+            document.getElementById('btnM2').classList.toggle('active', u === 'm2');
+            document.getElementById('hdrPrice').innerText = 'Price ($/' + u.toUpperCase() + ')';
+            render();
+        }
+
+        function render() {
+            const body = document.getElementById('inventoryBody');
+            body.innerHTML = '';
+            let activeData = [];
+            if (currentCollection === 'elite') {
+              if (currentThickness === '2cm') activeData = dataElite2cm;
+              else if (currentThickness === '3cm') activeData = dataElite3cm;
+              else activeData = dataEliteBlocks;
+            } else {
+              activeData = currentThickness === '2cm' ? dataGS2cm : dataGS3cm;
+            }
+
+            let renderData = activeData;
+            if (currentThickness === 'blocks') {
+              const grouped = {};
+              activeData.forEach((item, originalIndex) => {
+                if (!grouped[item.b]) {
+                  grouped[item.b] = { ...item, originalIndex, count: 0 };
+                }
+                grouped[item.b].count++;
+              });
+              renderData = Object.values(grouped);
+            }
+
+            renderData.forEach((item, i) => {
+                let id;
+                if (currentThickness === 'blocks') {
+                    id = currentCollection + '-item-' + item.originalIndex + '-' + currentThickness;
+                } else {
+                    id = currentCollection + '-item-' + i + '-' + currentThickness;
+                }
+                
+                let price, uLabel;
+                if (currentThickness === 'blocks') {
+                    price = item.p;
+                    uLabel = '$/TON';
+                } else {
+                    price = unit === 'sqft' ? item.p : (item.p * 10.7639);
+                    uLabel = '$/' + unit.toUpperCase();
+                }
+                
+                let photo = photos[id] || (item.i ? encodeURI(currentFolder + item.i) : '');
+
+                const row = document.createElement('tr');
+                row.id = id;
+                
+                if (currentThickness === 'blocks') {
+                    row.innerHTML = '<td data-label="Preview"> \\
+                        <div class="photo-box multi-hint" onclick="openBlockModal(\\'' + item.b + '\\')"> \\
+                          ' + (photo ? '<img src="' + photo + '">' : '<span class="no-img">NO PHOTO</span>') + ' \\
+                        </div> \\
+                      </td> \\
+                      <td data-label="Material"><span class="material-title">' + item.m + '</span></td> \\
+                      <td data-label="Block #"><code>' + item.b + '</code></td> \\
+                      <td data-label="Bundle #">' + item.bn + '</td> \\
+                      <td data-label="Price" style="text-align:right" class="price-val">' + price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + uLabel + '</td> \\
+                      <td data-label="Action" style="text-align:center"> \\
+                        <a href="https://wa.me/5527997274344?text=I\\'m interested in ' + item.m + ' (Block ' + item.b + ')" target="_blank" class="btn btn-wa">Enquire</a> \\
+                      </td>';
+                } else {
+                    row.innerHTML = '<td data-label="Preview"> \\
+                        <div class="photo-box" onclick="openLightbox(\\'' + photo + '\\')"> \\
+                          ' + (photo ? '<img src="' + photo + '">' : '<span class="no-img">NO PHOTO</span>') + ' \\
+                        </div> \\
+                      </td> \\
+                      <td data-label="Material"><span class="material-title">' + item.m + '</span></td> \\
+                      <td data-label="Block #"><code>' + item.b + '</code></td> \\
+                      <td data-label="Bundle #">' + item.bn + '</td> \\
+                      <td data-label="Stock" style="text-align:center"><span class="badge-qty">' + item.q + ' Slabs</span></td> \\
+                      <td data-label="Sizes">' + item.s + '</td> \\
+                      <td data-label="Finish">' + item.f + '</td> \\
+                      <td data-label="Price" style="text-align:right" class="price-val">' + price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + uLabel + '</td> \\
+                      <td data-label="Action" style="text-align:center"> \\
+                        <a href="https://wa.me/5527997274344?text=I\\'m interested in ' + item.m + ' (Block ' + item.b + ', Bundle ' + item.bn + ')" target="_blank" class="btn btn-wa">Enquire</a> \\
+                      </td>';
+                }
+                body.appendChild(row);
+            });
+        }
+
+        function doSearch() {
+            const q = document.getElementById('qInput').value.toUpperCase();
+            const f = document.getElementById('fFilter').value.toUpperCase();
+            document.querySelectorAll('#inventoryBody tr').forEach(r => {
+                const txt = r.innerText.toUpperCase();
+                r.style.display = (txt.includes(q) && txt.includes(f)) ? '' : 'none';
+            });
+        }
+
+        function openLightbox(src) {
+            if(!src) return;
+            document.getElementById('lbImg').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function openBlockModal(blockId) {
+          const allData = dataEliteBlocks;
+          const group = allData.filter(item => item.b === blockId);
+          if (group.length === 0) return;
+          const first = group[0];
+          
+          const modal = document.getElementById('blockModal');
+          const content = document.getElementById('blockModalContent');
+          
+          let html = \'<div class="block-info-grid"> \\
+              <div class="info-item"><label>Material</label><span>\' + first.m + \'</span></div> \\
+              <div class="info-item"><label>Block #</label><span>\' + first.b + \'</span></div> \\
+              <div class="info-item"><label>Dimensions</label><span>\' + first.s + \'</span></div> \\
+              <div class="info-item"><label>Price</label><span>$\' + first.p.toLocaleString(\\'en-US\\', {minimumFractionDigits:2}) + \' / TON</span></div> \\
+            </div> \\
+            <div style="color:var(--primary); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:15px;">Available Angles</div> \\
+            <div class="block-gallery">\';
+          
+          group.forEach(function(item) {
+            const originalIdx = allData.indexOf(item);
+            const id = "elite-item-" + originalIdx + "-blocks";
+            let photo = photos[id] || encodeURI(currentFolder + item.i);
+            html += \'<div class="gallery-img-box" onclick="openLightbox(\\\\'\' + photo + \'\\\\')"><img src="\' + photo + \'"></div>\';
+          });
+          
+          html += \'</div>\';
+          content.innerHTML = html;
+          modal.style.display = "flex";
+          modal.scrollTop = 0;
+        }
+
+        function closeBlockModal() {
+          document.getElementById('blockModal').style.display = "none";
+        }
+
+        window.onload = render;
+      `;
+      clone.body.appendChild(clientScript);
+
+      const blob = new Blob(['<!DOCTYPE html>\n' + clone.outerHTML], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `Trade_Expansion_Gallery.html`;
+      a.click();
+      alert("Gallery exported!");
+    }
+
+    function clearLocalPhotos() {
+      if (confirm('Are you sure you want to delete all work in progress photos?')) {
+        localStorage.removeItem('te_photos');
+        render();
+      }
+    }
+
+    function clearSinglePhoto(id) {
+      const photos = JSON.parse(localStorage.getItem('te_photos') || '{}');
+      delete photos[id];
+      localStorage.setItem('te_photos', JSON.stringify(photos));
+      render();
+    }
+
+    window.onload = render;
+  </script>
+</body>
+
+</html>

@@ -30,11 +30,14 @@ add_action('admin_post_nopriv_te_client_login', 'te_client_portal_handle_login')
 add_action('admin_post_te_client_login', 'te_client_portal_handle_login');
 add_action('admin_post_te_client_logout', 'te_client_portal_handle_logout');
 add_action('admin_post_te_portal_submit_report', 'te_client_portal_handle_report_submission');
+add_action('admin_post_te_client_proxy', 'te_client_portal_handle_proxy');
+add_action('admin_post_nopriv_te_client_proxy', 'te_client_portal_handle_proxy'); // Optional: security check inside
 
 /**
  * Ensures PHP session exists for portal nonce storage.
  */
-function te_client_portal_maybe_start_session() {
+function te_client_portal_maybe_start_session()
+{
   if (php_sapi_name() === 'cli') {
     return;
   }
@@ -47,7 +50,8 @@ function te_client_portal_maybe_start_session() {
 /**
  * Registers rewrite rules for /area-do-cliente and /dashboard.
  */
-function te_client_portal_register_routes() {
+function te_client_portal_register_routes()
+{
   add_rewrite_rule('^' . TE_CLIENT_PORTAL_LOGIN_SLUG . '/?$', 'index.php?te_client_portal=login', 'top');
   add_rewrite_rule('^' . TE_CLIENT_PORTAL_DASHBOARD_SLUG . '/?$', 'index.php?te_client_portal=dashboard', 'top');
   add_rewrite_tag('%te_client_portal%', '([^&]+)');
@@ -56,7 +60,8 @@ function te_client_portal_register_routes() {
 /**
  * Flush rewrite rules on theme activation.
  */
-function te_client_portal_after_switch() {
+function te_client_portal_after_switch()
+{
   te_client_portal_register_routes();
   flush_rewrite_rules();
 }
@@ -64,7 +69,8 @@ function te_client_portal_after_switch() {
 /**
  * Adds the custom query var.
  */
-function te_client_portal_query_vars($vars) {
+function te_client_portal_query_vars($vars)
+{
   $vars[] = 'te_client_portal';
   return $vars;
 }
@@ -72,7 +78,8 @@ function te_client_portal_query_vars($vars) {
 /**
  * Registers the "cliente" role if it does not exist.
  */
-function te_client_portal_register_role() {
+function te_client_portal_register_role()
+{
   if (!get_role('cliente')) {
     add_role('cliente', __('Cliente', 'tradeexpansion'), ['read' => true]);
   }
@@ -81,18 +88,40 @@ function te_client_portal_register_role() {
 /**
  * Template router.
  */
-function te_client_portal_template_include($template) {
+function te_client_portal_template_include($template)
+{
   $portal_view = get_query_var('te_client_portal');
 
   if (!$portal_view) {
     return $template;
   }
 
-  $view_path = get_template_directory() . '/client-portal/views/' . $portal_view . '.php';
-
-  if ($portal_view === 'dashboard' && !te_client_portal_user_can_access()) {
-    te_client_portal_redirect_with_message('login', 'session_expired');
+  // Check if user has a specific view assigned
+  if ($portal_view === 'dashboard' && is_user_logged_in()) {
+    $user_id = get_current_user_id();
+    $assigned_view = get_user_meta($user_id, 'te_portal_assigned_view', true);
+    if ($assigned_view) {
+      $specific_view_path = get_template_directory() . '/client-portal/views/' . $assigned_view . '.php';
+      if (file_exists($specific_view_path)) {
+        return $specific_view_path;
+      }
+    }
   }
+
+  // For the dashboard route, use the page template wrapper (with get_header/get_footer/loader)
+  // instead of loading views/dashboard.php directly without any layout.
+  if ($portal_view === 'dashboard') {
+    if (!is_user_logged_in()) {
+      wp_redirect(home_url('/' . TE_CLIENT_PORTAL_LOGIN_SLUG . '/'));
+      exit;
+    }
+    $page_template = get_template_directory() . '/page-portal-dashboard.php';
+    if (file_exists($page_template)) {
+      return $page_template;
+    }
+  }
+
+  $view_path = get_template_directory() . '/client-portal/views/' . $portal_view . '.php';
 
   if (file_exists($view_path)) {
     return $view_path;
@@ -102,9 +131,19 @@ function te_client_portal_template_include($template) {
 }
 
 /**
+ * Gets a client-specific setting from user meta with an optional default.
+ */
+function te_client_portal_get_setting($user_id, $key, $default = '')
+{
+  $value = get_user_meta($user_id, 'te_portal_' . $key, true);
+  return $value ? $value : $default;
+}
+
+/**
  * Checks if the logged user can see the dashboard.
  */
-function te_client_portal_user_can_access() {
+function te_client_portal_user_can_access()
+{
   if (!is_user_logged_in()) {
     return false;
   }
@@ -125,7 +164,8 @@ function te_client_portal_user_can_access() {
 /**
  * Handles the login submission.
  */
-function te_client_portal_handle_login() {
+function te_client_portal_handle_login()
+{
   if (!isset($_POST['te_client_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['te_client_nonce'])), 'te_client_login')) {
     te_client_portal_redirect_with_message('login', 'invalid_nonce');
   }
@@ -159,7 +199,8 @@ function te_client_portal_handle_login() {
 /**
  * Handles logout requests.
  */
-function te_client_portal_handle_logout() {
+function te_client_portal_handle_logout()
+{
   if (!isset($_POST['te_client_logout_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['te_client_logout_nonce'])), 'te_client_logout')) {
     te_client_portal_redirect_with_message('dashboard', 'invalid_nonce');
   }
@@ -172,7 +213,8 @@ function te_client_portal_handle_logout() {
 /**
  * Determines whether a user belongs to the allowed roles.
  */
-function te_client_portal_user_is_allowed($user) {
+function te_client_portal_user_is_allowed($user)
+{
   if (!$user || is_wp_error($user)) {
     return false;
   }
@@ -184,7 +226,8 @@ function te_client_portal_user_is_allowed($user) {
 /**
  * Stores the session nonce for the current user.
  */
-function te_client_portal_set_session_nonce($user_id) {
+function te_client_portal_set_session_nonce($user_id)
+{
   if (!session_id()) {
     session_start();
   }
@@ -195,16 +238,64 @@ function te_client_portal_set_session_nonce($user_id) {
 /**
  * Clears the stored session nonce.
  */
-function te_client_portal_clear_session() {
+function te_client_portal_clear_session()
+{
   if (isset($_SESSION[TE_CLIENT_PORTAL_SESSION_KEY])) {
     unset($_SESSION[TE_CLIENT_PORTAL_SESSION_KEY]);
   }
 }
 
 /**
+ * Handles proxy requests to App Script.
+ */
+function te_client_portal_handle_proxy()
+{
+  if (!is_user_logged_in() && !current_user_can('manage_options')) {
+    wp_send_json_error('Unauthorized', 401);
+  }
+
+  $user_id = get_current_user_id();
+  $apps_script_url = te_client_portal_get_setting($user_id, 'apps_script_url');
+
+  if (!$apps_script_url) {
+    // If not set for user, check if we have a default or if it's coming from POST (for admin)
+    $apps_script_url = isset($_POST['apps_script_url']) ? esc_url_raw($_POST['apps_script_url']) : '';
+  }
+
+  if (!$apps_script_url) {
+    wp_send_json_error('No App Script URL configured', 400);
+  }
+
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $apps_script_url);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $post_data = $_POST;
+    unset($post_data['action']); // Remove WP action
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
+  }
+
+  $response = curl_exec($ch);
+  $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  curl_close($ch);
+
+  header('Content-Type: application/json');
+  if ($http_code !== 200) {
+    http_response_code($http_code);
+  }
+  echo $response;
+  exit;
+}
+
+/**
  * Helper to redirect with system messages.
  */
-function te_client_portal_redirect_with_message($view, $code) {
+function te_client_portal_redirect_with_message($view, $code)
+{
   $slug = $view === 'dashboard' ? TE_CLIENT_PORTAL_DASHBOARD_SLUG : TE_CLIENT_PORTAL_LOGIN_SLUG;
   $url = add_query_arg('portal_status', $code, home_url('/' . $slug . '/'));
   wp_safe_redirect($url);
@@ -214,7 +305,8 @@ function te_client_portal_redirect_with_message($view, $code) {
 /**
  * Handles the submission of new reports from the front-end form.
  */
-function te_client_portal_handle_report_submission() {
+function te_client_portal_handle_report_submission()
+{
   if (!is_user_logged_in()) {
     te_client_portal_redirect_with_message('login', 'session_expired');
   }
@@ -276,22 +368,22 @@ function te_client_portal_handle_report_submission() {
   $client_name = te_client_portal_get_user_display_name($client_id);
   $status_label = te_client_portal_format_report_status($status_slug);
   $content = te_client_portal_build_report_content([
-    'title'        => $title,
-    'summary'      => $summary,
-    'client_name'  => $client_name,
+    'title' => $title,
+    'summary' => $summary,
+    'client_name' => $client_name,
     'status_label' => $status_label,
-    'date_label'   => $report_date_label,
-    'body'         => $body,
-    'pdf_url'      => $pdf_url,
+    'date_label' => $report_date_label,
+    'body' => $body,
+    'pdf_url' => $pdf_url,
   ]);
 
   $post_id = wp_insert_post([
-    'post_type'    => 'tec_relatorio',
-    'post_status'  => 'publish',
-    'post_title'   => $title,
+    'post_type' => 'tec_relatorio',
+    'post_status' => 'publish',
+    'post_title' => $title,
     'post_content' => $content,
     'post_excerpt' => wp_strip_all_tags($summary),
-    'post_author'  => $current_user->ID,
+    'post_author' => $current_user->ID,
   ], true);
 
   if (is_wp_error($post_id)) {
@@ -307,7 +399,8 @@ function te_client_portal_handle_report_submission() {
   te_client_portal_redirect_with_message('dashboard', 'report_created');
 }
 
-function te_client_portal_is_cliente_user($user_id) {
+function te_client_portal_is_cliente_user($user_id)
+{
   $user = get_userdata($user_id);
   if (!$user) {
     return false;
@@ -315,7 +408,8 @@ function te_client_portal_is_cliente_user($user_id) {
   return in_array('cliente', (array) $user->roles, true);
 }
 
-function te_client_portal_get_user_display_name($user_id) {
+function te_client_portal_get_user_display_name($user_id)
+{
   $user = get_userdata($user_id);
   if (!$user) {
     return '';
@@ -323,15 +417,16 @@ function te_client_portal_get_user_display_name($user_id) {
   return $user->display_name ?: $user->user_login;
 }
 
-function te_client_portal_build_report_content($args) {
+function te_client_portal_build_report_content($args)
+{
   $defaults = [
-    'title'        => '',
-    'summary'      => '',
-    'client_name'  => '',
+    'title' => '',
+    'summary' => '',
+    'client_name' => '',
     'status_label' => '',
-    'date_label'   => '',
-    'body'         => '',
-    'pdf_url'      => '',
+    'date_label' => '',
+    'body' => '',
+    'pdf_url' => '',
   ];
   $data = wp_parse_args($args, $defaults);
 
@@ -435,7 +530,8 @@ function te_client_portal_build_report_content($args) {
   );
 }
 
-function te_client_portal_format_report_date_label($raw_date) {
+function te_client_portal_format_report_date_label($raw_date)
+{
   if (!$raw_date) {
     return date_i18n('d/m/Y');
   }
@@ -451,24 +547,25 @@ function te_client_portal_format_report_date_label($raw_date) {
 /**
  * Placeholder for future reports integration.
  */
-function te_client_portal_fetch_reports($user_id) {
+function te_client_portal_fetch_reports($user_id)
+{
   $reports = [];
 
   $query_args = [
-    'post_type'      => 'tec_relatorio',
-    'post_status'    => 'publish',
+    'post_type' => 'tec_relatorio',
+    'post_status' => 'publish',
     'posts_per_page' => 20,
-    'meta_query'     => [
+    'meta_query' => [
       [
-        'key'   => 'tec_cliente_id',
+        'key' => 'tec_cliente_id',
         'value' => (int) $user_id,
         'compare' => '=',
-        'type'  => 'NUMERIC',
+        'type' => 'NUMERIC',
       ],
     ],
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-    'no_found_rows'  => true,
+    'orderby' => 'date',
+    'order' => 'DESC',
+    'no_found_rows' => true,
   ];
 
   $posts = get_posts($query_args);
@@ -477,16 +574,16 @@ function te_client_portal_fetch_reports($user_id) {
     foreach ($posts as $post) {
       $status_slug = get_post_meta($post->ID, 'tec_status', true) ?: 'pendente';
       $reports[] = [
-        'post_id'     => $post->ID,
-        'title'       => get_the_title($post),
-        'date'        => get_post_time('Y-m-d', false, $post, true),
-        'status'      => te_client_portal_format_report_status($status_slug),
+        'post_id' => $post->ID,
+        'title' => get_the_title($post),
+        'date' => get_post_time('Y-m-d', false, $post, true),
+        'status' => te_client_portal_format_report_status($status_slug),
         'status_slug' => $status_slug,
-        'url'         => get_post_meta($post->ID, 'tec_pdf_url', true) ?: get_permalink($post),
-        'edit_link'   => current_user_can('edit_post', $post->ID) ? get_edit_post_link($post->ID, '') : '',
-        'excerpt'     => has_excerpt($post) ? wp_strip_all_tags(get_the_excerpt($post), true) : '',
-        'content'     => $post->post_content,
-        'note'        => wp_strip_all_tags($post->post_content),
+        'url' => get_post_meta($post->ID, 'tec_pdf_url', true) ?: get_permalink($post),
+        'edit_link' => current_user_can('edit_post', $post->ID) ? get_edit_post_link($post->ID, '') : '',
+        'excerpt' => has_excerpt($post) ? wp_strip_all_tags(get_the_excerpt($post), true) : '',
+        'content' => $post->post_content,
+        'note' => wp_strip_all_tags($post->post_content),
       ];
     }
   }
@@ -538,24 +635,25 @@ function te_client_portal_fetch_reports($user_id) {
 /**
  * Placeholder for inspection gallery integration.
  */
-function te_client_portal_fetch_inspections($user_id) {
+function te_client_portal_fetch_inspections($user_id)
+{
   $inspections = [];
 
   $query_args = [
-    'post_type'      => 'tec_inspecao',
-    'post_status'    => 'publish',
+    'post_type' => 'tec_inspecao',
+    'post_status' => 'publish',
     'posts_per_page' => -1,
-    'meta_query'     => [
+    'meta_query' => [
       [
-        'key'     => 'tec_cliente_id',
-        'value'   => (int) $user_id,
+        'key' => 'tec_cliente_id',
+        'value' => (int) $user_id,
         'compare' => '=',
-        'type'    => 'NUMERIC',
+        'type' => 'NUMERIC',
       ],
     ],
-    'orderby'        => 'date',
-    'order'          => 'DESC',
-    'no_found_rows'  => true,
+    'orderby' => 'date',
+    'order' => 'DESC',
+    'no_found_rows' => true,
   ];
 
   $posts = get_posts($query_args);
@@ -603,13 +701,14 @@ function te_client_portal_fetch_inspections($user_id) {
   return $inspections;
 }
 
-function te_client_portal_prepare_inspection($post) {
+function te_client_portal_prepare_inspection($post)
+{
   $attachments = get_children([
-    'post_parent'    => $post->ID,
-    'post_type'      => 'attachment',
+    'post_parent' => $post->ID,
+    'post_type' => 'attachment',
     'post_mime_type' => 'image',
-    'orderby'        => 'menu_order ID',
-    'order'          => 'ASC',
+    'orderby' => 'menu_order ID',
+    'order' => 'ASC',
   ]);
 
   $materials = [];
@@ -643,7 +742,8 @@ function te_client_portal_prepare_inspection($post) {
   ];
 }
 
-function te_client_portal_get_attachment_material($attachment_id) {
+function te_client_portal_get_attachment_material($attachment_id)
+{
   $terms = wp_get_object_terms($attachment_id, 'tec_material', ['number' => 1]);
   if (!is_wp_error($terms) && !empty($terms)) {
     return [
@@ -661,7 +761,8 @@ function te_client_portal_get_attachment_material($attachment_id) {
 /**
  * Placeholder for financial data integration.
  */
-function te_client_portal_fetch_financial_data($user_id) {
+function te_client_portal_fetch_financial_data($user_id)
+{
   $data = function_exists('tec_finance_get_remote') ? tec_finance_get_remote($user_id) : false;
 
   if ($data && isset($data['entries']) && is_array($data['entries'])) {
@@ -684,7 +785,7 @@ function te_client_portal_fetch_financial_data($user_id) {
       }
       $data['summary'] = [
         'pending' => $pending,
-        'paid'    => $paid,
+        'paid' => $paid,
       ];
     }
 
@@ -722,7 +823,8 @@ function te_client_portal_fetch_financial_data($user_id) {
 /**
  * Placeholder for future projects / orders module.
  */
-function te_client_portal_fetch_projects_placeholder() {
+function te_client_portal_fetch_projects_placeholder()
+{
   return [
     'message' => __('Módulo de projetos/pedidos em desenvolvimento. Em breve será possível acompanhar etapas por material e cliente.', 'tradeexpansion'),
   ];
@@ -731,7 +833,8 @@ function te_client_portal_fetch_projects_placeholder() {
 /**
  * Placeholder for chat integration.
  */
-function te_client_portal_get_chat_placeholder() {
+function te_client_portal_get_chat_placeholder()
+{
   return [
     'message' => __('Chat com a Petra (API Gemini) em breve. Prepare-se para tirar dúvidas em tempo real dentro do portal.', 'tradeexpansion'),
   ];
@@ -740,7 +843,8 @@ function te_client_portal_get_chat_placeholder() {
 /**
  * Placeholder for KPI widgets.
  */
-function te_client_portal_get_kpis_placeholder() {
+function te_client_portal_get_kpis_placeholder()
+{
   return [
     'message' => __('KPIs e gráficos com Chart.js em breve. O espaço já está reservado para métricas personalizadas.', 'tradeexpansion'),
   ];
@@ -749,7 +853,8 @@ function te_client_portal_get_kpis_placeholder() {
 /**
  * Helper to format report statuses.
  */
-function te_client_portal_format_report_status($slug) {
+function te_client_portal_format_report_status($slug)
+{
   $map = [
     'aprovado' => __('Aprovado', 'tradeexpansion'),
     'pendente' => __('Pendente', 'tradeexpansion'),
@@ -760,7 +865,8 @@ function te_client_portal_format_report_status($slug) {
   return $map[$slug] ?? ucfirst($slug);
 }
 
-function te_client_portal_get_report_status_options() {
+function te_client_portal_get_report_status_options()
+{
   return [
     'aprovado' => te_client_portal_format_report_status('aprovado'),
     'pendente' => te_client_portal_format_report_status('pendente'),
@@ -771,7 +877,8 @@ function te_client_portal_get_report_status_options() {
 /**
  * Maps status codes to human-readable alerts.
  */
-function te_client_portal_get_status_message($code) {
+function te_client_portal_get_status_message($code)
+{
   $messages = [
     'invalid_nonce' => [
       'type' => 'error',
