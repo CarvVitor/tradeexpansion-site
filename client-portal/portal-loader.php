@@ -52,9 +52,10 @@ function te_client_portal_maybe_start_session()
  */
 function te_client_portal_register_routes()
 {
-  add_rewrite_rule('^' . TE_CLIENT_PORTAL_LOGIN_SLUG . '/?$', 'index.php?te_client_portal=login', 'top');
-  add_rewrite_rule('^' . TE_CLIENT_PORTAL_DASHBOARD_SLUG . '/?$', 'index.php?te_client_portal=dashboard', 'top');
-  add_rewrite_tag('%te_client_portal%', '([^&]+)');
+  add_rewrite_rule('^' . TE_CLIENT_PORTAL_LOGIN_SLUG . '/?$', 'index.php?tec_portal=login', 'top');
+  add_rewrite_rule('^' . TE_CLIENT_PORTAL_DASHBOARD_SLUG . '/?$', 'index.php?tec_portal=dashboard', 'top');
+  // Nota: tec_portal já é registrado no functions.php, mas deixamos aqui por segurança se for usado isolado.
+  add_rewrite_tag('%tec_portal%', '([^&]+)');
 }
 
 /**
@@ -71,7 +72,7 @@ function te_client_portal_after_switch()
  */
 function te_client_portal_query_vars($vars)
 {
-  $vars[] = 'te_client_portal';
+  $vars[] = 'tec_portal';
   return $vars;
 }
 
@@ -90,7 +91,7 @@ function te_client_portal_register_role()
  */
 function te_client_portal_template_include($template)
 {
-  $portal_view = get_query_var('te_client_portal');
+  $portal_view = get_query_var('tec_portal');
 
   if (!$portal_view) {
     return $template;

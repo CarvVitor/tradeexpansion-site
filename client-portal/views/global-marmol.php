@@ -333,7 +333,7 @@ $is_admin = current_user_can('manage_options') || $current_user->user_login === 
                 </div>
 
                 <div class="flex md:justify-end items-center gap-10">
-                    <img src="<?php echo get_template_directory_uri(); ?>/assets/logo.png"
+                    <img src="<?php echo get_template_directory_uri(); ?>/assets/images/logo.jpg"
                         style="height: 40px; opacity: 0.3; filter: grayscale(1);">
                     <div class="w-px h-10 bg-white/10"></div>
                     <img src="<?php echo esc_url($client_logo); ?>" alt="Client Logo"

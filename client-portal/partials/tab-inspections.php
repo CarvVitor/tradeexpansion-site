@@ -3,9 +3,29 @@ if (!isset($inspections, $active_tab)) {
   return;
 }
 
+// Idioma baseado no cliente
+$is_spanish_client = false;
+if (isset($current_user)) {
+  $client_name = $current_user->display_name;
+  if (stripos($client_name, 'Magma') !== false || stripos($client_name, 'Global Marmol') !== false) {
+    $is_spanish_client = true;
+  }
+}
+
+$labels = [
+  'title' => $is_spanish_client ? 'Inspecciones Técnicas' : 'Inspeções Técnicas',
+  'subtitle' => $is_spanish_client ? 'Visualice fotos y detalles de los bundles inspeccionados' : 'Visualize fotos e detalhes dos bundles inspecionados',
+  'new_inspection' => $is_spanish_client ? '+ Nueva Inspección' : '+ Nova Inspeção',
+  'bundle' => $is_spanish_client ? 'Bundle' : 'Bundle',
+  'details' => $is_spanish_client ? 'Detalles' : 'Detalhes',
+  'no_inspections' => $is_spanish_client ? 'No se encontraron inspecciones' : 'Nenhuma inspeção encontrada',
+  'empty_msg' => $is_spanish_client ? 'Las inspecciones realizadas aparecerán aquí.' : 'As inspeções realizadas aparecerão aqui.',
+  'footer_note' => $is_spanish_client ? 'Sistema de inspecciones integrado. Nuevas fotos pueden ser añadidas a través del botón (+) en cada bundle.' : 'Sistema de inspeções integrado. Novas fotos podem ser adicionadas através do botão (+) em cada bundle.',
+];
+
 $materials_json = !empty($material_options) ? wp_json_encode($material_options) : '[]';
 $materials_json = $materials_json ? esc_attr($materials_json) : '[]';
-$empty_material_text = esc_attr__('Sem registros de imagens para este material.', 'tradeexpansion');
+$empty_material_text = $is_spanish_client ? 'Sin registros de imágenes para este material.' : 'Sem registros de imagens para este material.';
 ?>
 <section data-tab-panel="inspections" class="space-y-5 <?php echo $active_tab === 'inspections' ? '' : 'hidden'; ?>"
   data-inspections-rest-url="<?php echo esc_attr($inspection_rest_url); ?>"
@@ -13,13 +33,14 @@ $empty_material_text = esc_attr__('Sem registros de imagens para este material.'
   data-material-options="<?php echo $materials_json; ?>" data-inspections-empty="<?php echo $empty_material_text; ?>">
   <div class="flex items-center justify-between border-b border-white/5 pb-6 mb-12">
     <div>
-      <h2 class="text-3xl font-bold text-white"><?php esc_html_e('Inspeções Técnicas', 'tradeexpansion'); ?></h2>
+      <h2 class="text-3xl font-bold text-white"><?php echo $labels['title']; ?></h2>
       <p class="text-white/40 text-sm font-light italic mt-1">
-        <?php esc_html_e('Visualize fotos e detalhes dos bundles inspecionados', 'tradeexpansion'); ?></p>
+        <?php echo $labels['subtitle']; ?>
+      </p>
     </div>
     <?php if (!empty($can_manage_inspections)): ?>
       <button type="button" class="btn-minimalist">
-        <?php esc_html_e('+ Nova Inspeção', 'tradeexpansion'); ?>
+        <?php echo $labels['new_inspection']; ?>
       </button>
     <?php endif; ?>
   </div>
@@ -78,7 +99,7 @@ $empty_material_text = esc_attr__('Sem registros de imagens para este material.'
           <!-- INFORMAÇÕES DO BUNDLE -->
           <div class="p-10">
             <div class="mb-4">
-              <span class="label-secondary opacity-40"><?php esc_html_e('Bundle', 'tradeexpansion'); ?></span>
+              <span class="label-secondary opacity-40"><?php echo $labels['bundle']; ?></span>
               <h3
                 class="text-4xl font-bold text-white mt-2 tracking-tighter hover:text-gold transition-colors duration-500">
                 #<?php echo esc_html($bundle_number); ?>
@@ -99,7 +120,7 @@ $empty_material_text = esc_attr__('Sem registros de imagens para este material.'
               <div class="flex gap-4">
                 <button type="button" onclick="viewInspectionDetails(<?php echo (int) $inspection['id']; ?>)"
                   class="btn-minimalist text-xs py-2 px-4">
-                  <?php esc_html_e('Detalles', 'tradeexpansion'); ?>
+                  <?php echo $labels['details']; ?>
                 </button>
                 <?php if (!empty($can_manage_inspections) && !empty($inspection['id'])): ?>
                   <button type="button" class="btn-minimalist text-xs py-2 px-3 inspection-add-photo"
@@ -131,15 +152,15 @@ $empty_material_text = esc_attr__('Sem registros de imagens para este material.'
           d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
       </svg>
       <h3 class="text-xl font-semibold text-secondary mb-2">
-        <?php esc_html_e('Nenhuma inspeção encontrada', 'tradeexpansion'); ?>
+        <?php echo $labels['no_inspections']; ?>
       </h3>
       <p class="text-secondary/60">
-        <?php esc_html_e('As inspeções realizadas aparecerão aqui.', 'tradeexpansion'); ?>
+        <?php echo $labels['empty_msg']; ?>
       </p>
     </div>
   <?php endif; ?>
 
   <p class="text-xs text-secondary/50 italic mt-6 text-center">
-    <?php esc_html_e('Sistema de inspeções integrado. Novas fotos podem ser adicionadas através do botão (+) em cada bundle.', 'tradeexpansion'); ?>
+    <?php echo $labels['footer_note']; ?>
   </p>
 </section>

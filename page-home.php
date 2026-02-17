@@ -8,6 +8,7 @@
 
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
+
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,6 +103,7 @@
     header.te-header.is-scrolled .te-logo-icon {
       display: block;
     }
+
     /* BARRA / MARQUEE ENTRE SEÇÕES */
     .te-marquee {
       background: rgba(5, 8, 8, 0.92);
@@ -144,8 +146,13 @@
     }
 
     @keyframes teMarquee {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
+      from {
+        transform: translateX(0);
+      }
+
+      to {
+        transform: translateX(-50%);
+      }
     }
 
     /* QUEBRA VISUAL COM VÍDEO */
@@ -335,7 +342,8 @@
     }
 
     main {
-      margin-top: 76px; /* espaço para o header fixo */
+      margin-top: 76px;
+      /* espaço para o header fixo */
     }
 
     /* HERO COM VÍDEO */
@@ -717,9 +725,17 @@
       animation: fadeUp 0.9s ease-out forwards;
     }
 
-    .fade-up.delay-1 { animation-delay: 0.18s; }
-    .fade-up.delay-2 { animation-delay: 0.32s; }
-    .fade-up.delay-3 { animation-delay: 0.48s; }
+    .fade-up.delay-1 {
+      animation-delay: 0.18s;
+    }
+
+    .fade-up.delay-2 {
+      animation-delay: 0.32s;
+    }
+
+    .fade-up.delay-3 {
+      animation-delay: 0.48s;
+    }
 
     @keyframes fadeUp {
       to {
@@ -780,370 +796,400 @@
 
 <body <?php body_class(); ?>>
 
-<header class="te-header" id="teHeader">
-  <a class="te-logo" href="<?php echo esc_url( home_url('/') ); ?>" aria-label="Trade Expansion">
-    <img class="te-logo-img" src="<?php echo esc_url( get_template_directory_uri() . '/assets/images/logo.jpg' ); ?>" alt="Trade Expansion" />
+  <header class="te-header" id="teHeader">
+    <a class="te-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Trade Expansion">
+      <img class="te-logo-img" src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo.jpg'); ?>"
+        alt="Trade Expansion" />
 
-    <!-- Ícone (aparece no scroll) -->
-    <svg class="te-logo-icon" viewBox="0 0 64 64" role="img" aria-label="Trade Expansion">
-      <defs>
-        <linearGradient id="teGold" x1="0" x2="1" y1="0" y2="1">
-          <stop offset="0" stop-color="#D6A354" />
-          <stop offset="1" stop-color="#5D2713" />
-        </linearGradient>
-      </defs>
-      <!-- Gancho minimalista -->
-      <path d="M36 8c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4Z" fill="url(#teGold)" />
-      <path d="M32 12v10" stroke="url(#teGold)" stroke-width="3" stroke-linecap="round" />
-      <path d="M26 22c0 3.3 2.7 6 6 6s6-2.7 6-6" fill="none" stroke="url(#teGold)" stroke-width="3" stroke-linecap="round" />
+      <!-- Ícone (aparece no scroll) -->
+      <svg class="te-logo-icon" viewBox="0 0 64 64" role="img" aria-label="Trade Expansion">
+        <defs>
+          <linearGradient id="teGold" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#D6A354" />
+            <stop offset="1" stop-color="#5D2713" />
+          </linearGradient>
+        </defs>
+        <!-- Gancho minimalista -->
+        <path d="M36 8c0 2.2-1.8 4-4 4s-4-1.8-4-4 1.8-4 4-4 4 1.8 4 4Z" fill="url(#teGold)" />
+        <path d="M32 12v10" stroke="url(#teGold)" stroke-width="3" stroke-linecap="round" />
+        <path d="M26 22c0 3.3 2.7 6 6 6s6-2.7 6-6" fill="none" stroke="url(#teGold)" stroke-width="3"
+          stroke-linecap="round" />
 
-      <!-- Contêiner geométrico -->
-      <rect x="14" y="30" width="36" height="24" rx="4" fill="none" stroke="url(#teGold)" stroke-width="3" />
-      <path d="M22 30v24M30 30v24M38 30v24" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
-      <path d="M14 38h36" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
-    </svg>
-  </a>
+        <!-- Contêiner geométrico -->
+        <rect x="14" y="30" width="36" height="24" rx="4" fill="none" stroke="url(#teGold)" stroke-width="3" />
+        <path d="M22 30v24M30 30v24M38 30v24" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
+        <path d="M14 38h36" stroke="url(#teGold)" stroke-width="2" opacity="0.65" />
+      </svg>
+    </a>
 
-  <nav class="te-nav">
-    <a href="<?php echo esc_url( home_url('/sobre-nos') ); ?>">Sobre</a>
-    <a href="<?php echo esc_url( home_url('/rochas-ornamentais') ); ?>">Rochas</a>
-    <a href="<?php echo esc_url( home_url('/inspecao') ); ?>">Inspeção</a>
-    <a href="<?php echo esc_url( home_url('/catalogo') ); ?>">Catálogo</a>
-    <a class="te-nav-cta" href="<?php echo esc_url( home_url('/contato') ); ?>">Contato</a>
-  </nav>
-</header>
+    <nav class="te-nav">
+      <a href="<?php echo esc_url(home_url('/sobre-nos')); ?>">Sobre</a>
+      <a href="<?php echo esc_url(home_url('/rochas-ornamentais')); ?>">Rochas</a>
+      <a href="<?php echo esc_url(home_url('/inspecao')); ?>">Inspeção</a>
+      <a href="<?php echo esc_url(home_url('/catalogo')); ?>">Catálogo</a>
+      <a class="te-nav-cta" href="<?php echo esc_url(home_url('/contato')); ?>">Contato</a>
+    </nav>
+  </header>
 
-<main>
-  <!-- HERO COM VÍDEO -->
-  <section class="hero">
-    <video
-      class="hero-video"
-      autoplay
-      muted
-      loop
-      playsinline
-      preload="auto"
-      poster="<?php echo esc_url( get_template_directory_uri() . '/assets/images/hero-home-fallback.jpg' ); ?>"
-    >
-      <source src="<?php echo esc_url( get_template_directory_uri() . '/assets/videos/hero-home.mp4' ); ?>" type="video/mp4" />
-    </video>
-    <div class="hero-overlay"></div>
+  <main>
+    <!-- HERO COM VÍDEO -->
+    <section class="hero">
+      <video class="hero-video" autoplay muted loop playsinline preload="auto"
+        poster="<?php echo esc_url(get_template_directory_uri() . '/assets/images/hero-home-fallback.jpg'); ?>">
+        <source src="<?php echo esc_url(get_template_directory_uri() . '/assets/videos/hero-home.mp4'); ?>"
+          type="video/mp4" />
+      </video>
+      <div class="hero-overlay"></div>
 
-    <div class="hero-grid">
-      <div class="fade-up">
-        <div class="hero-kicker">Grupo Trade Expansion</div>
-        <h1 class="hero-title">Excelência em operações <span>internacionais</span>.</h1>
-        <p class="hero-text">
-          Atuamos na conexão entre produtores brasileiros e compradores internacionais, com foco em rochas ornamentais,
-          commodities e inspeção técnica independente. Operação enxuta, olhar técnico e compromisso absoluto com a qualidade
-          entregue.
-        </p>
+      <div class="hero-grid">
+        <div class="fade-up">
+          <div class="hero-kicker">Grupo Trade Expansion</div>
+          <h1 class="hero-title">Excelência em operações <span>internacionais</span>.</h1>
+          <p class="hero-text">
+            Atuamos na conexão entre produtores brasileiros e compradores internacionais, com foco em rochas
+            ornamentais,
+            commodities e inspeção técnica independente. Operação enxuta, olhar técnico e compromisso absoluto com a
+            qualidade
+            entregue.
+          </p>
 
-        <div class="hero-actions">
-          <a class="btn-primary" href="<?php echo esc_url( home_url('/contato') ); ?>">Falar sobre um projeto</a>
-          <a class="btn-secondary" href="<?php echo esc_url( home_url('/inspecao') ); ?>">Ver como funciona a inspeção</a>
+          <div class="hero-actions">
+            <a class="btn-primary" href="<?php echo esc_url(home_url('/contato')); ?>">Falar sobre um projeto</a>
+            <a class="btn-secondary" href="<?php echo esc_url(home_url('/inspecao')); ?>">Ver como funciona a
+              inspeção</a>
+          </div>
+
+          <div class="hero-meta">Presença em campo no Brasil · Relacionamento direto com compradores externos</div>
         </div>
 
-        <div class="hero-meta">Presença em campo no Brasil · Relacionamento direto com compradores externos</div>
+        <aside class="hero-side-card fade-up delay-2">
+          <div class="hero-side-title">Operação em três pilares</div>
+          <div class="hero-side-text">
+            Exportação, inspeção e intermediação comercial atuam de forma integrada para reduzir riscos, alinhar
+            expectativas
+            entre as partes e construir relações de longo prazo.
+          </div>
+          <div class="hero-tags">
+            <span class="hero-tag-pill">Rochas ornamentais</span>
+            <span class="hero-tag-pill">Inspeção independente</span>
+            <span class="hero-tag-pill">Commodities</span>
+          </div>
+        </aside>
       </div>
+    </section>
 
-      <aside class="hero-side-card fade-up delay-2">
-        <div class="hero-side-title">Operação em três pilares</div>
-        <div class="hero-side-text">
-          Exportação, inspeção e intermediação comercial atuam de forma integrada para reduzir riscos, alinhar expectativas
-          entre as partes e construir relações de longo prazo.
-        </div>
-        <div class="hero-tags">
-          <span class="hero-tag-pill">Rochas ornamentais</span>
-          <span class="hero-tag-pill">Inspeção independente</span>
-          <span class="hero-tag-pill">Commodities</span>
-        </div>
-      </aside>
-    </div>
-  </section>
+    <!-- BARRA / MARQUEE (PALAVRAS-CHAVE) -->
+    <section class="te-marquee" aria-label="Áreas de atuação">
+      <div class="te-marquee-inner">
+        <div class="te-marquee-track">
+          <span class="te-marquee-item">Rochas ornamentais</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Inspeção independente</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
+          <span class="te-marquee-item">Commodities</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Exportação</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Sourcing</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Relatórios fotográficos</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
+          <span class="te-marquee-item">Qualidade &amp; conformidade</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
+          <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
 
-  <!-- BARRA / MARQUEE (PALAVRAS-CHAVE) -->
-  <section class="te-marquee" aria-label="Áreas de atuação">
-    <div class="te-marquee-inner">
-      <div class="te-marquee-track">
-        <span class="te-marquee-item">Rochas ornamentais</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Inspeção independente</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Commodities</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Exportação</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Sourcing</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Relatórios fotográficos</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Qualidade &amp; conformidade</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot" aria-hidden="true"></span>
-
-        <span class="te-marquee-item">Rochas ornamentais</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Inspeção independente</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Commodities</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Exportação</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Sourcing</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Relatórios fotográficos</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Qualidade &amp; conformidade</span><span class="te-marquee-dot" aria-hidden="true"></span>
-        <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot" aria-hidden="true"></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- SOBRE / QUEM SOMOS -->
-  <section class="te-section">
-    <div class="te-section-header fade-up">
-      <div class="te-kicker">Quem somos</div>
-      <h2 class="te-title">Estrutura enxuta, visão estratégica e atuação em campo.</h2>
-      <p class="te-subtitle">
-        A Trade Expansion LTDA é uma empresa brasileira de comércio exterior que auxilia produtores e compradores a
-        estruturarem operações internacionais com clareza, controle e segurança.
-      </p>
-    </div>
-
-    <div class="about-grid fade-up delay-1">
-      <div class="about-text">
-        <p>
-          Apoiamos parceiros na exportação de rochas ornamentais e na compra de commodities, sempre com foco na qualidade
-          real do produto, na viabilidade logística e na proteção contratual das partes envolvidas.
-        </p>
-        <p>
-          Cada operação é tratada de forma individual: avaliamos o contexto do cliente, entendemos o risco aceito,
-          analisamos fornecedores e estruturamos o fluxo de comunicação para que ninguém seja surpreendido no meio do caminho.
-        </p>
-
-        <div class="about-highlight">
-          <strong>Olhar técnico e responsabilidade.</strong>
-          Nossos relatórios e inspeções não são peças de marketing: são documentos objetivos, criados para embasar decisões
-          comerciais e construir confiança entre compradores e fornecedores.
+          <span class="te-marquee-item">Rochas ornamentais</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Inspeção independente</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
+          <span class="te-marquee-item">Commodities</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Exportação</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Sourcing</span><span class="te-marquee-dot" aria-hidden="true"></span>
+          <span class="te-marquee-item">Relatórios fotográficos</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
+          <span class="te-marquee-item">Qualidade &amp; conformidade</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
+          <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot"
+            aria-hidden="true"></span>
         </div>
       </div>
+    </section>
 
-      <div class="about-metrics">
-        <div class="about-metric">
-          <strong>Brasil &amp; exterior</strong>
-          Atuação direta em operações que conectam produtores brasileiros a importadores em diferentes mercados.
+    <!-- SOBRE / QUEM SOMOS -->
+    <section class="te-section">
+      <div class="te-section-header fade-up">
+        <div class="te-kicker">Quem somos</div>
+        <h2 class="te-title">Estrutura enxuta, visão estratégica e atuação em campo.</h2>
+        <p class="te-subtitle">
+          A Trade Expansion LTDA é uma empresa brasileira de comércio exterior que auxilia produtores e compradores a
+          estruturarem operações internacionais com clareza, controle e segurança.
+        </p>
+      </div>
+
+      <div class="about-grid fade-up delay-1">
+        <div class="about-text">
+          <p>
+            Apoiamos parceiros na exportação de rochas ornamentais e na compra de commodities, sempre com foco na
+            qualidade
+            real do produto, na viabilidade logística e na proteção contratual das partes envolvidas.
+          </p>
+          <p>
+            Cada operação é tratada de forma individual: avaliamos o contexto do cliente, entendemos o risco aceito,
+            analisamos fornecedores e estruturamos o fluxo de comunicação para que ninguém seja surpreendido no meio do
+            caminho.
+          </p>
+
+          <div class="about-highlight">
+            <strong>Olhar técnico e responsabilidade.</strong>
+            Nossos relatórios e inspeções não são peças de marketing: são documentos objetivos, criados para embasar
+            decisões
+            comerciais e construir confiança entre compradores e fornecedores.
+          </div>
         </div>
-        <div class="about-metric">
-          <strong>Inspeção em campo</strong>
-          Presença física em pedreiras, pátios e armazéns para conferência de lotes, metragem e acabamento.
-        </div>
-        <div class="about-metric">
-          <strong>Relatórios claros</strong>
-          Documentos com fotos, métricas e observações técnicas pensados para quem decide negócio.
-        </div>
-        <div class="about-metric">
-          <strong>Visão de longo prazo</strong>
-          Foco na construção de relações contínuas, e não em uma única venda isolada.
+
+        <div class="about-metrics">
+          <div class="about-metric">
+            <strong>Brasil &amp; exterior</strong>
+            Atuação direta em operações que conectam produtores brasileiros a importadores em diferentes mercados.
+          </div>
+          <div class="about-metric">
+            <strong>Inspeção em campo</strong>
+            Presença física em pedreiras, pátios e armazéns para conferência de lotes, metragem e acabamento.
+          </div>
+          <div class="about-metric">
+            <strong>Relatórios claros</strong>
+            Documentos com fotos, métricas e observações técnicas pensados para quem decide negócio.
+          </div>
+          <div class="about-metric">
+            <strong>Visão de longo prazo</strong>
+            Foco na construção de relações contínuas, e não em uma única venda isolada.
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- QUEBRA VISUAL (VÍDEO) -->
-  <section class="te-break" aria-label="Atuação em campo">
-    <video class="te-break-video" autoplay muted loop playsinline preload="metadata">
-      <source src="<?php echo esc_url( get_template_directory_uri() . '/assets/videos/hero-rochas.mp4' ); ?>" type="video/mp4" />
-    </video>
-    <div class="te-break-overlay" aria-hidden="true"></div>
-    <div class="te-break-content fade-up">
-      <div class="te-break-kicker">Do Brasil para o mundo</div>
-      <h2 class="te-break-title">Você não compra foto bonita — você compra previsibilidade.</h2>
-      <p class="te-break-sub">Por isso nosso trabalho é juntar ponta a ponta: material, padrão, metragem, acabamento, documentação e expectativas. O resto é barulho.</p>
-    </div>
-  </section>
+    <!-- QUEBRA VISUAL (VÍDEO) -->
+    <section class="te-break" aria-label="Atuação em campo">
+      <video class="te-break-video" autoplay muted loop playsinline preload="metadata">
+        <source src="<?php echo esc_url(get_template_directory_uri() . '/assets/videos/hero-rochas.mp4'); ?>"
+          type="video/mp4" />
+      </video>
+      <div class="te-break-overlay" aria-hidden="true"></div>
+      <div class="te-break-content fade-up">
+        <div class="te-break-kicker">Do Brasil para o mundo</div>
+        <h2 class="te-break-title">Você não compra foto bonita — você compra previsibilidade.</h2>
+        <p class="te-break-sub">Por isso nosso trabalho é juntar ponta a ponta: material, padrão, metragem, acabamento,
+          documentação e expectativas. O resto é barulho.</p>
+      </div>
+    </section>
 
-  <!-- SERVIÇOS PRINCIPAIS -->
-  <section class="services">
-    <div class="te-section-header fade-up">
-      <div class="te-kicker">Atuação</div>
-      <h2 class="te-title">O que o Grupo Trade Expansion entrega na prática.</h2>
-      <p class="te-subtitle">
-        Nossas frentes de trabalho se complementam: inspeção técnica, exportação e intermediação comercial estruturam um
-        fluxo único, com acompanhamento próximo do início ao fim da operação.
-      </p>
-    </div>
-
-    <div class="services-grid">
-      <article class="service-card fade-up">
-        <div class="service-kicker">Inspeção técnica</div>
-        <h3 class="service-title">Relatórios independentes em rochas e commodities.</h3>
-        <p class="service-text">
-          Conferimos lotes, metragem, acabamento e eventuais não conformidades, entregando relatórios com fotos, descrições
-          técnicas e observações objetivas. Material pensado para importadores, traders e equipes internas de qualidade.
+    <!-- SERVIÇOS PRINCIPAIS -->
+    <section class="services">
+      <div class="te-section-header fade-up">
+        <div class="te-kicker">Atuação</div>
+        <h2 class="te-title">O que o Grupo Trade Expansion entrega na prática.</h2>
+        <p class="te-subtitle">
+          Nossas frentes de trabalho se complementam: inspeção técnica, exportação e intermediação comercial estruturam
+          um
+          fluxo único, com acompanhamento próximo do início ao fim da operação.
         </p>
-        <a class="service-link" href="<?php echo esc_url( home_url('/inspecao') ); ?>">Ver detalhes da inspeção</a>
-      </article>
+      </div>
 
-      <article class="service-card fade-up delay-1">
-        <div class="service-kicker">Exportação</div>
-        <h3 class="service-title">Estruturação de operações com rochas ornamentais.</h3>
-        <p class="service-text">
-          Atuamos ao lado de produtores brasileiros na montagem de operações de exportação: seleção de materiais, definição
-          de lotes, conferência de documentação e coordenação com agentes de carga e terminais.
-        </p>
-        <a class="service-link" href="<?php echo esc_url( home_url('/rochas-ornamentais') ); ?>">Conhecer atuação em rochas</a>
-      </article>
+      <div class="services-grid">
+        <article class="service-card fade-up">
+          <div class="service-kicker">Inspeção técnica</div>
+          <h3 class="service-title">Relatórios independentes em rochas e commodities.</h3>
+          <p class="service-text">
+            Conferimos lotes, metragem, acabamento e eventuais não conformidades, entregando relatórios com fotos,
+            descrições
+            técnicas e observações objetivas. Material pensado para importadores, traders e equipes internas de
+            qualidade.
+          </p>
+          <a class="service-link" href="<?php echo esc_url(home_url('/inspecao')); ?>">Ver detalhes da inspeção</a>
+        </article>
 
-      <article class="service-card fade-up delay-2">
-        <div class="service-kicker">Intermediação</div>
-        <h3 class="service-title">Conexão segura entre compradores e fornecedores.</h3>
-        <p class="service-text">
-          Fazemos a ponte entre importadores estrangeiros e fornecedores nacionais, alinhando expectativas comerciais,
-          condições de pagamento, prazos e requisitos técnicos. Transparência total sobre riscos e limitações de cada operação.
-        </p>
-        <a class="service-link" href="<?php echo esc_url( home_url('/contato') ); ?>">Falar sobre uma demanda</a>
-      </article>
-    </div>
-  </section>
+        <article class="service-card fade-up delay-1">
+          <div class="service-kicker">Exportação</div>
+          <h3 class="service-title">Estruturação de operações com rochas ornamentais.</h3>
+          <p class="service-text">
+            Atuamos ao lado de produtores brasileiros na montagem de operações de exportação: seleção de materiais,
+            definição
+            de lotes, conferência de documentação e coordenação com agentes de carga e terminais.
+          </p>
+          <a class="service-link" href="<?php echo esc_url(home_url('/rochas-ornamentais')); ?>">Conhecer atuação em
+            rochas</a>
+        </article>
 
-  <!-- MATERIAIS EM DESTAQUE (FOTOS DINÂMICAS) -->
-  <?php
+        <article class="service-card fade-up delay-2">
+          <div class="service-kicker">Intermediação</div>
+          <h3 class="service-title">Conexão segura entre compradores e fornecedores.</h3>
+          <p class="service-text">
+            Fazemos a ponte entre importadores estrangeiros e fornecedores nacionais, alinhando expectativas comerciais,
+            condições de pagamento, prazos e requisitos técnicos. Transparência total sobre riscos e limitações de cada
+            operação.
+          </p>
+          <a class="service-link" href="<?php echo esc_url(home_url('/contato')); ?>">Falar sobre uma demanda</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- MATERIAIS EM DESTAQUE (FOTOS DINÂMICAS) -->
+    <?php
     $te_featured = new WP_Query([
-      'post_type'      => 'rocha',
+      'post_type' => 'rocha',
       'posts_per_page' => 6,
-      'no_found_rows'  => true,
-      'meta_query'     => [
+      'no_found_rows' => true,
+      'meta_query' => [
         [
-          'key'     => '_rocha_destaque',
-          'value'   => '1',
+          'key' => '_rocha_destaque',
+          'value' => '1',
           'compare' => '='
         ]
       ],
-      'meta_key'  => '_rocha_ordem',
-      'orderby'   => [
+      'meta_key' => '_rocha_ordem',
+      'orderby' => [
         'meta_value_num' => 'ASC',
-        'date'           => 'DESC'
+        'date' => 'DESC'
       ]
     ]);
-  ?>
+    ?>
 
-  <section class="te-section materials" id="materiais">
-    <div class="te-section-header fade-up">
-      <div class="te-kicker">Rochas ornamentais</div>
-      <h2 class="te-title">Alguns materiais que costumamos trabalhar.</h2>
-      <p class="te-subtitle">Aqui é o “gostinho” visual: você cadastra o material uma vez (com foto) e ele reaparece no site. Sem retrabalho, sem duplicação.</p>
-    </div>
+    <section class="te-section materials" id="materiais">
+      <div class="te-section-header fade-up">
+        <div class="te-kicker">Rochas ornamentais</div>
+        <h2 class="te-title">Alguns materiais que costumamos trabalhar.</h2>
+        <p class="te-subtitle">Aqui é o “gostinho” visual: você cadastra o material uma vez (com foto) e ele reaparece
+          no site. Sem retrabalho, sem duplicação.</p>
+      </div>
 
-    <div class="materials-grid">
-      <?php if ($te_featured->have_posts()) : ?>
-        <?php while ($te_featured->have_posts()) : $te_featured->the_post(); ?>
-          <?php
+      <div class="materials-grid">
+        <?php if ($te_featured->have_posts()): ?>
+          <?php while ($te_featured->have_posts()):
+            $te_featured->the_post(); ?>
+            <?php
             $te_img = get_the_post_thumbnail_url(get_the_ID(), 'large');
             if (!$te_img) {
               $te_img = get_template_directory_uri() . '/assets/images/hero-rochas-fallback.jpg';
             }
             $te_sku = get_post_meta(get_the_ID(), '_rocha_sku', true);
-          ?>
-          <article class="material-card fade-up" style="background-image: url('<?php echo esc_url($te_img); ?>');">
-            <div class="material-overlay" aria-hidden="true"></div>
-            <div class="material-content">
-              <h3 class="material-title"><?php the_title(); ?></h3>
-              <div class="material-meta"><?php echo $te_sku ? 'SKU ' . esc_html($te_sku) : 'Material em destaque'; ?></div>
-              <a class="material-link" href="<?php echo esc_url( home_url('/rochas-ornamentais') ); ?>">Ver página de rochas →</a>
-            </div>
-          </article>
-        <?php endwhile; ?>
-        <?php wp_reset_postdata(); ?>
-      <?php else : ?>
-        <div class="about-highlight" style="grid-column: 1 / -1;">
-          <strong>Sem fotos ainda?</strong> Sem drama. Assim que você cadastrar materiais com imagem destacada e marcar “destaque”, eles aparecem automaticamente aqui.
+            ?>
+            <article class="material-card fade-up" style="background-image: url('<?php echo esc_url($te_img); ?>');">
+              <div class="material-overlay" aria-hidden="true"></div>
+              <div class="material-content">
+                <h3 class="material-title"><?php the_title(); ?></h3>
+                <div class="material-meta"><?php echo $te_sku ? 'SKU ' . esc_html($te_sku) : 'Material em destaque'; ?>
+                </div>
+                <a class="material-link" href="<?php echo esc_url(home_url('/rochas-ornamentais')); ?>">Ver página de
+                  rochas →</a>
+              </div>
+            </article>
+          <?php endwhile; ?>
+          <?php wp_reset_postdata(); ?>
+        <?php else: ?>
+          <div class="about-highlight" style="grid-column: 1 / -1;">
+            <strong>Sem fotos ainda?</strong> Sem drama. Assim que você cadastrar materiais com imagem destacada e marcar
+            “destaque”, eles aparecem automaticamente aqui.
+          </div>
+        <?php endif; ?>
+      </div>
+
+      <div class="materials-cta-row fade-up delay-1">
+        <a class="btn-primary" href="<?php echo esc_url(home_url('/catalogo')); ?>">Explorar catálogo</a>
+        <a class="btn-secondary" href="<?php echo esc_url(home_url('/contato')); ?>">Solicitar disponibilidade</a>
+      </div>
+    </section>
+
+    <!-- COMO TRABALHAMOS -->
+    <section class="te-section">
+      <div class="te-section-header fade-up">
+        <div class="te-kicker">Como trabalhamos</div>
+        <h2 class="te-title">Processo claro, do primeiro contato ao pós-embarque.</h2>
+        <p class="te-subtitle">
+          Mais do que encontrar produto, nosso papel é organizar a operação, registrar o que foi entregue e dar
+          segurança para que
+          as partes sigam fazendo negócios.
+        </p>
+      </div>
+
+      <div class="process-grid">
+        <div class="process-step fade-up">
+          <div class="process-step-number">Etapa 1</div>
+          <div class="process-step-title">Entendimento da operação</div>
+          <p>
+            Mapeamos o cenário do cliente, o produto desejado, o mercado de destino e o nível de risco aceito. A partir
+            daí,
+            definimos o escopo: inspeção, intermediação, exportação ou combinação das três frentes.
+          </p>
         </div>
-      <?php endif; ?>
-    </div>
 
-    <div class="materials-cta-row fade-up delay-1">
-      <a class="btn-primary" href="<?php echo esc_url( home_url('/catalogo') ); ?>">Explorar catálogo</a>
-      <a class="btn-secondary" href="<?php echo esc_url( home_url('/contato') ); ?>">Solicitar disponibilidade</a>
-    </div>
-  </section>
+        <div class="process-step fade-up delay-1">
+          <div class="process-step-number">Etapa 2</div>
+          <div class="process-step-title">Conexão, conferência e registro</div>
+          <p>
+            Conectamos com fornecedores adequados, conferimos lotes em campo quando necessário e produzimos relatórios
+            técnicos
+            que registram o que está sendo negociado, evitando ruídos futuros.
+          </p>
+        </div>
 
-  <!-- COMO TRABALHAMOS -->
-  <section class="te-section">
-    <div class="te-section-header fade-up">
-      <div class="te-kicker">Como trabalhamos</div>
-      <h2 class="te-title">Processo claro, do primeiro contato ao pós-embarque.</h2>
-      <p class="te-subtitle">
-        Mais do que encontrar produto, nosso papel é organizar a operação, registrar o que foi entregue e dar segurança para que
-        as partes sigam fazendo negócios.
+        <div class="process-step fade-up delay-2">
+          <div class="process-step-number">Etapa 3</div>
+          <div class="process-step-title">Acompanhamento e pós-venda</div>
+          <p>
+            Mantemos o cliente informado até a conclusão da operação e usamos o histórico construído em relatórios e
+            negociações
+            para estruturar o próximo passo com mais segurança.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-final">
+      <h2>Pronto para discutir uma operação com o Grupo Trade Expansion?</h2>
+      <p>
+        Se você está avaliando uma compra no Brasil, estruturando exportação ou precisa de uma visão independente sobre
+        lotes
+        e cargas, podemos apoiar com olhar técnico e experiência prática.
       </p>
-    </div>
+      <a href="<?php echo esc_url(home_url('/contato')); ?>">Entrar em contato</a>
+    </section>
+  </main>
 
-    <div class="process-grid">
-      <div class="process-step fade-up">
-        <div class="process-step-number">Etapa 1</div>
-        <div class="process-step-title">Entendimento da operação</div>
-        <p>
-          Mapeamos o cenário do cliente, o produto desejado, o mercado de destino e o nível de risco aceito. A partir daí,
-          definimos o escopo: inspeção, intermediação, exportação ou combinação das três frentes.
-        </p>
-      </div>
+  </script>
+  <script>
+    (function () {
+      const header = document.getElementById('teHeader');
+      if (!header) return;
 
-      <div class="process-step fade-up delay-1">
-        <div class="process-step-number">Etapa 2</div>
-        <div class="process-step-title">Conexão, conferência e registro</div>
-        <p>
-          Conectamos com fornecedores adequados, conferimos lotes em campo quando necessário e produzimos relatórios técnicos
-          que registram o que está sendo negociado, evitando ruídos futuros.
-        </p>
-      </div>
+      // Header: logo completa -> ícone
+      const toggleHeader = () => {
+        header.classList.toggle('is-scrolled', window.scrollY > 24);
+      };
 
-      <div class="process-step fade-up delay-2">
-        <div class="process-step-number">Etapa 3</div>
-        <div class="process-step-title">Acompanhamento e pós-venda</div>
-        <p>
-          Mantemos o cliente informado até a conclusão da operação e usamos o histórico construído em relatórios e negociações
-          para estruturar o próximo passo com mais segurança.
-        </p>
-      </div>
-    </div>
-  </section>
+      // Parallax sutil (só desktop / sem reduzir acessibilidade)
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+      const heroVideo = document.querySelector('.hero-video');
+      const breakVideo = document.querySelector('.te-break-video');
 
-  <!-- CTA FINAL -->
-  <section class="cta-final">
-    <h2>Pronto para discutir uma operação com o Grupo Trade Expansion?</h2>
-    <p>
-      Se você está avaliando uma compra no Brasil, estruturando exportação ou precisa de uma visão independente sobre lotes
-      e cargas, podemos apoiar com olhar técnico e experiência prática.
-    </p>
-    <a href="<?php echo esc_url( home_url('/contato') ); ?>">Entrar em contato</a>
-  </section>
-</main>
+      let ticking = false;
+      const onScroll = () => {
+        toggleHeader();
+        if (prefersReduced || isCoarse) return;
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(() => {
+          const y = window.scrollY || 0;
+          const p1 = Math.min(28, y * 0.08);
+          const p2 = Math.min(20, y * 0.05);
+          if (heroVideo) heroVideo.style.transform = `translate3d(0, ${p1}px, 0) scale(1.03)`;
+          if (breakVideo) breakVideo.style.transform = `translate3d(0, ${p2}px, 0) scale(1.02)`;
+          ticking = false;
+        });
+      };
 
-</script>
-<script>
-  (function () {
-    const header = document.getElementById('teHeader');
-    if (!header) return;
-
-    // Header: logo completa -> ícone
-    const toggleHeader = () => {
-      header.classList.toggle('is-scrolled', window.scrollY > 24);
-    };
-
-    // Parallax sutil (só desktop / sem reduzir acessibilidade)
-    const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isCoarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-    const heroVideo = document.querySelector('.hero-video');
-    const breakVideo = document.querySelector('.te-break-video');
-
-    let ticking = false;
-    const onScroll = () => {
       toggleHeader();
-      if (prefersReduced || isCoarse) return;
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(() => {
-        const y = window.scrollY || 0;
-        const p1 = Math.min(28, y * 0.08);
-        const p2 = Math.min(20, y * 0.05);
-        if (heroVideo) heroVideo.style.transform = `translate3d(0, ${p1}px, 0) scale(1.03)`;
-        if (breakVideo) breakVideo.style.transform = `translate3d(0, ${p2}px, 0) scale(1.02)`;
-        ticking = false;
-      });
-    };
-
-    toggleHeader();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  })();
-</script>
-<?php wp_footer(); ?>
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+  </script>
+  <?php wp_footer(); ?>
 </body>
+
 </html>

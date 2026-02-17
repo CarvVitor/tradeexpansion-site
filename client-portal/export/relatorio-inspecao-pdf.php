@@ -32,22 +32,22 @@ if (!$can_edit && !$can_view_as_client) {
   wp_die(__('Você não tem permissão para acessar este relatório.', 'tradeexpansion'), __('Acesso negado', 'tradeexpansion'), ['response' => 403]);
 }
 
-$report_title   = get_the_title($post);
-$report_date    = get_post_time('d/m/Y', false, $post, true);
-$status_slug    = get_post_meta($post_id, 'tec_status', true);
-$status_label   = te_client_portal_format_report_status($status_slug);
-$cliente_nome   = function_exists('tec_portal_get_client_name') ? tec_portal_get_client_name($client_id) : '';
-$responsavel    = get_the_author_meta('display_name', $post->post_author);
-$material_nome  = get_post_meta($post_id, 'tec_material_nome', true);
-$lote_codigo    = get_post_meta($post_id, 'tec_lote_codigo', true);
+$report_title = get_the_title($post);
+$report_date = get_post_time('d/m/Y', false, $post, true);
+$status_slug = get_post_meta($post_id, 'tec_status', true);
+$status_label = te_client_portal_format_report_status($status_slug);
+$cliente_nome = function_exists('tec_portal_get_client_name') ? tec_portal_get_client_name($client_id) : '';
+$responsavel = get_the_author_meta('display_name', $post->post_author);
+$material_nome = get_post_meta($post_id, 'tec_material_nome', true);
+$lote_codigo = get_post_meta($post_id, 'tec_lote_codigo', true);
 $local_inspecao = get_post_meta($post_id, 'tec_local', true);
-$data_inspecao  = get_post_meta($post_id, 'tec_data_inspecao', true);
+$data_inspecao = get_post_meta($post_id, 'tec_data_inspecao', true);
 if (!$data_inspecao) {
   $data_inspecao = get_post_time('Y-m-d', false, $post, true);
 }
-$resumo         = get_post_meta($post_id, 'tec_resumo', true);
-$observacoes    = trim($post->post_content);
-$observacoes    = $observacoes ? apply_filters('the_content', $observacoes) : '<p>' . esc_html__('Nenhuma observação adicional registrada.', 'tradeexpansion') . '</p>';
+$resumo = get_post_meta($post_id, 'tec_resumo', true);
+$observacoes = trim($post->post_content);
+$observacoes = $observacoes ? apply_filters('the_content', $observacoes) : '<p>' . esc_html__('Nenhuma observação adicional registrada.', 'tradeexpansion') . '</p>';
 
 $checklist_items = [
   __('Integridade das chapas/blocos', 'tradeexpansion'),
@@ -59,6 +59,7 @@ $checklist_items = [
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
+
 <head>
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,18 +69,21 @@ $checklist_items = [
       size: A4;
       margin: 20mm;
     }
+
     :root {
       --primary: #102724;
       --accent: #5D2713;
       --bg: #ffffff;
       --muted: rgba(16, 39, 36, 0.65);
     }
+
     body {
       font-family: 'Vollkorn', serif;
       margin: 0;
       background: #f5f5f0;
       color: var(--primary);
     }
+
     .pdf-wrap {
       max-width: 800px;
       margin: 0 auto;
@@ -87,6 +91,7 @@ $checklist_items = [
       padding: 32px 40px 48px;
       box-shadow: 0 20px 60px rgba(16, 39, 36, 0.08);
     }
+
     header {
       display: flex;
       justify-content: space-between;
@@ -95,21 +100,25 @@ $checklist_items = [
       padding-bottom: 16px;
       margin-bottom: 28px;
     }
+
     header img {
       height: 48px;
     }
+
     header h1 {
       font-size: 1.4rem;
       margin: 0;
       text-transform: uppercase;
       letter-spacing: 0.15em;
     }
+
     .meta {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
+
     .meta span {
       display: block;
       font-size: 0.8rem;
@@ -118,12 +127,15 @@ $checklist_items = [
       color: var(--muted);
       margin-bottom: 4px;
     }
+
     .meta strong {
       font-size: 1rem;
     }
+
     section {
       margin-bottom: 28px;
     }
+
     section h2 {
       font-size: 1rem;
       text-transform: uppercase;
@@ -131,17 +143,20 @@ $checklist_items = [
       color: var(--accent);
       margin-bottom: 12px;
     }
+
     .grid-two {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
     }
+
     .grid-two label {
       display: block;
       font-size: 0.85rem;
       color: var(--muted);
       margin-bottom: 4px;
     }
+
     .grid-two p,
     .grid-two div {
       font-size: 1rem;
@@ -150,29 +165,34 @@ $checklist_items = [
       padding: 10px 14px;
       min-height: 42px;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.95rem;
     }
+
     table th,
     table td {
       border: 1px solid rgba(16, 39, 36, 0.2);
       padding: 10px;
       text-align: left;
     }
+
     table th {
       background: rgba(16, 39, 36, 0.05);
       text-transform: uppercase;
       letter-spacing: 0.2em;
       font-size: 0.75rem;
     }
+
     .note-block {
       border: 1px dashed rgba(16, 39, 36, 0.3);
       border-radius: 16px;
       padding: 18px;
       background: rgba(241, 241, 217, 0.5);
     }
+
     .status-chip {
       display: inline-flex;
       align-items: center;
@@ -184,16 +204,19 @@ $checklist_items = [
       text-transform: uppercase;
       letter-spacing: 0.3em;
     }
+
     footer {
       margin-top: 32px;
       font-size: 0.8rem;
       color: var(--muted);
       text-align: center;
     }
+
     @media print {
       body {
         background: #fff;
       }
+
       .pdf-wrap {
         box-shadow: none;
         padding: 0;
@@ -202,6 +225,7 @@ $checklist_items = [
   </style>
   <?php wp_head(); ?>
 </head>
+
 <body class="pdf-report">
   <div class="pdf-wrap">
     <header>
@@ -209,7 +233,7 @@ $checklist_items = [
         <h1><?php esc_html_e('Relatório de Inspeção', 'tradeexpansion'); ?></h1>
         <small><?php echo bloginfo('name'); ?></small>
       </div>
-      <?php $logo = get_template_directory_uri() . '/assets/logo.png'; ?>
+      <?php $logo = get_template_directory_uri() . '/assets/images/logo.jpg'; ?>
       <img src="<?php echo esc_url($logo); ?>" alt="<?php bloginfo('name'); ?>">
     </header>
 
@@ -276,7 +300,7 @@ $checklist_items = [
           </tr>
         </thead>
         <tbody>
-          <?php foreach ($checklist_items as $item) : ?>
+          <?php foreach ($checklist_items as $item): ?>
             <tr>
               <td><?php echo esc_html($item); ?></td>
               <td><?php echo esc_html__('—', 'tradeexpansion'); ?></td>
@@ -300,4 +324,5 @@ $checklist_items = [
   </div>
   <?php wp_footer(); ?>
 </body>
+
 </html>

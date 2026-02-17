@@ -693,16 +693,15 @@
 
 <body id="main-body">
 
-  <header class="site-header">
-    <div class="logo-container">
-      <img src="https://tradeexpansion.com.br/wp-content/themes/tradeexpansion-site-main/assets/images/logo.jpg"
-        alt="Trade Expansion">
-    </div>
-    <nav class="header-nav">
-      <a href="https://tradeexpansion.com.br/">Home</a>
-      <a href="https://tradeexpansion.com.br/rochas/">Slabs</a>
-      <a href="https://tradeexpansion.com.br/contato/">Contact</a>
-    </nav>
+  <div class="logo-container">
+    <img src="https://tradeexpansion.com.br/wp-content/themes/tradeexpansion-site-main/assets/logo.jpg"
+      alt="Trade Expansion">
+  </div>
+  <nav class="header-nav">
+    <a href="https://tradeexpansion.com.br/">Home</a>
+    <a href="https://tradeexpansion.com.br/rochas/">Slabs</a>
+    <a href="https://tradeexpansion.com.br/contato/">Contact</a>
+  </nav>
   </header>
 
   <div class="container">

@@ -174,13 +174,13 @@ $already_logged = $current_user && te_client_portal_user_is_allowed($current_use
     <!-- Cinematic Visual Side -->
     <div class="branding-side">
       <div class="branding-content">
-        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo.png'); ?>" alt="Trade Expansion"
+        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo.jpg'); ?>" alt="Trade Expansion"
           class="h-10 w-auto mb-20 opacity-40 grayscale brightness-200">
         <h1 class="text-6xl font-bold text-white leading-[0.9] mb-8 tracking-tighter">
           Technical<br><span class="text-primary-gold italic font-normal tracking-normal">Excellence.</span>
         </h1>
         <p class="text-white/30 text-xl leading-relaxed font-light italic max-w-sm">
-          <?php _e('Curaduría técnica de materiales ornamentais. Un portal exclusivo para socios globales.', 'tradeexpansion'); ?>
+          <?php _e('Curadoria técnica de materiais ornamentais. Um portal exclusivo para parceiros globais.', 'tradeexpansion'); ?>
         </p>
       </div>
 
@@ -193,9 +193,10 @@ $already_logged = $current_user && te_client_portal_user_is_allowed($current_use
     <div class="form-side">
       <div class="mb-16">
         <span class="editorial-tag">Privé Access</span>
-        <h2 class="text-4xl font-bold text-white mb-3 tracking-tight"><?php _e('Bienvenido', 'tradeexpansion'); ?></h2>
+        <h2 class="text-4xl font-bold text-white mb-3 tracking-tight"><?php _e('Bem-vindo', 'tradeexpansion'); ?></h2>
         <p class="text-white/30 text-sm italic">
-          <?php _e('Inicie sesión para acceder a su portafolio exclusivo.', 'tradeexpansion'); ?></p>
+          <?php _e('Inicie sessão para acessar seu portfólio exclusivo.', 'tradeexpansion'); ?>
+        </p>
       </div>
 
       <?php if ($status_message): ?>
@@ -210,7 +211,8 @@ $already_logged = $current_user && te_client_portal_user_is_allowed($current_use
           <div class="p-10 rounded-2xl border border-white/5 bg-white/2">
             <span class="luxury-label mb-4"><?php _e('Sesión Activa', 'tradeexpansion'); ?></span>
             <p class="text-2xl text-white mb-10">
-              <?php echo esc_html($current_user->display_name ?: $current_user->user_login); ?></p>
+              <?php echo esc_html($current_user->display_name ?: $current_user->user_login); ?>
+            </p>
 
             <a href="<?php echo esc_url(home_url('/dashboard/')); ?>" class="block btn-gold-prestige text-center mb-6">
               <?php _e('Entrar al Panel', 'tradeexpansion'); ?>

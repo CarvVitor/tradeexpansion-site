@@ -50,14 +50,8 @@ add_action('init', function () {
   // Registra tags para as variáveis de rota
   add_rewrite_tag('%tec_portal%', '([^&]+)');
   add_rewrite_tag('%lang%', '([^&]+)');
-
-  // Sem prefixo de idioma
-  add_rewrite_rule('^area-do-cliente/?$', 'index.php?tec_portal=login', 'top');
-  add_rewrite_rule('^dashboard/?$', 'index.php?tec_portal=dashboard', 'top');
-
-  // Com prefixo de idioma (pt ou en)
-  add_rewrite_rule('^(pt|en)/area-do-cliente/?$', 'index.php?tec_portal=login&lang=$matches[1]', 'top');
-  add_rewrite_rule('^(pt|en)/dashboard/?$', 'index.php?tec_portal=dashboard&lang=$matches[1]', 'top');
+  add_rewrite_tag('%tec_export%', '([^&]+)');
+  add_rewrite_tag('%tec_export_post%', '([^&]+)');
 });
 
 // 2) Permite as query vars
@@ -89,45 +83,14 @@ add_action('admin_init', function () {
 });
 
 // 5) Router: seleciona o template correto (prefere /client-portal/views)
+// Nota: agora delegado principalmente ao portal-loader.php, mas mantido se houver lógica específica aqui.
 add_filter('template_include', function ($template) {
   $portal = get_query_var('tec_portal');
   if (!$portal)
     return $template;
 
-  $base = get_template_directory() . '/client-portal';
-  $views = $base . '/views';
-
-  $resolve = function ($name) use ($base, $views) {
-    $viewFile = $views . '/' . $name . '.php';
-    $rootFile = $base . '/' . $name . '.php';
-    if (file_exists($viewFile))
-      return $viewFile;
-    if (file_exists($rootFile))
-      return $rootFile;
-    return false;
-  };
-
-  if ($portal === 'login') {
-    $file = $resolve('login');
-    return $file ? $file : $template;
-  }
-
-  if ($portal === 'dashboard') {
-    if (!is_user_logged_in()) {
-      wp_redirect(home_url('/area-do-cliente'));
-      exit;
-    }
-    // Use the page template wrapper (with get_header/get_footer/loader)
-    // instead of loading views/dashboard.php directly without any layout.
-    $page_template = get_template_directory() . '/page-portal-dashboard.php';
-    if (file_exists($page_template)) {
-      return $page_template;
-    }
-    $file = $resolve('dashboard');
-    return $file ? $file : $template;
-  }
-
-  return $template;
+  // A maior parte da lógica agora está no portal-loader.php
+  return te_client_portal_template_include($template);
 });
 
 /* ==== /CLIENT PORTAL ==== */
