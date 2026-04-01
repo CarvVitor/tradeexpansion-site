@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Digital de Cubas — Trade Expansion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #102724;
+            --primary-dark: #0a1b18;
+            --background: #fdfdfd;
+            --surface: #ffffff;
+            --text-main: #1a1612;
+            --text-muted: #6b6057;
+            --accent: #c9a96e;
+            --accent-light: #e8d5a3;
+            --line: rgba(0, 0, 0, 0.08);
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* ─── LANGUAGE SWITCHER ────────────────────────── */
+        .lang-switcher {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--line);
+        }
+
+        .lang-btn {
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: var(--transition);
+            opacity: 0.5;
+            filter: grayscale(0.8);
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            filter: grayscale(0);
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        /* ─── COVER ───────────────────────────────────── */
+        .hero {
+            height: 100vh;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            position: relative;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.05), transparent);
+            pointer-events: none;
+        }
+
+        .hero-eyebrow {
+            font-size: 12px;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .hero-title {
+            font-size: clamp(48px, 8vw, 100px);
+            font-weight: 300;
+            line-height: 0.9;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--accent-light);
+        }
+
+        /* ─── ORIGIN SECTION ───────────────────────────── */
+        .origin-section {
+            background-color: #f9f7f4;
+            padding: 120px 60px;
+            text-align: center;
+        }
+
+        .origin-title {
+            font-size: 42px;
+            font-weight: 300;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+        
+        .origin-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .origin-desc {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 16px;
+            line-height: 2;
+            color: var(--text-muted);
+            letter-spacing: 0.02em;
+        }
+
+        /* ─── CONTAINER ────────────────────────────────── */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 100px 60px;
+        }
+
+        .section-header {
+            margin-bottom: 80px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 300;
+            color: var(--primary);
+        }
+
+        /* ─── PRODUCT GRID ─────────────────────────────── */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 120px;
+        }
+
+        .product-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            padding: 40px;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.05);
+        }
+
+        /* ─── GALLERY & SELECTORS ─────────────────────────── */
+        .product-gallery {
+            position: relative;
+            width: 100%;
+        }
+
+        .main-image-container {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: #f7f7f7;
+            overflow: hidden;
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: opacity 0.25s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .img-fallback {
+            background-color: #f7f7f7;
+            padding: 40px;
+            object-fit: scale-down;
+            opacity: 0.5;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        .is-loading::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            background: #f0f0f0;
+            background-image: linear-gradient(to right, #f0f0f0 0%, #e8e8e8 20%, #f0f0f0 40%, #f0f0f0 100%);
+            background-repeat: no-repeat;
+            background-size: 1000px 100%; 
+            animation: shimmer 2s infinite linear forwards;
+        }
+
+        .variation-selectors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .mat-selector {
+            background: none;
+            border: 1px solid var(--line);
+            border-radius: 50px;
+            padding: 8px 16px;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .mat-selector:hover {
+            border-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .mat-selector.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--surface);
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(201,169,110,0.2);
+        }
+
+        .dimension-toggle {
+            margin-top: 20px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 0;
+            border-bottom: 1px solid transparent;
+            font-weight: 600;
+        }
+
+        .dimension-toggle:hover {
+            border-color: var(--accent);
+        }
+
+        /* ─── INFO ───────────────────────────────────── */
+        .product-info {
+            padding: 10px 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .product-model {
+            font-size: 11px;
+            letter-spacing: 0.35em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .product-name {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            color: var(--primary);
+            line-height: 1.1;
+        }
+
+        .product-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 500px;
+            line-height: 1.8;
+            transition: opacity 0.25s;
+        }
+
+        .product-specs {
+            margin-bottom: 35px;
+            border-top: 1px solid var(--line);
+            padding-top: 25px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .spec-label {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 400;
+        }
+
+        .spec-value {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .price-container {
+            display: flex;
+            align-items: baseline;
+            gap: 20px;
+        }
+
+        .price-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .price-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 38px;
+            font-weight: 600;
+            color: var(--primary);
+            transition: opacity 0.25s;
+        }
+
+        /* ─── FOOTER ───────────────────────────────────── */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 120px 60px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 28px;
+            letter-spacing: 0.45em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 50px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            list-style: none;
+            margin-bottom: 80px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ─── RUSTIC SPECIAL VIEW ───────────────────────── */
+        .is-schematic .main-image {
+            filter: grayscale(1) opacity(0.8);
+        }
+        .schematic-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.05);
+            padding: 5px 12px;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            border-radius: 2px;
+            z-index: 3;
+        }
+
+        /* ─── UTILS ───────────────────────────────────── */
+        [data-i18n] { transition: opacity 0.2s; }
+        .fade-out { opacity: 0; }
+
+        /* ─── RESPONSIVE ──────────────────────────────── */
+        @media (max-width: 768px) {
+            .container { padding: 40px 20px; }
+            .origin-section { padding: 80px 20px; }
+            .product-card {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding: 24px;
+            }
+            .product-name { font-size: 32px; }
+            .product-desc { font-size: 13px; }
+            .price-value { font-size: 32px; }
+            .variation-selectors { justify-content: flex-start; }
+            .hero-title { font-size: 40px; }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="lang-switcher">
+        <div class="lang-btn active" onclick="switchLang('pt')" id="btn-pt"><img src="https://flagcdn.com/br.svg" alt="Português"></div>
+        <div class="lang-btn" onclick="switchLang('en')" id="btn-en"><img src="https://flagcdn.com/us.svg" alt="English"></div>
+        <div class="lang-btn" onclick="switchLang('es')" id="btn-es"><img src="https://flagcdn.com/es.svg" alt="Español"></div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <p class="hero-eyebrow" data-i18n="hero_eyebrow">Digital Catalog 2024</p>
+        <h1 class="hero-title" data-i18n="hero_title">Stone Basin <br><em>Collection</em></h1>
+    </section>
+
+    <!-- Origin Section -->
+    <section class="origin-section">
+        <h2 class="origin-title" data-i18n="origin_title">O Berço da <em>Beleza</em></h2>
+        <p class="origin-desc" data-i18n="origin_desc">Do coração do Brasil para o mundo. Nossas pedras são meticulosamente extraídas de jazidas seletas, lapidadas com maestria artística para elevar seu espaço ao auge da sofisticação e luxo autêntico.</p>
+    </section>
+
+    <div class="container">
+        
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="cat_apoio">Countertop Sinks</h2>
+        </div>
+        <div class="product-grid" id="grid-apoio"></div>
+
+        <div class="section-header" style="margin-top: 150px;">
+            <h2 class="section-title" data-i18n="cat_semi">Semi-Countertop</h2>
+        </div>
+        <div class="product-grid" id="grid-semi"></div>
+
+        <div class="section-header" style="margin-top: 150px;">
+            <h2 class="section-title" data-i18n="cat_rustico">Rustic Collection</h2>
+        </div>
+        <div class="product-grid" id="grid-rustico"></div>
+
+    </div>
+
+    <footer>
+        <div class="footer-logo">Trade Expansion</div>
+        <ul class="footer-links">
+            <li><a href="#" data-i18n="footer_home">Home</a></li>
+            <li><a href="#" data-i18n="footer_materials">Materials</a></li>
+            <li><a href="#" data-i18n="footer_contact">Contact</a></li>
+        </ul>
+        <p style="font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 0.15em; text-transform: uppercase;">
+            © 2024 Trade Expansion LTDA. All Rights Reserved.
+        </p>
+    </footer>
+
+    <script>
+        const translations = {
+            pt: {
+                hero_eyebrow: "Catálogo Digital 2024",
+                hero_title: "Coleção de <br><em>Cubas</em> Ornamento",
+                origin_title: "O Berço da <em>Beleza</em>",
+                origin_desc: "Do coração do Brasil para o mundo. Nossas pedras são meticulosamente extraídas de jazidas seletas, lapidadas com maestria artística para elevar seu espaço ao auge da sofisticação e luxo autêntico.",
+                cat_apoio: "Cubas de Apoio",
+                cat_semi: "Semi-Apoio e Encaixe",
+                cat_rustico: "Linha Rústica",
+                footer_home: "Início",
+                footer_materials: "Materiais",
+                footer_contact: "Contato",
+                price_label: "Preço FOB USD",
+                spec_dim: "Dimensões",
+                btn_dimension: "Ver Dimensões",
+                btn_photo: "Ver Foto",
+                model: "Modelo",
+                schematic: "Visão Técnica",
+                
+                // Materials
+                m_bege: "Bege Bahia",
+                m_moura: 'Branco Moura',
+                m_branco: "Mármore Branco",
+                m_carrara: "Mármore Carrarinha",
+                m_rosa: "Rosa Bahia",
+                
+                // Descriptions Genericas
+                desc_cilindrica: "Equilíbrio perfeito entre a robustez da pedra e a leveza das formas circulares.",
+                desc_quadrada: "Linhas retas e design minimalista. Uma peça moderna que exalta a pureza geométrica.",
+                desc_oitavada: "Oito faces polidas que criam um jogo de reflexos único em pedras veadas.",
+                desc_redonda: "Compacta e elegante. Perfeita para lavabos sofisticados.",
+                desc_rustica: "A beleza da pedra bruta preservada com interior polido à perfeição.",
+                
+                // Descriptions Editoriais de Luxo
+                m_desc_bege: "Traz a luz radiante e a elegância atemporal à sua casa, esculpido na tradicional e calorosa rocha brasileira. Uma peça de arte orgânica permanente.",
+                m_desc_moura: "Contraste dramático e sofisticação exótica. Uma exibição audaciosa da natureza que atrai o olhar e protagoniza imediatamente qualquer ambiente.",
+                m_desc_branco: "Minimalismo cristalino absoluto. Uma afirmação de purismo arquitetônico que transborda a tranquilidade e a perfeição contínua da pureza absoluta.",
+                m_desc_carrara: "Veios delicados e ritmados revelando a riqueza oculta da pedra, criando um palco clássico e refinado de serenidade autêntica.",
+                m_desc_rosa: "Tonalidades raras e passionalmente quentes que conferem um status inegável de verdadeira obra-prima escultural natural."
+            },
+            en: {
+                hero_eyebrow: "Digital Catalog 2024",
+                hero_title: "Stone Basin <br><em>Collection</em>",
+                origin_title: "The Cradle of <em>Beauty</em>",
+                origin_desc: "From the heart of Brazil to the world. Our stones are meticulously extracted from select quarries, polished with artistic mastery to elevate your space to the pinnacle of authentic luxury.",
+                cat_apoio: "Countertop Sinks",
+                cat_semi: "Semi-Countertop",
+                cat_rustico: "Rustic Collection",
+                footer_home: "Home",
+                footer_materials: "Materials",
+                footer_contact: "Contact",
+                price_label: "FOB Price USD",
+                spec_dim: "Dimensions",
+                btn_dimension: "Dimensions",
+                btn_photo: "View Photo",
+                model: "Model",
+                schematic: "Technical View",
+                
+                // Materials
+                m_bege: "Bahia Beige",
+                m_moura: 'Moura White',
+                m_branco: "White Marble",
+                m_carrara: "Carrarinha Marble",
+                m_rosa: "Pink Bahia",
+                
+                // Descriptions Genericas
+                desc_cilindrica: "Perfect balance between the robustness of stone and the lightness of circular forms.",
+                desc_quadrada: "Straight lines and minimalist design. A modern piece that exalts geometric purity.",
+                desc_oitavada: "Eight polished faces that create a unique play of reflections in veined stones.",
+                desc_redonda: "Compact and elegant. Perfect for sophisticated powder rooms.",
+                desc_rustica: "The beauty of raw stone preserved with an interior polished to perfection.",
+                
+                // Descriptions Editoriais de Luxo
+                m_desc_bege: "Brings radiant light and timeless elegance to your home, sculpted from the traditional and warm Brazilian stone. A permanent piece of organic art.",
+                m_desc_moura: "Dramatic contrast and exotic sophistication. A bold display of nature that catches the eye and instantly takes center stage in any environment.",
+                m_desc_branco: "Absolute crystalline minimalism. An architectural statement of purism that overflows with the seamless perfection of absolute purity.",
+                m_desc_carrara: "Delicate, rhythmic veins revealing the hidden richness of the stone, creating a classic and refined stage of authentic serenity.",
+                m_desc_rosa: "Rare and passionately warm tones that grant an undeniable status of a true sculptural, natural masterpiece."
+            },
+            es: {
+                hero_eyebrow: "Catálogo Digital 2024",
+                hero_title: "Colección de <br><em>Lavabos</em> Ornamento",
+                origin_title: "La Cuna de la <em>Belleza</em>",
+                origin_desc: "Del corazón de Brasil para el mundo. Nuestras piedras son meticulosamente extraídas de canteras selectas, pulidas con maestría artística para elevar su espacio a la cima del lujo auténtico.",
+                cat_apoio: "Lavabos de Apoyo",
+                cat_semi: "Semi-Apoyo y Encaje",
+                cat_rustico: "Línea Rústica",
+                footer_home: "Inicio",
+                footer_materials: "Materiales",
+                footer_contact: "Contacto",
+                price_label: "Precio FOB USD",
+                spec_dim: "Dimensiones",
+                btn_dimension: "Dimensiones",
+                btn_photo: "Ver Foto",
+                model: "Modelo",
+                schematic: "Visión Técnica",
+                
+                // Materials
+                m_bege: "Bege Bahia",
+                m_moura: 'Blanco Moura',
+                m_branco: "Mármol Blanco",
+                m_carrara: "Mármol Carrarinha",
+                m_rosa: "Rosa Bahia",
+                
+                // Descriptions Genericas
+                desc_cilindrica: "Equilibrio perfecto entre la robustez de la piedra y la ligereza de las formas circulares.",
+                desc_quadrada: "Líneas rectas y diseño minimalista. Una pieza moderna que exalta la pureza geométrica.",
+                desc_oitavada: "Ocho caras pulidas que crean un juego de reflejos único en piedras veteadas.",
+                desc_redonda: "Compacto y elegante. Perfecto para tocadores sofisticados.",
+                desc_rustica: "La belleza de la piedra bruta preservada con un interior pulido a la perfección.",
+
+                // Descriptions Editoriais de Luxo
+                m_desc_bege: "Aporta luz radiante y elegancia atemporal a su hogar, esculpido en la tradicional y cálida piedra brasileña. Una pieza permanente de arte orgánico.",
+                m_desc_moura: "Contraste dramático y sofisticación exótica. Una audaz exhibición de la naturaleza que atrae la mirada y protagoniza inmediatamente cualquier ambiente.",
+                m_desc_branco: "Minimalismo cristalino absoluto. Una declaración arquitectónica de purismo que desborda la tranquilidad y perfección sin fisuras de la pureza absoluta.",
+                m_desc_carrara: "Vetas delicadas y rítmicas que revelan la riqueza oculta de la piedra, creando un escenario clásico y refinado de genuina serenidad.",
+                m_desc_rosa: "Tonalidades raras y apasionadamente cálidas que confieren un estatus innegable de verdadera obra maestra escultural natural."
+            }
+        };
+
+        const FALLBACK_SVG = `data:image/svg+xml;utf8,<svg viewBox='0 0 24 24' width='60' height='60' stroke='%23c9a96e' stroke-width='1' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='18' rx='2' ry='2'></rect><circle cx='8.5' cy='8.5' r='1.5'></circle><polyline points='21 15 16 10 5 21'></polyline></svg>`;
+
+        const handleImgErr = "this.onerror=null; this.src='" + FALLBACK_SVG + "'; this.classList.add('img-fallback');";
+
+        const products = [
+            {
+                id: "cilindrica", cat: "apoio", model: "CR",
+                name: { pt: "Cuba Cilíndrica", en: "Cylindrical Sink", es: "Lavabo Cilíndrico" },
+                desc: "desc_cilindrica", dim: "Ø 31 cm x 13 cm", default_price: "150.48",
+                folder: "CUBA DE APOIO CILÍNDRICA ",
+                hero: "Cuba de Apoio Cilindrica - hero.png",
+                dim_img: "CUBA DE APOIO CILÍNDRICA - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE APOIO CILÍNDRICA - Bege Bahia.png", price: "150.48", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE APOIO CILÍNDRICA - Branco \"Moura\" Exótico.png", price: "150.48", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE APOIO CILÍNDRICA - Marmore Branco.png", price: "150.48", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE APOIO CILÍNDRICA - Marmore Carrarinha.png", price: "150.48", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE APOIO CILÍNDRICA - Rosa Bahia.png", price: "150.48", desc: "m_desc_rosa" }
+                ]
+            },
+            {
+                id: "quadrada", cat: "apoio", model: "CQ",
+                name: { pt: "Cuba Quadrada", en: "Square Sink", es: "Lavabo Cuadrado" },
+                desc: "desc_quadrada", dim: "40 x 40 x 13 cm", default_price: "756.36",
+                folder: "CUBA DE APOIO QUADRADA",
+                hero: "CUBA DE APOIO QUADRADA - Hero.png",
+                dim_img: "CUBA DE APOIO QUADRADA - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE APOIO QUADRADA - Bege Bahia.png", price: "756.36", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE APOIO QUADRADA - Branco \"Moura\" Exótico.png", price: "756.36", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE APOIO QUADRADA - Marmore Branco.png", price: "756.36", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE APOIO QUADRADA - Marmore Carrarinha.png", price: "756.36", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE APOIO QUADRADA - Rosa Bahia.png", price: "756.36", desc: "m_desc_rosa" }
+                ]
+            },
+            {
+                id: "oitavada", cat: "apoio", model: "CO",
+                name: { pt: "Cuba Oitavada", en: "Octagonal Sink", es: "Lavabo Octogonal" },
+                desc: "desc_oitavada", dim: "41 x 41 x 13 cm", default_price: "756.36",
+                folder: "CUBA DE APOIO OITAVADA",
+                hero: "CUBA DE APOIO OITAVADA-hero.png",
+                dim_img: "CUBA DE APOIO OITAVADA - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE APOIO OITAVADA-Bege Bahia .png", price: "756.36", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE APOIO OITAVADA - Branco \"Moura\" Exótico.png", price: "756.36", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE APOIO OITAVADA-Marmore Branco.png", price: "756.36", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE APOIO OITAVADA-Marmore Carrarinha.png", price: "756.36", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE APOIO OITAVADA-Rosa Bahia.png", price: "756.36", desc: "m_desc_rosa" }
+                ]
+            },
+            {
+                id: "redonda28", cat: "apoio", model: "Redonda 28",
+                name: { pt: "Cuba Round 28", en: "Round 28 Sink", es: "Lavabo Round 28" },
+                desc: "desc_redonda", dim: "28 x 28 x 12.5 cm", default_price: "150.48",
+                folder: "CUBA DE APOIO REDONDA - 28CM",
+                hero: "CUBA DE APOIO REDONDA - 28CM - Hero.png",
+                dim_img: "CUBA DE APOIO REDONDA - 28CM - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE APOIO REDONDA - 28CM - Bege Bahia.png", price: "150.48", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE APOIO REDONDA - 28CM - Branco \"Moura\" Exótico.png", price: "150.48", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE APOIO REDONDA - 28CM - Marmore Branco.png", price: "150.48", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE APOIO REDONDA - 28CM - Marmore Carrarinha.png", price: "150.48", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE APOIO REDONDA - 28CM - Rosa Bahia.png", price: "150.48", desc: "m_desc_rosa" }
+                ]
+            },
+            {
+                id: "redonda34", cat: "apoio", model: "Redonda 34",
+                name: { pt: "Cuba Round 34", en: "Round 34 Sink", es: "Lavabo Round 34" },
+                desc: "desc_redonda", dim: "34 x 34 x 13 cm", default_price: "150.48",
+                folder: "CUBA DE APOIO REDONDA - 34CM ",
+                hero: "CUBA DE APOIO REDONDA - 34CM - Hero.png",
+                dim_img: "CUBA DE APOIO REDONDA - 34CM - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE APOIO REDONDA - 34CM - Bege Bahia.png", price: "150.48", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE APOIO REDONDA - 34CM - Branco \"Moura\" Exótico.png", price: "150.48", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE APOIO REDONDA - 34CM - Marmore Branco.png", price: "150.48", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE APOIO REDONDA - 34CM - Marmore Carrarinha.png", price: "150.48", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE APOIO REDONDA - 34CM - Rosa Bahia.png", price: "150.48", desc: "m_desc_rosa" }
+                ]
+            },
+            // SEMI APOIO
+            {
+                id: "semi_cilindrica", cat: "semi", model: "CCSA",
+                name: { pt: "Semi-Apoio Cilíndrica", en: "Semi-Countertop Cylindrical", es: "Semi-Apoyo Cilíndrico" },
+                desc: "desc_cilindrica", dim: "38.5 x 38.5 x 12.5 cm", default_price: "277.20",
+                folder: "CUBA DE SEMI APOIO CILINDRICA",
+                hero: "CUBA DE SEMI APOIO CILINDRICA - Hero.png",
+                dim_img: "CUBA DE SEMI APOIO CILINDRICA - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE SEMI APOIO CILINDRICA - Bege Bahia.png", price: "277.20", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE SEMI APOIO CILINDRICA - Branco \"Moura\" Exótico.png", price: "277.20", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE SEMI APOIO CILINDRICA - Marmore Branco.png", price: "277.20", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE SEMI APOIO CILINDRICA -Marmore Carrarinha.png", price: "277.20", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE SEMI APOIO CILINDRICA - Rosa Bahia.png", price: "277.20", desc: "m_desc_rosa" }
+                ]
+            },
+            {
+                id: "semi_quadrada", cat: "semi", model: "CQSA",
+                name: { pt: "Semi-Apoio Quadrada", en: "Semi-Countertop Square", es: "Semi-Apoyo Cuadrado" },
+                desc: "desc_quadrada", dim: "40 x 40 x 9.5 cm", default_price: "487.08",
+                folder: "CUBA DE SEMI APOIO QUADRADA",
+                hero: "CUBA DE SEMI APOIO QUADRADA - hero.png",
+                dim_img: "CUBA DE SEMI APOIO QUADRADA - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE SEMI APOIO QUADRADA - Bege bahia.png", price: "487.08", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE SEMI APOIO QUADRADA - Branco \"Moura\" Exótico.png", price: "487.08", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE SEMI APOIO QUADRADA - Marmore Branco.png", price: "487.08", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE SEMI APOIO QUADRADA - Marmore Carrarinha.png", price: "487.08", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE SEMI APOIO QUADRADA - Rosa Bahia.png", price: "487.08", desc: "m_desc_rosa" }
+                ]
+            },
+            {
+                id: "semi_oitavada", cat: "semi", model: "COSA",
+                name: { pt: "Semi-Apoio Oitavada", en: "Semi-Countertop Octagonal", es: "Semi-Apoyo Octogonal" },
+                desc: "desc_oitavada", dim: "41 x 41 x 14 cm", default_price: "405.90",
+                folder: "CUBA DE SEMI APOIO OITAVADA",
+                hero: "CUBA DE SEMI APOIO OITAVADA - hero.png",
+                dim_img: "CUBA DE SEMI APOIO OITAVADA - Dimensões.png",
+                variations: [
+                    { m: "m_bege", file: "CUBA DE SEMI APOIO OITAVADA - Bege Bahia.png", price: "405.90", desc: "m_desc_bege" },
+                    { m: "m_moura", file: "CUBA DE SEMI APOIO OITAVADA - Branco \"Moura\" Exótico.png", price: "405.90", desc: "m_desc_moura" },
+                    { m: "m_branco", file: "CUBA DE SEMI APOIO OITAVADA - Marmore Branco.png", price: "405.90", desc: "m_desc_branco" },
+                    { m: "m_carrara", file: "CUBA DE SEMI APOIO OITAVADA - Marmore Carrarinha.png", price: "405.90", desc: "m_desc_carrara" },
+                    { m: "m_rosa", file: "CUBA DE SEMI APOIO OITAVADA - Rosa Bahia.png", price: "405.90", desc: "m_desc_rosa" }
+                ]
+            },
+            // RUSTICO (No Variations = No Dynamic changes but fallback needs handler)
+            {
+                id: "rustico_bege", cat: "rustico", model: "Rústico I",
+                name: { pt: "Bege Bahia Rústico", en: "Rustic Bege Bahia", es: "Bege Bahia Rústico" },
+                desc: "desc_rustica", dim: "~40 x 40 x 13 cm", default_price: "540.00",
+                folder: "CUBA DE APOIO BEGE BAHIA  RUSTICO",
+                hero: "CUBA DE APOIO BEGE BAHIA  RUSTICO-hero.png",
+                dim_img: "CUBA DE APOIO BEGE BAHIA  RUSTICO - Dimensões.png",
+                variations: []
+            },
+            {
+                id: "rustico_branco", cat: "rustico", model: "Rústico II",
+                name: { pt: "Branco Exótico Rústico", en: "Rustic Exotic White", es: "Blanco Exótico Rústico" },
+                desc: "desc_rustica", dim: "~45 x 35 x 15 cm", default_price: "756.00",
+                folder: "CUBA DE APOIO BRANCO EXÓTICO RUSTICO",
+                hero: "CUBA DE APOIO BRANCO EXÓTICO RUSTICO - Dimensão.png",
+                dim_img: "CUBA DE APOIO BRANCO EXÓTICO RUSTICO - Dimensão.png",
+                placeholder: true, variations: []
+            },
+            {
+                id: "rustico_granito", cat: "rustico", model: "Rústico III",
+                name: { pt: "Granito Rústico", en: "Rustic Granite", es: "Granito Rústico" },
+                desc: "desc_rustica", dim: "~50 x 40 x 12 cm", default_price: "540.00",
+                folder: "CUBA DE APOIO GRANITO  RUSTICO",
+                hero: "CUBA DE APOIO GRANITO RUSTICO - Dimensões.png",
+                dim_img: "CUBA DE APOIO GRANITO RUSTICO - Dimensões.png",
+                placeholder: true, variations: []
+            }
+        ];
+
+        let currentLang = 'pt';
+        const selectedMaterialIndex = {};
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${lang}`).classList.add('active');
+
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.classList.add('fade-out');
+                    setTimeout(() => {
+                        el.innerHTML = translations[lang][key];
+                        el.classList.remove('fade-out');
+                    }, 200);
+                }
+            });
+            updateGridsLanguage();
+        }
+
+        function renderGrids() {
+            const grids = {
+                apoio: document.getElementById('grid-apoio'),
+                semi: document.getElementById('grid-semi'),
+                rustico: document.getElementById('grid-rustico')
+            };
+
+            for (let k in grids) grids[k].innerHTML = '';
+
+            products.forEach((p, pIndex) => {
+                const card = document.createElement('div');
+                card.className = `product-card ${p.placeholder ? 'is-schematic' : ''}`;
+                card.id = `card-${pIndex}`;
+                
+                if(p.variations.length > 0) {
+                    selectedMaterialIndex[pIndex] = 0;
+                }
+                
+                let activeVar = p.variations.length > 0 ? p.variations[selectedMaterialIndex[pIndex]] : null;
+                let activeDescKey = activeVar ? activeVar.desc : p.desc;
+                let activePrice = activeVar ? activeVar.price : p.default_price;
+
+                let selectorsHtml = p.variations.map((v, vIndex) => {
+                    return `<button class="mat-selector ${selectedMaterialIndex[pIndex] === vIndex ? 'active' : ''}" 
+                                 onclick="setPhoto(${pIndex}, ${vIndex})" 
+                                 data-mat-key="${v.m}">
+                                ${translations[currentLang][v.m]}
+                            </button>`;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="product-gallery">
+                        ${p.placeholder ? `<div class="schematic-badge" data-i18n="schematic">${translations[currentLang].schematic}</div>` : ''}
+                        <div class="main-image-container" id="container-${pIndex}">
+                            <img src="Cubas/${p.folder}/${activeVar ? activeVar.file : p.hero}" class="main-image" id="pimg-${pIndex}" onerror="${handleImgErr}">
+                        </div>
+                        <div class="variation-selectors" id="selectors-${pIndex}">${selectorsHtml}</div>
+                        <div class="dimension-toggle" id="toggle-${pIndex}" onclick="toggleDim(${pIndex})">
+                            <span data-i18n="btn_dimension">${translations[currentLang].btn_dimension}</span>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <p class="product-model"><span data-i18n="model">${translations[currentLang].model}</span> ${p.model}</p>
+                            <h3 class="product-name" id="name-${pIndex}">${p.name[currentLang]}</h3>
+                            <p class="product-desc" id="desc-${pIndex}" data-active-desc-key="${activeDescKey}">${translations[currentLang][activeDescKey]}</p>
+                            <div class="product-specs">
+                                <div class="spec-item">
+                                    <span class="spec-label" data-i18n="spec_dim">${translations[currentLang].spec_dim}</span>
+                                    <span class="spec-value">${p.dim}</span>
+                                </div>
+                            </div>
+                            <div class="price-container">
+                                <span class="price-label" data-i18n="price_label">${translations[currentLang].price_label}</span>
+                                <span class="price-value" id="price-${pIndex}">$${activePrice}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grids[p.cat].appendChild(card);
+            });
+        }
+
+        function updateGridsLanguage() {
+            products.forEach((p, pIndex) => {
+                document.getElementById(`name-${pIndex}`).innerText = p.name[currentLang];
+                
+                const descEl = document.getElementById(`desc-${pIndex}`);
+                const activeKey = descEl.getAttribute('data-active-desc-key');
+                if (translations[currentLang][activeKey]) {
+                    descEl.innerText = translations[currentLang][activeKey];
+                }
+
+                const selectorsContainer = document.getElementById(`selectors-${pIndex}`);
+                if(selectorsContainer) {
+                    const selectors = selectorsContainer.querySelectorAll('.mat-selector');
+                    selectors.forEach(s => {
+                        const matKey = s.getAttribute('data-mat-key');
+                        if (matKey) s.innerText = translations[currentLang][matKey];
+                    });
+                }
+            });
+        }
+
+        function setPhoto(pIndex, vIndex) {
+            const p = products[pIndex];
+            const v = p.variations[vIndex];
+            const img = document.getElementById(`pimg-${pIndex}`);
+            const container = document.getElementById(`container-${pIndex}`);
+            const descEl = document.getElementById(`desc-${pIndex}`);
+            const priceEl = document.getElementById(`price-${pIndex}`);
+            const toggle = document.getElementById(`toggle-${pIndex}`);
+            
+            img.style.opacity = '0';
+            descEl.style.opacity = '0';
+            priceEl.style.opacity = '0';
+            container.classList.add('is-loading');
+
+            selectedMaterialIndex[pIndex] = vIndex;
+
+            setTimeout(() => {
+                img.src = `Cubas/${p.folder}/${v.file}`;
+                
+                descEl.setAttribute('data-active-desc-key', v.desc);
+                descEl.innerText = translations[currentLang][v.desc];
+                priceEl.innerText = `$${v.price}`;
+
+                toggle.querySelector('span').innerText = translations[currentLang].btn_dimension;
+                const card = img.closest('.product-card');
+                card.classList.remove('is-schematic');
+
+                card.querySelectorAll('.mat-selector').forEach((s, i) => {
+                    s.classList.toggle('active', i === vIndex);
+                });
+
+                img.style.opacity = '1';
+                descEl.style.opacity = '1';
+                priceEl.style.opacity = '1';
+                container.classList.remove('is-loading');
+            }, 300);
+        }
+
+        function toggleDim(pIndex) {
+            const p = products[pIndex];
+            const img = document.getElementById(`pimg-${pIndex}`);
+            const container = document.getElementById(`container-${pIndex}`);
+            const toggle = document.getElementById(`toggle-${pIndex}`);
+            const currentSrc = decodeURIComponent(img.src);
+            const isDim = currentSrc.includes(p.dim_img);
+            
+            img.style.opacity = '0';
+            container.classList.add('is-loading');
+
+            setTimeout(() => {
+                if (isDim) {
+                    // Retorna pra foto principal correspondente ao material selecionado
+                    let restoreImgSrc = `Cubas/${p.folder}/${p.hero}`;
+                    if(p.variations.length > 0){
+                        restoreImgSrc = `Cubas/${p.folder}/${p.variations[selectedMaterialIndex[pIndex]].file}`;
+                    }
+                    img.src = restoreImgSrc;
+                    
+                    toggle.querySelector('span').innerText = translations[currentLang].btn_dimension;
+                    if (p.placeholder) img.closest('.product-card').classList.add('is-schematic');
+                    
+                    if(p.variations.length > 0){
+                       img.closest('.product-card').querySelectorAll('.mat-selector')[selectedMaterialIndex[pIndex]].classList.add('active');
+                    }
+                } else {
+                    img.src = `Cubas/${p.folder}/${p.dim_img}`;
+                    toggle.querySelector('span').innerText = translations[currentLang].btn_photo;
+                    img.closest('.product-card').classList.remove('is-schematic');
+                    
+                    img.closest('.product-card').querySelectorAll('.mat-selector').forEach(s => s.classList.remove('active'));
+                }
+                
+                img.style.opacity = '1';
+                container.classList.remove('is-loading');
+            }, 300);
+        }
+
+        window.onload = renderGrids;
+    </script>
+    
+    <!-- Assistente IA Petra -->
+    <script src="../../ai-assistente/chat-widget.js"></script>
+</body>
+
+</html>

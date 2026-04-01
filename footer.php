@@ -89,5 +89,7 @@
 </script>
 
 <?php wp_footer(); ?>
+<!-- Assistente IA Petra -->
+<script src="<?php echo get_template_directory_uri(); ?>/ai-assistente/chat-widget.js"></script>
 </body>
 </html>
