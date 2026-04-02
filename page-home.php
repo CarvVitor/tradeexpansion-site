@@ -1033,7 +1033,14 @@
             <button id="te-lab-close" style="background:none; border:none; color:var(--cream); font-size:1.5rem; cursor:pointer; line-height: 1;">✕</button>
           </div>
         </div>
-        <iframe id="te-lab-iframe" src="" style="width:100%; flex: 1; border:none;" title="Technical Report Viewer"></iframe>
+        <div style="position: relative; flex: 1; display: flex; flex-direction: column;">
+          <div style="position: absolute; inset: 0; pointer-events: none; z-index: 10; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            <div style="transform: rotate(-35deg); font-family: sans-serif; font-weight: 800; color: rgba(184, 149, 106, 0.12); font-size: 4rem; text-transform: uppercase; letter-spacing: 0.2em; white-space: nowrap; user-select: none;">
+              Example Only · Clients Only · Example Only · Clients Only
+            </div>
+          </div>
+          <iframe id="te-lab-iframe" src="" style="width:100%; flex: 1; border:none;" title="Technical Report Viewer"></iframe>
+        </div>
         <div style="text-align:center; padding: 0.8rem; font-size:0.75rem; color:rgba(184,149,106,0.5); text-transform:uppercase; letter-spacing:0.1em; background: rgba(26,26,26,0.5);">Documento de uso analítico · Trade Expansion Technical Division</div>
       </div>
     </div>
