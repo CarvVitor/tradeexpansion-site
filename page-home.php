@@ -1024,12 +1024,17 @@
     </section>
 
     <!-- MODAL DO LAUDO -->
-    <div id="te-lab-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center;">
-      <div style="max-width: 700px; width: 90%; position: relative;">
-        <button id="te-lab-close" style="position:absolute; top:-40px; right:0; background:none; border:none; color:var(--cream); font-size:1.5rem; cursor:pointer;">✕</button>
-        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/report-blurred.png'); ?>"
-          alt="Exemplo de laudo técnico" style="width:100%; border-radius:12px; box-shadow:0 24px 60px rgba(0,0,0,0.6);">
-        <p style="text-align:center; margin-top:1rem; font-size:0.82rem; color:rgba(184,149,106,0.7); text-transform:uppercase; letter-spacing:0.1em;">Dados borrados para preservar a privacidade dos clientes</p>
+    <div id="te-lab-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.9); backdrop-filter:blur(10px); align-items:center; justify-content:center;">
+      <div style="max-width: 900px; width: 95%; height: 85vh; position: relative; background: var(--secondary); border: 1px solid rgba(184, 149, 106, 0.2); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;">
+        <div style="padding: 1rem 1.5rem; background: rgba(26, 26, 26, 0.9); border-bottom: 1px solid rgba(184, 149, 106, 0.1); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-family: 'Cormorant Garamond', serif; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.9rem;">Technical Inspection Report · Taj Mahal</span>
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <a href="<?php echo esc_url(get_template_directory_uri() . '/assets/Laudo_Taj-Mahal_EN_2026-04-02.pdf'); ?>" download class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.75rem; border-color: rgba(184, 149, 106, 0.3);">Download PDF</a>
+            <button id="te-lab-close" style="background:none; border:none; color:var(--cream); font-size:1.5rem; cursor:pointer; line-height: 1;">✕</button>
+          </div>
+        </div>
+        <iframe id="te-lab-iframe" src="" style="width:100%; flex: 1; border:none;" title="Technical Report Viewer"></iframe>
+        <div style="text-align:center; padding: 0.8rem; font-size:0.75rem; color:rgba(184,149,106,0.5); text-transform:uppercase; letter-spacing:0.1em; background: rgba(26,26,26,0.5);">Documento de uso analítico · Trade Expansion Technical Division</div>
       </div>
     </div>
 
@@ -1232,8 +1237,16 @@
       const labBtn = document.getElementById('te-lab-btn');
       const labModal = document.getElementById('te-lab-modal');
       const labClose = document.getElementById('te-lab-close');
+      const labIframe = document.getElementById('te-lab-iframe');
+      const pdfUrl = "<?php echo esc_url(get_template_directory_uri() . '/assets/Laudo_Taj-Mahal_EN_2026-04-02.pdf'); ?>";
+
       if (labBtn && labModal) {
-        labBtn.addEventListener('click', () => { labModal.style.display = 'flex'; });
+        labBtn.addEventListener('click', () => { 
+          labModal.style.display = 'flex'; 
+          if (labIframe && !labIframe.src) {
+            labIframe.src = pdfUrl + "#toolbar=0&navpanes=0";
+          }
+        });
         labClose.addEventListener('click', () => { labModal.style.display = 'none'; });
         labModal.addEventListener('click', (e) => { if (e.target === labModal) labModal.style.display = 'none'; });
       }
