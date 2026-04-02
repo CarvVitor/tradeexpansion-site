@@ -48,7 +48,7 @@
     <!-- LOGO -->
     <div class="flex items-center space-x-3">
       <a href="<?php echo home_url(); ?>" class="flex items-center space-x-2" aria-label="Trade Expansion">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/logo.jpg" alt="Trade Expansion"
+        <img src="<?php echo get_template_directory_uri(); ?>/assets/logo.png" alt="Trade Expansion"
           class="te-logo-img h-10 w-auto">
 
         <!-- Ícone (aparece no scroll) -->
@@ -109,16 +109,11 @@
       });
     </script>
 
-    <!-- BANDEIRAS -->
-    <div class="flex items-center space-x-4 relative z-30">
-      <a href="/pt/" title="Português" class="hover:opacity-80 transition">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/br-flag.svg" alt="Português"
-          class="w-6 h-6 rounded-full border border-custom1">
-      </a>
-      <a href="/en/" title="English" class="hover:opacity-80 transition">
-        <img src="<?php echo get_template_directory_uri(); ?>/assets/uk-flag.svg" alt="English"
-          class="w-6 h-6 rounded-full border border-custom1">
-      </a>
+    <!-- SELETOR DE IDIOMA (B2B LUXURY) -->
+    <div class="flex items-center space-x-3 relative z-30 text-sm tracking-widest uppercase font-semibold text-custom1/70">
+      <a href="/pt/" title="Português" class="hover:text-gold transition text-custom1">PT</a>
+      <span class="opacity-40">/</span>
+      <a href="/en/" title="English" class="hover:text-gold transition">EN</a>
     </div>
   </header>
 

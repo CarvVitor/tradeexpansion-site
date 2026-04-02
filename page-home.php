@@ -13,16 +13,18 @@
   <meta charset="<?php bloginfo('charset'); ?>">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php wp_title('|', true, 'right'); ?> <?php bloginfo('name'); ?></title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Vollkorn:wght@400;500;600&display=swap" rel="stylesheet">
   <?php wp_head(); ?>
 
   <style>
     :root {
-      --primary: #102724;
-      --secondary: #484942;
-      --accent: #5D2713;
-      --cream: #F1F1D9;
-      --text: #E1E2DA;
-      --gold: #D6A354;
+      --primary: #1A1A1A;
+      --secondary: #2D2D2D;
+      --accent: #B8956A;
+      --cream: #F5F3EF;
+      --text: #E8E6E1;
+      --gold: #B8956A;
+      --charcoal: #0F0F0F;
     }
 
     * {
@@ -32,7 +34,7 @@
     body {
       margin: 0;
       font-family: 'Vollkorn', Georgia, serif;
-      background: radial-gradient(circle at top, #1b332f 0%, #0c1514 45%, #050808 100%);
+      background: var(--charcoal);
       color: var(--text);
       overflow-x: hidden;
     }
@@ -52,9 +54,9 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: linear-gradient(90deg, rgba(16, 39, 36, 0.92), rgba(72, 73, 66, 0.9));
+      background: rgba(15, 15, 15, 0.92);
       backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(241, 241, 217, 0.06);
+      border-bottom: 1px solid rgba(184, 149, 106, 0.08);
     }
 
     .te-logo {
@@ -89,7 +91,7 @@
 
     header.te-header.is-scrolled {
       padding: 0.85rem 4vw;
-      border-bottom-color: rgba(214, 163, 84, 0.18);
+      border-bottom-color: rgba(184, 149, 106, 0.18);
     }
 
     header.te-header.is-scrolled .te-logo-img {
@@ -106,9 +108,9 @@
 
     /* BARRA / MARQUEE ENTRE SEÇÕES */
     .te-marquee {
-      background: rgba(5, 8, 8, 0.92);
-      border-top: 1px solid rgba(241, 241, 217, 0.08);
-      border-bottom: 1px solid rgba(241, 241, 217, 0.08);
+      background: rgba(15, 15, 15, 0.95);
+      border-top: 1px solid rgba(184, 149, 106, 0.08);
+      border-bottom: 1px solid rgba(184, 149, 106, 0.08);
       overflow: hidden;
     }
 
@@ -132,16 +134,16 @@
       font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.24em;
-      color: rgba(241, 241, 217, 0.78);
+      color: rgba(245, 243, 239, 0.6);
       white-space: nowrap;
     }
 
     .te-marquee-dot {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
-      background: rgba(214, 163, 84, 0.85);
-      box-shadow: 0 0 14px rgba(214, 163, 84, 0.35);
+      background: rgba(184, 149, 106, 0.7);
+      box-shadow: 0 0 10px rgba(184, 149, 106, 0.25);
       flex: 0 0 auto;
     }
 
@@ -181,8 +183,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at top left, rgba(214, 163, 84, 0.22), transparent 55%),
-        linear-gradient(120deg, rgba(16, 39, 36, 0.88), rgba(5, 8, 8, 0.92));
+        radial-gradient(circle at top left, rgba(184, 149, 106, 0.12), transparent 55%),
+        linear-gradient(120deg, rgba(15, 15, 15, 0.92), rgba(15, 15, 15, 0.95));
     }
 
     .te-break-content {
@@ -219,9 +221,9 @@
 
     /* GRID DE MATERIAIS (FOTOS DINÂMICAS) */
     .materials {
-      background: rgba(5, 8, 8, 0.88);
-      border-top: 1px solid rgba(241, 241, 217, 0.06);
-      border-bottom: 1px solid rgba(241, 241, 217, 0.06);
+      background: rgba(15, 15, 15, 0.95);
+      border-top: 1px solid rgba(184, 149, 106, 0.06);
+      border-bottom: 1px solid rgba(184, 149, 106, 0.06);
     }
 
     .materials-grid {
@@ -238,7 +240,7 @@
       min-height: 280px;
       background-size: cover;
       background-position: center;
-      border: 1px solid rgba(241, 241, 217, 0.14);
+      border: 1px solid rgba(184, 149, 106, 0.12);
       box-shadow: 0 18px 48px rgba(0, 0, 0, 0.55);
       transition: transform 0.22s ease-out, box-shadow 0.22s ease-out, border-color 0.22s ease-out;
     }
@@ -246,7 +248,7 @@
     .material-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75);
-      border-color: rgba(214, 163, 84, 0.55);
+      border-color: rgba(184, 149, 106, 0.45);
     }
 
     .material-overlay {
@@ -329,15 +331,15 @@
     .te-nav-cta {
       padding: 0.55rem 1.4rem;
       border-radius: 999px;
-      border: 1px solid rgba(214, 163, 84, 0.65);
+      border: 1px solid rgba(184, 149, 106, 0.5);
       color: var(--cream) !important;
-      background: radial-gradient(circle at top left, rgba(214, 163, 84, 0.28), transparent 55%);
+      background: radial-gradient(circle at top left, rgba(184, 149, 106, 0.18), transparent 55%);
       transition: background 0.25s ease-out, transform 0.25s ease-out, box-shadow 0.25s ease-out;
     }
 
     .te-nav-cta:hover {
-      background: linear-gradient(135deg, #d6a354, #5d2713);
-      box-shadow: 0 0 18px rgba(214, 163, 84, 0.45);
+      background: linear-gradient(135deg, var(--accent), #8B6E4E);
+      box-shadow: 0 0 18px rgba(184, 149, 106, 0.35);
       transform: translateY(-1px);
     }
 
@@ -371,8 +373,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at top left, rgba(214, 163, 84, 0.38), transparent 55%),
-        linear-gradient(120deg, rgba(16, 39, 36, 0.94), rgba(16, 39, 36, 0.65), rgba(5, 8, 8, 0.95));
+        radial-gradient(circle at top left, rgba(184, 149, 106, 0.15), transparent 55%),
+        linear-gradient(120deg, rgba(15, 15, 15, 0.95), rgba(26, 26, 26, 0.85), rgba(15, 15, 15, 0.97));
       mix-blend-mode: multiply;
     }
 
@@ -397,8 +399,9 @@
     }
 
     .hero-title {
-      font-size: clamp(2.9rem, 5vw, 4.6rem);
-      line-height: 1.05;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      line-height: 1.1;
       font-weight: 300;
       margin-bottom: 1.8rem;
     }
@@ -428,7 +431,7 @@
       justify-content: center;
       padding: 0.85rem 2.4rem;
       border-radius: 999px;
-      background: linear-gradient(135deg, #d6a354, #5d2713);
+      background: linear-gradient(135deg, var(--accent), #8B6E4E);
       color: var(--cream);
       text-transform: uppercase;
       letter-spacing: 0.18em;
@@ -449,19 +452,18 @@
       justify-content: center;
       padding: 0.8rem 1.9rem;
       border-radius: 999px;
-      border: 1px solid rgba(241, 241, 217, 0.4);
-      color: rgba(241, 241, 217, 0.88);
+      border: 1px solid rgba(241, 241, 217, 0.2);
+      color: rgba(241, 241, 217, 0.9);
       text-transform: uppercase;
       letter-spacing: 0.16em;
       font-size: 0.78rem;
-      background: rgba(5, 8, 8, 0.6);
-      backdrop-filter: blur(6px);
+      background: transparent;
       transition: background 0.22s ease-out, border-color 0.22s ease-out;
     }
 
     .btn-secondary:hover {
-      background: rgba(5, 8, 8, 0.9);
-      border-color: var(--gold);
+      background: rgba(214, 163, 84, 0.1);
+      border-color: rgba(214, 163, 84, 0.4);
     }
 
     .hero-meta {
@@ -475,9 +477,10 @@
     .hero-side-card {
       padding: 2.2rem 2.4rem;
       border-radius: 18px;
-      background: radial-gradient(circle at top left, rgba(241, 241, 217, 0.08), rgba(16, 39, 36, 0.98));
-      border: 1px solid rgba(241, 241, 217, 0.12);
+      background: rgba(26, 26, 26, 0.85);
+      border: 1px solid rgba(184, 149, 106, 0.12);
       box-shadow: 0 22px 60px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
     }
 
     .hero-side-title {
@@ -538,6 +541,7 @@
     }
 
     .te-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 2.1rem;
       font-weight: 300;
       color: var(--cream);
@@ -605,17 +609,18 @@
     .service-card {
       padding: 2.4rem 2.2rem;
       border-radius: 18px;
-      background: radial-gradient(circle at top left, rgba(241, 241, 217, 0.12), rgba(16, 39, 36, 0.98));
-      border: 1px solid rgba(241, 241, 217, 0.18);
+      background: rgba(26, 26, 26, 0.85);
+      border: 1px solid rgba(184, 149, 106, 0.12);
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.6);
-      color: rgba(241, 241, 217, 0.9);
+      color: rgba(245, 243, 239, 0.9);
+      backdrop-filter: blur(8px);
       transition: transform 0.22s ease-out, box-shadow 0.22s ease-out, border-color 0.22s ease-out;
     }
 
     .service-card:hover {
       transform: translateY(-6px);
       box-shadow: 0 24px 56px rgba(0, 0, 0, 0.8);
-      border-color: rgba(214, 163, 84, 0.6);
+      border-color: rgba(184, 149, 106, 0.45);
     }
 
     .service-kicker {
@@ -656,10 +661,10 @@
     .process-step {
       padding: 1.8rem 1.8rem 1.9rem;
       border-radius: 16px;
-      border: 1px solid rgba(241, 241, 217, 0.14);
-      background: rgba(5, 8, 8, 0.9);
+      border: 1px solid rgba(184, 149, 106, 0.1);
+      background: rgba(26, 26, 26, 0.7);
       font-size: 0.94rem;
-      color: rgba(241, 241, 217, 0.84);
+      color: rgba(245, 243, 239, 0.84);
     }
 
     .process-step-number {
@@ -679,12 +684,14 @@
     /* CTA FINAL */
     .cta-final {
       padding: 5rem 6vw 5.5rem;
-      background: radial-gradient(circle at top left, #5d2713, #102724);
+      background: linear-gradient(135deg, rgba(184, 149, 106, 0.15), rgba(15, 15, 15, 0.98));
       text-align: center;
       color: var(--cream);
+      border-top: 1px solid rgba(184, 149, 106, 0.1);
     }
 
     .cta-final h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 2.3rem;
       font-weight: 300;
       margin-bottom: 1.4rem;
@@ -694,7 +701,7 @@
       font-size: 0.98rem;
       max-width: 36rem;
       margin: 0 auto 2.4rem;
-      color: rgba(241, 241, 217, 0.9);
+      color: rgba(245, 243, 239, 0.85);
       line-height: 1.7;
     }
 
@@ -704,8 +711,8 @@
       justify-content: center;
       padding: 0.9rem 2.6rem;
       border-radius: 999px;
-      background: #f1f1d9;
-      color: #102724;
+      background: linear-gradient(135deg, var(--accent), #8B6E4E);
+      color: var(--cream);
       text-transform: uppercase;
       letter-spacing: 0.18em;
       font-size: 0.8rem;
@@ -798,7 +805,7 @@
 
   <header class="te-header" id="teHeader">
     <a class="te-logo" href="<?php echo esc_url(home_url('/')); ?>" aria-label="Trade Expansion">
-      <img class="te-logo-img" src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo.jpg'); ?>"
+      <img class="te-logo-img" src="<?php echo esc_url(get_template_directory_uri() . '/assets/logo.png'); ?>"
         alt="Trade Expansion" />
 
       <!-- Ícone (aparece no scroll) -->
@@ -843,36 +850,31 @@
 
       <div class="hero-grid">
         <div class="fade-up">
-          <div class="hero-kicker">Grupo Trade Expansion</div>
-          <h1 class="hero-title">Excelência em operações <span>internacionais</span>.</h1>
+          <div class="hero-kicker">Boutique de Inteligência em Comércio Exterior</div>
+          <h1 class="hero-title">Onde a Precisão encontra a <span>Exclusividade</span> na Exportação de Rochas.</h1>
           <p class="hero-text">
-            Atuamos na conexão entre produtores brasileiros e compradores internacionais, com foco em rochas
-            ornamentais,
-            commodities e inspeção técnica independente. Operação enxuta, olhar técnico e compromisso absoluto com a
-            qualidade
-            entregue.
+            Curadoria técnica e inteligência operacional para compradores que não aceitam margem
+            para erro. Do campo à entrega final, garantimos a integridade do seu investimento.
           </p>
 
           <div class="hero-actions">
-            <a class="btn-primary" href="<?php echo esc_url(home_url('/contato')); ?>">Falar sobre um projeto</a>
-            <a class="btn-secondary" href="<?php echo esc_url(home_url('/inspecao')); ?>">Ver como funciona a
-              inspeção</a>
+            <a class="btn-primary" href="<?php echo esc_url(home_url('/contato')); ?>">Solicitar Curadoria Técnica</a>
+            <a class="btn-secondary" href="<?php echo esc_url(home_url('/inspecao')); ?>">Consultar Especialista</a>
           </div>
 
-          <div class="hero-meta">Presença em campo no Brasil · Relacionamento direto com compradores externos</div>
+          <div class="hero-meta">Operações para importadores na Europa, Ásia e América do Norte · Inspeções em ES, MG e BA</div>
         </div>
 
         <aside class="hero-side-card fade-up delay-2">
-          <div class="hero-side-title">Operação em três pilares</div>
+          <div class="hero-side-title">Atendimento Boutique e Dedicado</div>
           <div class="hero-side-text">
-            Exportação, inspeção e intermediação comercial atuam de forma integrada para reduzir riscos, alinhar
-            expectativas
-            entre as partes e construir relações de longo prazo.
+            Cada operação recebe atenção exclusiva. Nosso modelo boutique garante que seu projeto
+            tenha um especialista dedicado do início ao embarque — sem filas, sem surpresas.
           </div>
           <div class="hero-tags">
-            <span class="hero-tag-pill">Rochas ornamentais</span>
-            <span class="hero-tag-pill">Inspeção independente</span>
-            <span class="hero-tag-pill">Commodities</span>
+            <span class="hero-tag-pill">Curadoria de Rochas</span>
+            <span class="hero-tag-pill">Inspeção Técnica</span>
+            <span class="hero-tag-pill">Blindagem Operacional</span>
           </div>
         </aside>
       </div>
@@ -894,71 +896,58 @@
             aria-hidden="true"></span>
           <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot"
             aria-hidden="true"></span>
-
-          <span class="te-marquee-item">Rochas ornamentais</span><span class="te-marquee-dot" aria-hidden="true"></span>
-          <span class="te-marquee-item">Inspeção independente</span><span class="te-marquee-dot"
-            aria-hidden="true"></span>
-          <span class="te-marquee-item">Commodities</span><span class="te-marquee-dot" aria-hidden="true"></span>
-          <span class="te-marquee-item">Exportação</span><span class="te-marquee-dot" aria-hidden="true"></span>
-          <span class="te-marquee-item">Sourcing</span><span class="te-marquee-dot" aria-hidden="true"></span>
-          <span class="te-marquee-item">Relatórios fotográficos</span><span class="te-marquee-dot"
-            aria-hidden="true"></span>
-          <span class="te-marquee-item">Qualidade &amp; conformidade</span><span class="te-marquee-dot"
-            aria-hidden="true"></span>
-          <span class="te-marquee-item">Logística internacional</span><span class="te-marquee-dot"
-            aria-hidden="true"></span>
         </div>
       </div>
     </section>
+
+    <div style="background: rgba(26, 26, 26, 0.6); text-align: center; padding: 1.5rem 0; border-bottom: 1px solid rgba(184, 149, 106, 0.08);">
+      <p style="font-size: 0.82rem; letter-spacing: 0.12em; color: rgba(184, 149, 106, 0.7); margin: 0; text-transform: uppercase;">
+        Operações realizadas para importadores na Europa, Ásia e América do Norte · Inspeções técnicas em ES, MG e BA
+      </p>
+    </div>
 
     <!-- SOBRE / QUEM SOMOS -->
     <section class="te-section">
       <div class="te-section-header fade-up">
         <div class="te-kicker">Quem somos</div>
-        <h2 class="te-title">Estrutura enxuta, visão estratégica e atuação em campo.</h2>
+        <h2 class="te-title">A Inteligência por trás das Maiores Operações.</h2>
         <p class="te-subtitle">
-          A Trade Expansion LTDA é uma empresa brasileira de comércio exterior que auxilia produtores e compradores a
-          estruturarem operações internacionais com clareza, controle e segurança.
+          Na Trade Expansion, não apenas facilitamos negócios; nós os blindamos. Nossa estrutura
+          boutique permite um olhar microscópico sobre cada detalhe da rocha e da logística.
         </p>
       </div>
 
       <div class="about-grid fade-up delay-1">
         <div class="about-text">
           <p>
-            Apoiamos parceiros na exportação de rochas ornamentais e na compra de commodities, sempre com foco na
-            qualidade
-            real do produto, na viabilidade logística e na proteção contratual das partes envolvidas.
-          </p>
-          <p>
-            Cada operação é tratada de forma individual: avaliamos o contexto do cliente, entendemos o risco aceito,
-            analisamos fornecedores e estruturamos o fluxo de comunicação para que ninguém seja surpreendido no meio do
-            caminho.
+            Operamos como uma extensão dedicada do seu time de compras. Cada lote é analisado com rigor técnico,
+            cada documento é revisado com precisão jurídica, e cada embarque é acompanhado com a vigílância
+            que seu investimento exige.
           </p>
 
           <div class="about-highlight">
-            <strong>Olhar técnico e responsabilidade.</strong>
-            Nossos relatórios e inspeções não são peças de marketing: são documentos objetivos, criados para embasar
-            decisões
-            comerciais e construir confiança entre compradores e fornecedores.
+            <strong>Inteligência aplicada ao campo.</strong>
+            Nossos laudos e inspeções são instrumentos de decisão — não peças de marketing. Cada relatório
+            é construído para blindar operações e proteger ambas as partes.
           </div>
         </div>
 
         <div class="about-metrics">
           <div class="about-metric">
-            <strong>Brasil &amp; exterior</strong>
-            Atuação direta em operações que conectam produtores brasileiros a importadores em diferentes mercados.
+            <strong>Curadoria Técnica</strong>
+            Seleção criteriosa de materiais com análise visual, dimensional e de acabamento.
           </div>
           <div class="about-metric">
-            <strong>Inspeção em campo</strong>
-            Presença física em pedreiras, pátios e armazéns para conferência de lotes, metragem e acabamento.
+            <strong>Inspeção em Campo</strong>
+            Presença física em pedreiras, pátios e armazéns com documentação fotográfica detalhada.
           </div>
           <div class="about-metric">
-            <strong>Relatórios claros</strong>
-            Documentos com fotos, métricas e observações técnicas pensados para quem decide negócio.
+            <strong>Laudos Técnicos</strong>
+            Documentos com métricas objetivas, construídos para quem toma decisões de alto valor.
           </div>
           <div class="about-metric">
-            <strong>Visão de longo prazo</strong>
-            Foco na construção de relações contínuas, e não em uma única venda isolada.
+            <strong>Visão Estratégica</strong>
+            Foco na construção de operações sustentáveis e relacionamentos de longo prazo.
           </div>
         </div>
       </div>
@@ -979,53 +968,116 @@
       </div>
     </section>
 
+    <!-- THE INTELLIGENCE LAB -->
+    <section class="te-section" style="border-top: 1px solid rgba(184, 149, 106, 0.08);">
+      <div class="te-section-header fade-up">
+        <div class="te-kicker">The Intelligence Lab</div>
+        <h2 class="te-title">Onde cada lote é dissecado antes da decisão.</h2>
+        <p class="te-subtitle">
+          Nosso rigor técnico não é um discurso — é um protocolo. Cada material passa por análise visual,
+          dimensional e de acabamento antes de qualquer recomendação.
+        </p>
+      </div>
+
+      <div class="services-grid" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+        <article class="service-card fade-up" style="text-align: center; padding: 2.8rem 2rem;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin: 0 auto 1.2rem;">
+            <circle cx="20" cy="20" r="14" stroke="var(--accent)" stroke-width="2" fill="none"/>
+            <line x1="30" y1="30" x2="42" y2="42" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="20" cy="20" r="6" stroke="var(--accent)" stroke-width="1.5" fill="none" opacity="0.5"/>
+          </svg>
+          <h3 class="service-title">Análise de Lote</h3>
+          <p class="service-text">Conferência visual, dimensional e de acabamento com registro fotográfico de cada peça avaliada.</p>
+        </article>
+
+        <article class="service-card fade-up delay-1" style="text-align: center; padding: 2.8rem 2rem;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin: 0 auto 1.2rem;">
+            <rect x="6" y="4" width="36" height="40" rx="3" stroke="var(--accent)" stroke-width="2" fill="none"/>
+            <line x1="14" y1="14" x2="34" y2="14" stroke="var(--accent)" stroke-width="1.5" opacity="0.6"/>
+            <line x1="14" y1="20" x2="30" y2="20" stroke="var(--accent)" stroke-width="1.5" opacity="0.6"/>
+            <line x1="14" y1="26" x2="34" y2="26" stroke="var(--accent)" stroke-width="1.5" opacity="0.6"/>
+            <line x1="14" y1="32" x2="26" y2="32" stroke="var(--accent)" stroke-width="1.5" opacity="0.6"/>
+          </svg>
+          <h3 class="service-title">Laudo Técnico</h3>
+          <p class="service-text">Relatório fotográfico com métricas objetivas, construído para embasar decisões de alto valor.</p>
+        </article>
+
+        <article class="service-card fade-up delay-2" style="text-align: center; padding: 2.8rem 2rem;">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style="margin: 0 auto 1.2rem;">
+            <path d="M24 4L24 12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M24 36L24 44" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M4 24L12 24" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M36 24L44 24" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="24" cy="24" r="10" stroke="var(--accent)" stroke-width="2" fill="none"/>
+            <circle cx="24" cy="24" r="4" fill="var(--accent)" opacity="0.3"/>
+          </svg>
+          <h3 class="service-title">Blindagem Operacional</h3>
+          <p class="service-text">Documentação que protege comprador e vendedor em cada etapa da operação comercial.</p>
+        </article>
+      </div>
+
+      <div style="text-align: center; margin-top: 2.4rem;" class="fade-up delay-1">
+        <button id="te-lab-btn" class="btn-secondary" style="cursor: pointer; font-family: inherit;">
+          Ver Exemplo de Laudo →
+        </button>
+      </div>
+    </section>
+
+    <!-- MODAL DO LAUDO -->
+    <div id="te-lab-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); align-items:center; justify-content:center;">
+      <div style="max-width: 700px; width: 90%; position: relative;">
+        <button id="te-lab-close" style="position:absolute; top:-40px; right:0; background:none; border:none; color:var(--cream); font-size:1.5rem; cursor:pointer;">✕</button>
+        <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/report-blurred.png'); ?>"
+          alt="Exemplo de laudo técnico" style="width:100%; border-radius:12px; box-shadow:0 24px 60px rgba(0,0,0,0.6);">
+        <p style="text-align:center; margin-top:1rem; font-size:0.82rem; color:rgba(184,149,106,0.7); text-transform:uppercase; letter-spacing:0.1em;">Dados borrados para preservar a privacidade dos clientes</p>
+      </div>
+    </div>
+
     <!-- SERVIÇOS PRINCIPAIS -->
     <section class="services">
       <div class="te-section-header fade-up">
         <div class="te-kicker">Atuação</div>
-        <h2 class="te-title">O que o Grupo Trade Expansion entrega na prática.</h2>
+        <h2 class="te-title">Três pilares que blindam sua operação.</h2>
         <p class="te-subtitle">
-          Nossas frentes de trabalho se complementam: inspeção técnica, exportação e intermediação comercial estruturam
-          um
-          fluxo único, com acompanhamento próximo do início ao fim da operação.
+          Inspeção técnica, exportação e intermediação comercial operam de forma integrada para
+          eliminar riscos antes que eles existam.
         </p>
       </div>
 
-      <div class="services-grid">
-        <article class="service-card fade-up">
-          <div class="service-kicker">Inspeção técnica</div>
-          <h3 class="service-title">Relatórios independentes em rochas e commodities.</h3>
+      <div class="services-grid" style="grid-template-columns: 1.5fr 1fr; gap: 2rem;">
+        <article class="service-card fade-up" style="border-color: rgba(184, 149, 106, 0.25); padding: 2.8rem;">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" style="margin-bottom: 1.2rem;">
+            <circle cx="20" cy="20" r="18" stroke="var(--accent)" stroke-width="1.5" fill="none"/>
+            <path d="M12 20L18 26L28 14" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="service-kicker">Diferencial Central</div>
+          <h3 class="service-title">Inspeção Técnica Independente</h3>
           <p class="service-text">
-            Conferimos lotes, metragem, acabamento e eventuais não conformidades, entregando relatórios com fotos,
-            descrições
-            técnicas e observações objetivas. Material pensado para importadores, traders e equipes internas de
-            qualidade.
+            Laudos com registro fotográfico, análise dimensional e de acabamento. Cada relatório é
+            um instrumento de decisão construído para proteger seu investimento.
           </p>
-          <a class="service-link" href="<?php echo esc_url(home_url('/inspecao')); ?>">Ver detalhes da inspeção</a>
+          <a class="service-link" href="<?php echo esc_url(home_url('/inspecao')); ?>">Conhecer protocolo de inspeção</a>
         </article>
 
-        <article class="service-card fade-up delay-1">
-          <div class="service-kicker">Exportação</div>
-          <h3 class="service-title">Estruturação de operações com rochas ornamentais.</h3>
-          <p class="service-text">
-            Atuamos ao lado de produtores brasileiros na montagem de operações de exportação: seleção de materiais,
-            definição
-            de lotes, conferência de documentação e coordenação com agentes de carga e terminais.
-          </p>
-          <a class="service-link" href="<?php echo esc_url(home_url('/rochas-ornamentais')); ?>">Conhecer atuação em
-            rochas</a>
-        </article>
+        <div style="display: flex; flex-direction: column; gap: 2rem;">
+          <article class="service-card fade-up delay-1">
+            <div class="service-kicker">Exportação</div>
+            <h3 class="service-title">Operações estruturadas com rochas ornamentais.</h3>
+            <p class="service-text">
+              Seleção de materiais, curadoria de lotes e coordenação logística do início ao embarque.
+            </p>
+            <a class="service-link" href="<?php echo esc_url(home_url('/rochas-ornamentais')); ?>">Explorar curadoria</a>
+          </article>
 
-        <article class="service-card fade-up delay-2">
-          <div class="service-kicker">Intermediação</div>
-          <h3 class="service-title">Conexão segura entre compradores e fornecedores.</h3>
-          <p class="service-text">
-            Fazemos a ponte entre importadores estrangeiros e fornecedores nacionais, alinhando expectativas comerciais,
-            condições de pagamento, prazos e requisitos técnicos. Transparência total sobre riscos e limitações de cada
-            operação.
-          </p>
-          <a class="service-link" href="<?php echo esc_url(home_url('/contato')); ?>">Falar sobre uma demanda</a>
-        </article>
+          <article class="service-card fade-up delay-2">
+            <div class="service-kicker">Intermediação</div>
+            <h3 class="service-title">Conexão blindada entre compradores e fornecedores.</h3>
+            <p class="service-text">
+              Alinhamento técnico e comercial com transparência total sobre riscos e limitações.
+            </p>
+            <a class="service-link" href="<?php echo esc_url(home_url('/contato')); ?>">Consultar especialista</a>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -1054,8 +1106,6 @@
       <div class="te-section-header fade-up">
         <div class="te-kicker">Rochas ornamentais</div>
         <h2 class="te-title">Alguns materiais que costumamos trabalhar.</h2>
-        <p class="te-subtitle">Aqui é o “gostinho” visual: você cadastra o material uma vez (com foto) e ele reaparece
-          no site. Sem retrabalho, sem duplicação.</p>
       </div>
 
       <div class="materials-grid">
@@ -1082,9 +1132,8 @@
           <?php endwhile; ?>
           <?php wp_reset_postdata(); ?>
         <?php else: ?>
-          <div class="about-highlight" style="grid-column: 1 / -1;">
-            <strong>Sem fotos ainda?</strong> Sem drama. Assim que você cadastrar materiais com imagem destacada e marcar
-            “destaque”, eles aparecem automaticamente aqui.
+          <div class="about-highlight" style="grid-column: 1 / -1; display: none;">
+            <!-- Placeholder section oculta via CSS. Para exibir os materiais, insira posts de rochas destacadas no WP -->
           </div>
         <?php endif; ?>
       </div>
@@ -1112,9 +1161,7 @@
           <div class="process-step-number">Etapa 1</div>
           <div class="process-step-title">Entendimento da operação</div>
           <p>
-            Mapeamos o cenário do cliente, o produto desejado, o mercado de destino e o nível de risco aceito. A partir
-            daí,
-            definimos o escopo: inspeção, intermediação, exportação ou combinação das três frentes.
+            Mapeamos o cenário do cliente, o produto desejado e o nível de risco aceito para definir o escopo ideal e seguro da exportação.
           </p>
         </div>
 
@@ -1122,9 +1169,7 @@
           <div class="process-step-number">Etapa 2</div>
           <div class="process-step-title">Conexão, conferência e registro</div>
           <p>
-            Conectamos com fornecedores adequados, conferimos lotes em campo quando necessário e produzimos relatórios
-            técnicos
-            que registram o que está sendo negociado, evitando ruídos futuros.
+            Conectamos os parceiros certos, auditamos lotes em campo e produzimos laudos técnicos objetivos e detalhados.
           </p>
         </div>
 
@@ -1132,9 +1177,7 @@
           <div class="process-step-number">Etapa 3</div>
           <div class="process-step-title">Acompanhamento e pós-venda</div>
           <p>
-            Mantemos o cliente informado até a conclusão da operação e usamos o histórico construído em relatórios e
-            negociações
-            para estruturar o próximo passo com mais segurança.
+            Garantimos comunicação transparente até o fim da entrega e usamos o histórico para otimizar negócios futuros.
           </p>
         </div>
       </div>
@@ -1142,17 +1185,14 @@
 
     <!-- CTA FINAL -->
     <section class="cta-final">
-      <h2>Pronto para discutir uma operação com o Grupo Trade Expansion?</h2>
+      <h2>Seu próximo embarque merece inteligência de ponta.</h2>
       <p>
-        Se você está avaliando uma compra no Brasil, estruturando exportação ou precisa de uma visão independente sobre
-        lotes
-        e cargas, podemos apoiar com olhar técnico e experiência prática.
+        Deixe que nossa curadoria técnica elimine os riscos antes que eles existam.
       </p>
-      <a href="<?php echo esc_url(home_url('/contato')); ?>">Entrar em contato</a>
+      <a href="<?php echo esc_url(home_url('/contato')); ?>">Solicitar Curadoria Técnica</a>
     </section>
   </main>
 
-  </script>
   <script>
     (function () {
       const header = document.getElementById('teHeader');
@@ -1187,6 +1227,25 @@
 
       toggleHeader();
       window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Modal do Intelligence Lab
+      const labBtn = document.getElementById('te-lab-btn');
+      const labModal = document.getElementById('te-lab-modal');
+      const labClose = document.getElementById('te-lab-close');
+      if (labBtn && labModal) {
+        labBtn.addEventListener('click', () => { labModal.style.display = 'flex'; });
+        labClose.addEventListener('click', () => { labModal.style.display = 'none'; });
+        labModal.addEventListener('click', (e) => { if (e.target === labModal) labModal.style.display = 'none'; });
+      }
+
+      // Fade-up observer
+      const faders = document.querySelectorAll('.fade-up');
+      if (faders.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+        }, { threshold: 0.15 });
+        faders.forEach(f => io.observe(f));
+      }
     })();
   </script>
   <?php wp_footer(); ?>
