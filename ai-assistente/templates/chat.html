@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trade Expansion </title>
+    <style>
+        body {
+            font-family: "Inter", Arial, sans-serif;
+            background-color: #F4F4F4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        header {
+            background-color: #004AAD;
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        #chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .message {
+            max-width: 80%;
+            margin-bottom: 0.8rem;
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            /* Ensure long words break instead of overflowing */
+            white-space: pre-wrap;
+            /* Preserve newlines inside the text */
+        }
+
+        .user {
+            background-color: #0073E6;
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .bot {
+            background-color: #EAEAEA;
+            color: #1E1E1E;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        footer {
+            padding: 0.8rem;
+            background-color: white;
+            border-top: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        #send-btn {
+            background-color: #004AAD;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 0.8rem 1.5rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        #send-btn:hover {
+            background-color: #0073E6;
+        }
+
+        .footer-text {
+            text-align: center;
+            padding: 0.5rem;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .bot p {
+            margin-top: 0;
+        }
+
+        .bot ul {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .bot li {
+            margin-bottom: 5px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+    <header>🤖 Trade Expansion AI Assistant</header>
+
+    <div id="chat-container">
+        <div class="message bot">
+            Olá! 👋 Sou a Petra, assistente da <strong>Trade Expansion</strong>. <br>
+            Posso te ajudar a entender mais sobre exportações, inspeções de rochas ou processos internacionais.
+        </div>
+    </div>
+
+    <footer>
+        <input id="user-input" type="text" placeholder="Digite sua mensagem..." autocomplete="off" />
+        <button id="send-btn">Enviar</button>
+    </footer>
+
+    <div class="footer-text">Powered by Gemini · Flask · LangChain</div>
+
+    <script>
+        const chatContainer = document.getElementById("chat-container");
+        const userInput = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+
+        // Configuração do marked para prevenir problemas de segurança básicos
+        marked.setOptions({
+            breaks: true, // Parse line breaks as <br>
+            sanitize: false // Set to true se não confiar no HTML gerado pelo LLM. False permite tags ricas que o bot gerar.
+        });
+
+        function addMessage(text, sender) {
+            const msg = document.createElement("div");
+            msg.classList.add("message", sender);
+
+            if (sender === 'bot') {
+                try {
+                    // Utiliza a biblioteca marked para converter Markdown em HTML
+                    msg.innerHTML = marked.parse(text);
+                } catch (e) {
+                    // Fallback se markdown falhar
+                    msg.innerHTML = text.replace(/\n/g, "<br>");
+                }
+            } else {
+                msg.textContent = text;
+            }
+
+            chatContainer.appendChild(msg);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (!text) return;
+
+            addMessage(text, "user");
+            userInput.value = "";
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+            sendBtn.textContent = "...";
+
+            try {
+                // Ao rodar localmente no Flask será '/chat'
+                // Ao implantar do site da Trade Expansion pra Render usaremos o link absoluto: 'https://seusite.onrender.com/chat'
+                const endpoint = "/chat";
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: text }),
+                });
+
+                if (!response.ok) {
+                    throw new Error("Erro na solicitação");
+                }
+
+                const data = await response.json();
+                addMessage(data.answer, "bot");
+            } catch (error) {
+                console.error("Erro:", error);
+                addMessage("⚠️ Erro ao contatar a assistente virtual Petra. Tente novamente.", "bot");
+            } finally {
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                sendBtn.textContent = "Enviar";
+                userInput.focus();
+            }
+        }
+
+        sendBtn.addEventListener("click", sendMessage);
+        userInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") sendMessage();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+# Sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Backups e temporários
+*.bak
+*.old
+*.backup
+*.tmp
+*_backup
+*_old
+
+# Env e credenciais
+.env
+.env.*
+*.key
+*.pem
+
+# Node (caso apareça)
+node_modules/
+package-lock.json
+
+# Dependências PHP (caso apareça)
+vendor/
+
+# Arquivo Git antigo arquivado
+.git_arquivo_*/
+
+# Uploads de plugin de cache
+cache/
+*.cache
+
+# SQL dumps
+*.sql
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
